@@ -383,8 +383,8 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="Forms\MainForm.pas">
-            <Form>Form1</Form>
+        <DCCReference Include="Forms\BooksForm.pas">
+            <Form>frmBooks</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Repositories\BooksRepository.pas"/>

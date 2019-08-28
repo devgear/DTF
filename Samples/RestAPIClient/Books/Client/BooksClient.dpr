@@ -4,7 +4,7 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   BooksModule in 'Modules\BooksModule.pas' {dmDataAccess: TDataModule},
-  MainForm in 'Forms\MainForm.pas' {Form1},
+  BooksForm in 'Forms\BooksForm.pas' {frmBooks},
   BooksRepository in 'Repositories\BooksRepository.pas',
   BooksRestApi in 'Apis\BooksRestApi.pas',
   DTF.DAO in '..\..\..\..\Sources\Core\DTF.DAO.pas',
@@ -15,6 +15,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrmBooks, frmBooks);
   Application.Run;
 end.

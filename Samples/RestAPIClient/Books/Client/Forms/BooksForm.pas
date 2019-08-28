@@ -1,4 +1,4 @@
-unit MainForm;
+unit BooksForm;
 
 interface
 
@@ -16,7 +16,7 @@ uses
   FMX.StdCtrls, FMX.Memo, FMX.Edit, FMX.Layouts, FMX.ExtCtrls;
 
 type
-  TForm1 = class(TForm)
+  TfrmBooks = class(TForm)
     btnLoadData: TButton;
     Grid1: TGrid;
     Label1: TLabel;
@@ -61,13 +61,13 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frmBooks: TfrmBooks;
 
 implementation
 
 {$R *.fmx}
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TfrmBooks.FormCreate(Sender: TObject);
 begin
   FViewModel := TdmDataAccess.Create(nil);
   FViewModel.OnImageLoaded := ImageLoaded;
@@ -77,42 +77,42 @@ begin
   BindSourceDB2.DataSet := FViewModel.memBookDetail;
 end;
 
-procedure TForm1.FormDestroy(Sender: TObject);
+procedure TfrmBooks.FormDestroy(Sender: TObject);
 begin
   FViewModel.Free;
 end;
 
-procedure TForm1.btnLoadDataClick(Sender: TObject);
+procedure TfrmBooks.btnLoadDataClick(Sender: TObject);
 begin
   FViewModel.LoadData;
 end;
 
-procedure TForm1.btnNewDataClick(Sender: TObject);
+procedure TfrmBooks.btnNewDataClick(Sender: TObject);
 begin
   FViewModel.NewData;
   ClearControls;
 end;
 
-procedure TForm1.btnSaveDataClick(Sender: TObject);
+procedure TfrmBooks.btnSaveDataClick(Sender: TObject);
 begin
   FViewModel.SaveData;
 
   ShowMessage('저장');
 end;
 
-procedure TForm1.btnDeleteDataClick(Sender: TObject);
+procedure TfrmBooks.btnDeleteDataClick(Sender: TObject);
 begin
   FViewModel.DeleteData;
 
   ShowMessage('삭제');
 end;
 
-procedure TForm1.ClearControls;
+procedure TfrmBooks.ClearControls;
 begin
   ImageControl1.Bitmap.Assign(nil);
 end;
 
-procedure TForm1.ImageLoaded(AStream: TStream);
+procedure TfrmBooks.ImageLoaded(AStream: TStream);
 begin
   if not Assigned(AStream) or (AStream.Size = 0) then
     ImageControl1.Bitmap.Assign(nil)

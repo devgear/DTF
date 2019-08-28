@@ -1,7 +1,7 @@
-object Form1: TForm1
+object frmBooks: TfrmBooks
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = #46020#49436#51221#48372' '#44288#47532
   ClientHeight = 446
   ClientWidth = 700
   FormFactor.Width = 320
