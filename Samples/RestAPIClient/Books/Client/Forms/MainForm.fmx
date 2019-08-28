@@ -1,0 +1,221 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 446
+  ClientWidth = 700
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  DesignerMasterStyle = 0
+  object btnLoadData: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 16.000000000000000000
+    TabOrder = 0
+    Text = #45936#51060#53552' '#47196#46300
+    OnClick = btnLoadDataClick
+  end
+  object Grid1: TGrid
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 24.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 369.000000000000000000
+    Size.Height = 385.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    RowCount = 0
+    Viewport.Width = 365.000000000000000000
+    Viewport.Height = 360.000000000000000000
+  end
+  object Label1: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 46.000000000000000000
+    Text = #51228#47785
+    TabOrder = 11
+  end
+  object edtTitle: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 12
+    Position.X = 408.000000000000000000
+    Position.Y = 65.000000000000000000
+    Size.Width = 257.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label2: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 94.000000000000000000
+    Text = #51200#51088
+    TabOrder = 6
+  end
+  object edtAuthor: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 7
+    Position.X = 408.000000000000000000
+    Position.Y = 113.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label3: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 142.000000000000000000
+    Text = 'ISBN'
+    TabOrder = 4
+  end
+  object edtISBN: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 5
+    Position.X = 408.000000000000000000
+    Position.Y = 161.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label4: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 190.000000000000000000
+    Text = #44032#44201
+    TabOrder = 2
+  end
+  object edtPrice: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Position.X = 408.000000000000000000
+    Position.Y = 209.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label5: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 238.000000000000000000
+    Text = #44288#47144#47553#53356
+    TabOrder = 9
+  end
+  object edtLink: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 10
+    Position.X = 408.000000000000000000
+    Position.Y = 257.000000000000000000
+    Size.Width = 257.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label6: TLabel
+    Position.X = 408.000000000000000000
+    Position.Y = 286.000000000000000000
+    Text = #49444#47749
+    TabOrder = 8
+  end
+  object mmoDescription: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 408.000000000000000000
+    Position.Y = 304.000000000000000000
+    Size.Width = 257.000000000000000000
+    Size.Height = 97.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Viewport.Width = 253.000000000000000000
+    Viewport.Height = 93.000000000000000000
+  end
+  object btnNewData: TButton
+    Position.X = 408.000000000000000000
+    Position.Y = 16.000000000000000000
+    TabOrder = 16
+    Text = #49888#44508
+    OnClick = btnNewDataClick
+  end
+  object btnSaveData: TButton
+    Position.X = 584.000000000000000000
+    Position.Y = 408.000000000000000000
+    TabOrder = 14
+    Text = #51200#51109
+    OnClick = btnSaveDataClick
+  end
+  object ImageControl1: TImageControl
+    Position.X = 536.000000000000000000
+    Position.Y = 96.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 145.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 17
+  end
+  object btnDeleteData: TButton
+    Position.X = 584.000000000000000000
+    Position.Y = 16.000000000000000000
+    TabOrder = 15
+    Text = #49325#51228
+    OnClick = btnDeleteDataClick
+  end
+  object BindSourceDB2: TBindSourceDB
+    DataSet = dmDataAccess.memBookDetail
+    ScopeMappings = <>
+    Left = 312
+    Top = 240
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = dmDataAccess.memBookList
+    ScopeMappings = <>
+    Left = 312
+    Top = 184
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 308
+    Top = 117
+    object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      GridControl = Grid1
+      Columns = <>
+    end
+    object LinkControlToField1: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_LINK'
+      Control = edtLink
+      Track = False
+    end
+    object LinkControlToField2: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_AUTHOR'
+      Control = edtAuthor
+      Track = False
+    end
+    object LinkControlToField3: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_DESCRIPTION'
+      Control = mmoDescription
+      Track = False
+    end
+    object LinkControlToField4: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_PRICE'
+      Control = edtPrice
+      Track = False
+    end
+    object LinkControlToField5: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_TITLE'
+      Control = edtTitle
+      Track = False
+    end
+    object LinkControlToField6: TLinkControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB2
+      FieldName = 'BOOK_ISBN'
+      Control = edtISBN
+      Track = False
+    end
+  end
+end
