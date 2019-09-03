@@ -3,10 +3,10 @@
         <ProjectGuid>{0B709304-0F40-4A56-AD34-29E3B861CEF7}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="RADServer\BookPackage.dproj">
+        <Projects Include="Client\BooksClient.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Client\BooksClient.dproj">
+        <Projects Include="RADServer\BookRentalPackage.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -17,15 +17,6 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="BookPackage">
-        <MSBuild Projects="RADServer\BookPackage.dproj"/>
-    </Target>
-    <Target Name="BookPackage:Clean">
-        <MSBuild Projects="RADServer\BookPackage.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="BookPackage:Make">
-        <MSBuild Projects="RADServer\BookPackage.dproj" Targets="Make"/>
-    </Target>
     <Target Name="BooksClient">
         <MSBuild Projects="Client\BooksClient.dproj"/>
     </Target>
@@ -35,14 +26,23 @@
     <Target Name="BooksClient:Make">
         <MSBuild Projects="Client\BooksClient.dproj" Targets="Make"/>
     </Target>
+    <Target Name="BookRentalPackage">
+        <MSBuild Projects="RADServer\BookRentalPackage.dproj"/>
+    </Target>
+    <Target Name="BookRentalPackage:Clean">
+        <MSBuild Projects="RADServer\BookRentalPackage.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BookRentalPackage:Make">
+        <MSBuild Projects="RADServer\BookRentalPackage.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="BookPackage;BooksClient"/>
+        <CallTarget Targets="BooksClient;BookRentalPackage"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="BookPackage:Clean;BooksClient:Clean"/>
+        <CallTarget Targets="BooksClient:Clean;BookRentalPackage:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="BookPackage:Make;BooksClient:Make"/>
+        <CallTarget Targets="BooksClient:Make;BookRentalPackage:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

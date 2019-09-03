@@ -1,4 +1,4 @@
-package BookPackage;
+package BookRentalPackage;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -39,6 +39,8 @@ requires
   emsserverresource;
 
 contains
-  BookResource in 'BookResource.pas' {BooksResource1: TDataModule};
+  BookResource in 'BookResource.pas' {BooksResource: TDataModule},
+  UserResource in 'UserResource.pas' {UsersResource: TDataModule},
+  RentalResouce in 'RentalResouce.pas' {RentalsResource: TDataModule};
 
 end.

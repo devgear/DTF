@@ -31,8 +31,10 @@ const
   RESOURCE_ITEM   = 'books/{item}';
   RESOURCE_IMAGE  = 'books/{item}/photo';
 
-  ROOTELMT_LIST   = 'books.book';
-  ROOTELMT_ITEM   = 'book';
+//  ROOTELMT_LIST   = 'books.book';
+//  ROOTELMT_ITEM   = 'book';
+  ROOTELMT_LIST   = '';
+  ROOTELMT_ITEM   = '';
 
 
 { TBooksRestApi }
@@ -77,8 +79,8 @@ begin
 
   Writer := TJsonObjectWriter.Create(False);
   try
-    Writer.WriteStartObject;  // start resource
-    Writer.WritePropertyName('book');
+//    Writer.WriteStartObject;  // start resource
+//    Writer.WritePropertyName('book');
 
     Writer.WriteStartObject;  // start item
     Writer.WritePropertyName('BOOK_TITLE');
@@ -100,7 +102,7 @@ begin
     Writer.WriteValue(ADataSet.FieldByName('BOOK_DESCRIPTION').AsString);
 
     Writer.WriteEndObject;  // end item
-    Writer.WriteEndObject;  // end resource
+//    Writer.WriteEndObject;  // end resource
 
     Result := Writer.JSON as TJSONObject;
   finally
