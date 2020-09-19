@@ -22,6 +22,14 @@ object Form1: TForm1
     TabOrder = 0
     Text = 'Edit1'
   end
+  object Button1: TButton
+    Left = 568
+    Top = 424
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 1
+  end
   object FDConnection1: TFDConnection
     Params.Strings = (
       

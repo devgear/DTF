@@ -1,3 +1,14 @@
+{
+  TODO
+    포커스 벗어났을 경우 닫히도록 처리
+    여러 컨트롤에서 사용가능하도록
+    확장 가능하도록, DataSetFilter, RESTful
+      TAutoComplete
+        +------------------------+--------------------+
+        |                        |                    |
+        TAutoCompleteDSFilter    TAutoCompleteQuery   TAutoCompleteREST
+}
+
 unit AutoCompleteForm;
 
 interface
@@ -10,41 +21,57 @@ uses
   Data.Bind.DBScope;
 
 type
+  TfrmAutoComplete = class;
+
   TfrmAutoComplete = class(TForm)
-    ListView1: TListView;
+    ListView: TListView;
     BindingsList1: TBindingsList;
     LinkListControlToField1: TLinkListControlToField;
     BindSourceDB1: TBindSourceDB;
+    procedure ListViewKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormDestroy(Sender: TObject);
   private
-    { Private declarations }
     class var
       FInstance: TfrmAutoComplete;
   private
+    FDroppedDown: Boolean;
+
     FSearchEdit: TEdit;
     FDataSet: TDataSet;
     FListFields: TArray<string>;
     FKeyFields: TArray<string>;
-    procedure SetSearchEdit(AEdit: TEdit);
+    FEditWndProc, FListWndProc: TWndMethod;
 
-    procedure SearchEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-  public
-    { Public declarations }
     procedure Initialize;
-    class procedure Setup(
-            AParent: TForm;
-            ASearchEdit: TEdit;
-            ADataSet: TDataSet;
-            AListFields: TArray<string>;
-            AKeyFields: TArray<string>
-          );
+
+    procedure EditWndProc(var Message: TMessage);
+    procedure ListWndProc(var Message: TMessage);
+    procedure SearchEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SearchEditClick(Sender: TObject);
+  public
+    procedure DropDown;
+    procedure CloseUp;
+
+    class procedure Setup(AParent: TForm; ASearchEdit: TEdit; ADataSet: TDataSet;
+            AListFields: TArray<string>; AKeyFields: TArray<string>);
     class procedure ReleaseInstance;
   end;
 
 implementation
 
+uses
+  System.Types;
+
 {$R *.dfm}
 
 { TfrmAutoComplete }
+
+procedure TfrmAutoComplete.SearchEditClick(Sender: TObject);
+begin
+  if FSearchEdit.Text <> '' then
+    DropDown;
+end;
 
 procedure TfrmAutoComplete.SearchEditKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -62,38 +89,125 @@ begin
   FDataSet.Filtered := (FSearchEdit.Text <> '');
 
   if Key = VK_DOWN then
-    ListView1.SetFocus;
+  begin
+    DropDown;
+    ListView.ItemIndex := 0;
+    ListView.SetFocus;
+    Exit;
+  end;
 
-  Visible := (FSearchEdit.Text <> '');
+  if Key = VK_ESCAPE then
+  begin
+    CloseUp;
+    Exit;
+  end;
+
+  if FSearchEdit.Text = '' then
+    CloseUp
+  else
+    DropDown;
 end;
 
-procedure TfrmAutoComplete.SetSearchEdit(AEdit: TEdit);
-begin
-  FSearchEdit := AEdit;
-//  FDataSet := ADataSet;
-  FSearchEdit.OnKeyUp := SearchEditKeyUp;
-end;
-
-class procedure TfrmAutoComplete.Setup(
-            AParent: TForm;
-            ASearchEdit: TEdit;
-            ADataSet: TDataSet;
-            AListFields: TArray<string>;
-            AKeyFields: TArray<string>
-          );
+class procedure TfrmAutoComplete.Setup(AParent: TForm; ASearchEdit: TEdit; ADataSet: TDataSet;
+  AListFields: TArray<string>; AKeyFields: TArray<string>);
 begin
   if not Assigned(FInstance) then
   begin
     FInstance := TfrmAutoComplete.Create(AParent);
     FInstance.Parent := AParent;
-    FInstance.Left := 100;
-    FINstance.Top := 100;
   end;
   FInstance.FSearchEdit := ASearchEdit;
   FInstance.FDataSet := ADataSet;
   FInstance.FListFields := AListFields;
   FInstance.FKeyFields := AKeyFields;
   FInstance.Initialize;
+end;
+
+procedure TfrmAutoComplete.EditWndProc(var Message: TMessage);
+var
+  Sender: TControl;
+begin
+  case Message.Msg of
+  CM_CANCELMODE:
+    begin
+      OutputDebugString(PChar('CM_CANCELMODE'));
+      Sender := TControl(Message.LParam);
+
+      if Sender <> FSearchEdit then
+        CloseUp;
+    end;
+  WM_KILLFOCUS:
+    begin
+      OutputDebugString(PChar('WM_KILLFOCUS'));
+      if not ListView.Focused then
+        CloseUp;
+    end;
+//  WM_SETFOCUS:
+//    begin
+//      if FSearchEdit.Text <> '' then
+//        DropDown;
+//    end;
+  else
+    FEditWndProc(Message);
+  end;
+end;
+
+procedure TfrmAutoComplete.ListWndProc(var Message: TMessage);
+var
+  Sender: TControl;
+begin
+  case Message.Msg of
+  CM_CANCELMODE:
+    begin
+      OutputDebugString(PChar('CM_CANCELMODE'));
+      Sender := TControl(Message.LParam);
+
+      if Sender <> ListView then
+      begin
+        FSearchEdit.SetFocus;
+        FSearchEdit.SelStart := Length(FSearchEdit.Text);
+        CloseUp;
+      end;
+    end;
+  WM_KILLFOCUS:
+    begin
+      OutputDebugString(PChar('WM_KILLFOCUS'));
+      if not FSearchEdit.Focused then
+      begin
+        FSearchEdit.SetFocus;
+        FSearchEdit.SelStart := Length(FSearchEdit.Text);
+        CloseUp;
+      end;
+    end;
+//  WM_SETFOCUS:
+//    begin
+//      if FSearchEdit.Text <> '' then
+//        DropDown;
+//    end;
+  else
+    FListWndProc(Message);
+  end;
+end;
+
+procedure TfrmAutoComplete.DropDown;
+begin
+  Visible := True;
+
+  FDroppedDown := True;
+end;
+
+procedure TfrmAutoComplete.FormDestroy(Sender: TObject);
+begin
+  OutputDebugString(PChar('AC.Destroy'));
+end;
+
+procedure TfrmAutoComplete.CloseUp;
+begin
+  if FDroppedDown then
+  begin
+    Visible := False;
+    FDroppedDown := False;
+  end;
 end;
 
 procedure TfrmAutoComplete.Initialize;
@@ -105,16 +219,25 @@ var
   P: TPoint;
 begin
   FSearchEdit.OnKeyUp := SearchEditKeyUp;
+  FSearchEdit.OnClick := SearchEditClick;
 
-  ListView1.Columns.Clear;
+  FEditWndProc := FSearchEdit.WindowProc;
+  FSearchEdit.WindowProc := EditWndProc;
+
+  FListWndProc := ListView.WindowProc;
+  ListView.WindowProc := ListWndProc;
+
+  // Add ListControl Items
+  ListView.Columns.Clear;
   for Field in FListFields do
   begin
-    Column := ListView1.Columns.Add;
+    Column := ListView.Columns.Add;
     Column.AutoSize := True;
   end;
 
-  // Data binding
+  // Set Data binding
   BindSourceDB1.DataSet := FDataSet;
+  LinkListControlToField1.Control := ListView;
   LinkListControlToField1.FieldName := FListFields[0];
 
   for I := 1 to Length(FListFields) - 1 do
@@ -124,14 +247,32 @@ begin
     Item.SourceMemberName := FListFields[I];
   end;
 
+  // Set position
   P := FSearchEdit.ClientToParent(Point(0, 0), FSearchEdit.Parent);
   Left := P.X;
   Top := P.Y + FSearchEdit.Height;
+end;
 
+procedure TfrmAutoComplete.ListViewKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_UP) and (ListView.ItemIndex = 0) then
+  begin
+    FSearchEdit.SetFocus;
+    FSearchEdit.SelStart := Length(FSearchEdit.Text);
+  end;
+
+  if Key = VK_ESCAPE then
+  begin
+    FSearchEdit.SetFocus;
+    FSearchEdit.SelStart := Length(FSearchEdit.Text);
+    CloseUp;
+  end;
 end;
 
 class procedure TfrmAutoComplete.ReleaseInstance;
 begin
+  OutputDebugString(PChar('AC.finalization'));
 //  if Assigned(FInstance) then
 //  begin
 //    FInstance.Parent := nil;

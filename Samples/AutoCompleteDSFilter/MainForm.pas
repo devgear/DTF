@@ -27,6 +27,7 @@ type
     FDQuery1JOB_COUNTRY: TStringField;
     FDQuery1SALARY: TFMTBCDField;
     FDQuery1FULL_NAME: TStringField;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -46,6 +47,8 @@ uses AutoCompleteForm;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   TfrmAutoComplete.Setup(Self, Edit1, FDQuery1, ['FIRST_NAME', 'LAST_NAME', 'JOB_COUNTRY'], ['FIRST_NAME']);
+
+
 end;
 
 end.

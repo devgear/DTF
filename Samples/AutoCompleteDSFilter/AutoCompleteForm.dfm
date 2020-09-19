@@ -12,9 +12,10 @@ object frmAutoComplete: TfrmAutoComplete
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
-  object ListView1: TListView
+  object ListView: TListView
     Left = 0
     Top = 0
     Width = 523
@@ -121,10 +122,7 @@ object frmAutoComplete: TfrmAutoComplete
     ShowColumnHeaders = False
     TabOrder = 0
     ViewStyle = vsReport
-    ExplicitLeft = 34
-    ExplicitTop = 36
-    ExplicitWidth = 321
-    ExplicitHeight = 265
+    OnKeyDown = ListViewKeyDown
   end
   object BindingsList1: TBindingsList
     Methods = <>
@@ -135,7 +133,7 @@ object frmAutoComplete: TfrmAutoComplete
       Category = 'Quick Bindings'
       DataSource = BindSourceDB1
       FieldName = 'FIRST_NAME'
-      Control = ListView1
+      Control = ListView
       FillExpressions = <
         item
           SourceMemberName = 'LAST_NAME'
