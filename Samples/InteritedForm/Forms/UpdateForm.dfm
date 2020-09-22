@@ -3,12 +3,12 @@ inherited frmUpdate: TfrmUpdate
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel2: TPanel
-    inherited Panel3: TPanel
-      object DBGrid2: TDBGrid
+    inherited pnlMain: TPanel
+      object DBGrid1: TDBGrid
         Left = 16
         Top = 16
         Width = 649
-        Height = 313
+        Height = 281
         DataSource = dsMain
         Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         TabOrder = 0
@@ -17,6 +17,14 @@ inherited frmUpdate: TfrmUpdate
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
+      end
+      object Edit1: TEdit
+        Left = 16
+        Top = 312
+        Width = 121
+        Height = 21
+        TabOrder = 1
+        Text = 'Edit1'
       end
     end
   end

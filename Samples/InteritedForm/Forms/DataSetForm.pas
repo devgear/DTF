@@ -11,8 +11,8 @@ uses
 
 type
   TfrmDTFDataSet = class(TfrmDTFBase)
-    VirtualImageList1: TVirtualImageList;
-    ImageCollection1: TImageCollection;
+    VirtualImageList: TVirtualImageList;
+    ImageCollection: TImageCollection;
     aclMain: TActionList;
     actDSNewInsert: TDataSetInsert;
     actDSDelete: TDataSetDelete;
@@ -20,8 +20,8 @@ type
     actDSCancel: TDataSetCancel;
     dsMain: TDataSource;
     Panel2: TPanel;
-    Panel3: TPanel;
-    Panel4: TPanel;
+    pnlMain: TPanel;
+    pnlMenu: TPanel;
     ToolBar2: TToolBar;
     ToolButton11: TToolButton;
     ToolButton1: TToolButton;

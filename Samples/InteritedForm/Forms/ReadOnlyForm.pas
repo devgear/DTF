@@ -16,9 +16,9 @@ uses
 
 type
   TfrmReadOnly = class(TfrmDTFDataSet)
-    DBGrid2: TDBGrid;
     FDConnection1: TFDConnection;
     FDQuery1: TFDQuery;
+    DBGrid1: TDBGrid;
     procedure actPrintExecute(Sender: TObject);
     procedure actDownloadExecute(Sender: TObject);
   private

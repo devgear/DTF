@@ -13,13 +13,14 @@ uses
   FireDAC.Comp.DataSet, Vcl.Grids, Vcl.DBGrids, Vcl.DBActns, System.Actions,
   Vcl.ActnList, Vcl.BaseImageCollection, Vcl.ImageCollection, System.ImageList,
   Vcl.ImgList, Vcl.VirtualImageList, Vcl.ComCtrls, Vcl.ToolWin, Vcl.ExtCtrls,
-  Vcl.Menus;
+  Vcl.Menus, Vcl.StdCtrls;
 
 type
   TfrmUpdate = class(TfrmDTFDataSet)
     FDQuery1: TFDQuery;
     FDConnection1: TFDConnection;
-    DBGrid2: TDBGrid;
+    DBGrid1: TDBGrid;
+    Edit1: TEdit;
   private
     { Private declarations }
   public

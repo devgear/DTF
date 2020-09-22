@@ -1,0 +1,38 @@
+-- Menu
+CREATE TABLE menu_categories
+(
+	cate_seq	INTEGER NOT NULL, 
+	cate_name	VARCHAR(100) NOT NULL, 
+	
+	CONSTRAINT cate_seq_pk PRIMARY KEY (cate_seq)
+);
+CREATE GENERATOR cate_seq_gen;
+CREATE TRIGGER set_cate_seq FOR menu_categories
+ACTIVE BEFORE INSERT POSITION 0
+as
+begin
+     new.cate_seq = gen_id(cate_seq_gen, 1);
+end;
+
+
+
+CREATE TABLE menu_groups
+(
+	group_seq	INTEGER NOT NULL, 
+	cate_seq	INTEGER, 
+	group_name	varchar(100) NOT NULL, 
+
+	CONSTRAINT group_seq_pk PRIMARY KEY group_seq
+);
+ALTER TABLE menu_groups ADD CONSTRAINT menu_cate_group_fk FOREIGN KEY (cate_seq) REFERENCES menu_categories (cate_seq) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE TABLE menu_items
+(
+	menu_seq	INTEGER NOT NULL, 
+	cate_seq	INTEGER,
+	group_seq	INTEGER, 
+	menu_id		varchar(16) NOT NULL, 
+	menu_name	varchar(100) NOT NULL, 
+
+	CONSTRAINT menu_seq_pk PRIMARY KEY menu_seq
+);

@@ -83,6 +83,8 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -101,6 +103,54 @@
         <DCCReference Include="MainForm.pas">
             <Form>frmMain</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DatabaseModule.pas">
+            <Form>dmDatabase</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Form.Base.pas">
+            <Form>frmDTFBase</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Builders\DTF.Builder.Factory.pas"/>
+        <DCCReference Include="MenuFactory.pas"/>
+        <DCCReference Include="..\Forms\DTF.Form.MDIChild.pas">
+            <Form>frmDTFMDIChild</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Form.DataSet.pas">
+            <Form>frmDTFDataSet</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="TestForm.pas">
+            <Form>frmTest</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Cores\DTF.Types.pas"/>
+        <DCCReference Include="Sys\SYS1010.pas">
+            <Form>frmSYS1010</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Frames.Base.pas">
+            <Form>fmeDTFBase</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Frames.DataSet.pas">
+            <Form>fmeDTFDataSet</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Module.Resource.pas">
+            <Form>dmResource</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\Forms\DTF.Frame.DBGrid.pas">
+            <Form>fmeDTFDBGrid</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -122,6 +172,12 @@
                 <Source>
                     <Source Name="MainSource">DTFMDIClient.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k270.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp270.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="Win32\Debug\DTFMDIClient.exe" Configuration="Debug" Class="ProjectOutput">

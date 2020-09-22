@@ -28,9 +28,6 @@ object Form1: TForm1
     Font.Style = []
     OnChange = TabSetChange
     OnMouseUp = TabSetMouseUp
-    ExplicitLeft = 296
-    ExplicitTop = 240
-    ExplicitWidth = 185
   end
   object ToolBar1: TToolBar
     Left = 0
@@ -40,9 +37,6 @@ object Form1: TForm1
     Caption = 'ToolBar1'
     Images = ImageList1
     TabOrder = 1
-    ExplicitLeft = 312
-    ExplicitTop = 240
-    ExplicitWidth = 150
     object ToolButton1: TToolButton
       Left = 0
       Top = 0

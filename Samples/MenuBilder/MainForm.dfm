@@ -10,24 +10,21 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsMDIForm
+  Menu = MainMenu1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
-    Left = 24
-    Top = 16
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 0
-    OnClick = Button1Click
-  end
-  object Panel1: TPanel
-    Left = 24
-    Top = 64
-    Width = 553
-    Height = 377
-    Caption = 'Panel1'
-    TabOrder = 1
+  object MainMenu1: TMainMenu
+    Left = 296
+    Top = 232
+    object Createsubform1: TMenuItem
+      Caption = 'Create sub form'
+      OnClick = Createsubform1Click
+    end
+    object Createsub2form1: TMenuItem
+      Caption = 'Create sub2 form'
+      OnClick = Createsub2form1Click
+    end
   end
 end
