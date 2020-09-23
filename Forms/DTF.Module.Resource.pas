@@ -9,7 +9,8 @@ uses
 type
   TdmResource = class(TDataModule)
     vilToolButton: TVirtualImageList;
-    imcToolButton: TImageCollection;
+    ImageCollection: TImageCollection;
+    vilMenus: TVirtualImageList;
   private
     { Private declarations }
   public

@@ -1,11 +1,11 @@
-program MenuBilderDemo;
+program ViewBilderDemo;
 
 uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {Form1},
   DTF.Builder.Factory in '..\..\Sources\DTF.Builder.Factory.pas',
   Sub1Form in 'Sub1Form.pas' {frmSub1},
-  MenuFactory in 'MenuFactory.pas',
+  ViewFactory in 'ViewFactory.pas',
   Sub2Form in 'Sub2Form.pas' {frmSub2};
 
 {$R *.res}

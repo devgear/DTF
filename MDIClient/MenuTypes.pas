@@ -1,10 +1,16 @@
-unit MenuFactory;
+unit MenuTypes;
 
 interface
 uses
   DTF.Builder.Factory, DTF.Form.MDIChild;
 
 type
+  PMenuData = ^TMenuData;
+  TMenuData = record
+    MenuId: string;
+    MenuName: string;
+  end;
+
   TDTFForm = TfrmDTFMDIChild;
   TDTFFormClass = class of TfrmDTFMDIChild;
 

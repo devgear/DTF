@@ -11,7 +11,8 @@ CREATE TRIGGER set_cate_seq FOR menu_categories
 ACTIVE BEFORE INSERT POSITION 0
 as
 begin
-     new.cate_seq = gen_id(cate_seq_gen, 1);
+	IF ((new.cate_seq is null) or (new.cate_seq = 0)) THEN
+		new.cate_seq = gen_id(cate_seq_gen, 1);
 end;
 
 
@@ -22,17 +23,35 @@ CREATE TABLE menu_groups
 	cate_seq	INTEGER, 
 	group_name	varchar(100) NOT NULL, 
 
-	CONSTRAINT group_seq_pk PRIMARY KEY group_seq
+	CONSTRAINT group_seq_pk PRIMARY KEY (group_seq)
 );
-ALTER TABLE menu_groups ADD CONSTRAINT menu_cate_group_fk FOREIGN KEY (cate_seq) REFERENCES menu_categories (cate_seq) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE menu_groups ADD CONSTRAINT menu_cate_group_fk FOREIGN KEY (cate_seq) 	REFERENCES menu_categories (cate_seq) ON UPDATE CASCADE ON DELETE CASCADE;
+CREATE GENERATOR group_seq_gen;
+CREATE TRIGGER set_group_seq FOR menu_groups
+ACTIVE BEFORE INSERT POSITION 0
+as
+begin
+	IF ((new.group_seq is null) or (new.group_seq = 0)) THEN
+		new.group_seq = gen_id(group_seq_gen, 1);
+end;
+
+
 
 CREATE TABLE menu_items
 (
 	menu_seq	INTEGER NOT NULL, 
-	cate_seq	INTEGER,
 	group_seq	INTEGER, 
 	menu_id		varchar(16) NOT NULL, 
 	menu_name	varchar(100) NOT NULL, 
 
-	CONSTRAINT menu_seq_pk PRIMARY KEY menu_seq
+	CONSTRAINT menu_seq_pk PRIMARY KEY (menu_seq)
 );
+ALTER TABLE menu_items ADD CONSTRAINT menu_group_item_fk FOREIGN KEY (group_seq) 		REFERENCES menu_groups (group_seq) ON UPDATE CASCADE ON DELETE CASCADE;
+CREATE GENERATOR menu_seq_gen;
+CREATE TRIGGER set_menu_seq FOR menu_items
+ACTIVE BEFORE INSERT POSITION 0
+as
+begin
+	IF ((new.menu_seq is null) or (new.menu_seq = 0)) THEN
+		new.menu_seq = gen_id(menu_seq_gen, 1);
+end;

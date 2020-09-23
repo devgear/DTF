@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections,
-  Vcl.ExtCtrls, Vcl.StdCtrls, MenuFactory, Vcl.Menus;
+  Vcl.ExtCtrls, Vcl.StdCtrls, ViewFactory, Vcl.Menus;
 
 type
   TForm1 = class(TForm)
@@ -34,7 +34,7 @@ var
   Form: TForm;
   FormClass: TFormClass;
 begin
-  FormClass := TMenuFactory.Instance.Get(AId);
+  FormClass := TViewFactory.Instance.Get(AId);
   if not Assigned(FormClass) then
     Exit;
 

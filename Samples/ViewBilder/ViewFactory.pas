@@ -1,4 +1,4 @@
-unit MenuFactory;
+unit ViewFactory;
 
 interface
 
@@ -6,12 +6,12 @@ uses
   DTF.Builder.Factory, Vcl.Forms;
 
 type
-  TMenuFactory = TAbstractFactory<string, TFormClass>;
+  TViewFactory = TAbstractFactory<string, TFormClass>;
 
 implementation
 
 initialization
 finalization
-  TMenuFactory.Instance.Release;
+  TViewFactory.Instance.Release;
 
 end.

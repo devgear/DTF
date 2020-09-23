@@ -1,0 +1,72 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7A46AFD1-CF2E-4EB6-8E99-E51B6949CA6E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="AutoCompleteDSFilter\ACDSF.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MDITabSet\MDITabSetDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="InteritedForm\InheritedForm.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ViewBilder\ViewBilderDemo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ACDSF">
+        <MSBuild Projects="AutoCompleteDSFilter\ACDSF.dproj"/>
+    </Target>
+    <Target Name="ACDSF:Clean">
+        <MSBuild Projects="AutoCompleteDSFilter\ACDSF.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ACDSF:Make">
+        <MSBuild Projects="AutoCompleteDSFilter\ACDSF.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MDITabSetDemo">
+        <MSBuild Projects="MDITabSet\MDITabSetDemo.dproj"/>
+    </Target>
+    <Target Name="MDITabSetDemo:Clean">
+        <MSBuild Projects="MDITabSet\MDITabSetDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MDITabSetDemo:Make">
+        <MSBuild Projects="MDITabSet\MDITabSetDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="InheritedForm">
+        <MSBuild Projects="InteritedForm\InheritedForm.dproj"/>
+    </Target>
+    <Target Name="InheritedForm:Clean">
+        <MSBuild Projects="InteritedForm\InheritedForm.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="InheritedForm:Make">
+        <MSBuild Projects="InteritedForm\InheritedForm.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ViewBilderDemo">
+        <MSBuild Projects="ViewBilder\ViewBilderDemo.dproj"/>
+    </Target>
+    <Target Name="ViewBilderDemo:Clean">
+        <MSBuild Projects="ViewBilder\ViewBilderDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ViewBilderDemo:Make">
+        <MSBuild Projects="ViewBilder\ViewBilderDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ACDSF;MDITabSetDemo;InheritedForm;ViewBilderDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ACDSF:Clean;MDITabSetDemo:Clean;InheritedForm:Clean;ViewBilderDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ACDSF:Make;MDITabSetDemo:Make;InheritedForm:Make;ViewBilderDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

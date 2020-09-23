@@ -24,7 +24,7 @@ implementation
 
 {$R *.dfm}
 
-uses MenuFactory;
+uses MenuTypes;
 
 initialization
   TMenuFactory.Instance.Regist('test', TfrmTest);

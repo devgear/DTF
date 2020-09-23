@@ -1,4 +1,4 @@
-unit DTF.Frames.Base;
+unit DTF.Frame.Base;
 
 interface
 

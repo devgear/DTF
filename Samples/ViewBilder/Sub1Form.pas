@@ -1,13 +1,14 @@
-unit Sub2Form;
+unit Sub1Form;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
 
 type
-  TfrmSub2 = class(TForm)
+  TfrmSub1 = class(TForm)
+    Edit1: TEdit;
   private
     { Private declarations }
   public
@@ -15,16 +16,16 @@ type
   end;
 
 var
-  frmSub2: TfrmSub2;
+  frmSub1: TfrmSub1;
 
 implementation
 
 {$R *.dfm}
 
-uses MenuFactory;
+uses ViewFactory;
 
 initialization
-  TMenuFactory.Instance.Regist('sub2', TfrmSub2);
+  TViewFactory.Instance.Regist('sub1', TfrmSub1);
 finalization
 
 end.

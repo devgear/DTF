@@ -10,12 +10,10 @@ inherited fmeDTFDataSet: TfmeDTFDataSet
     List = True
     ShowCaptions = True
     TabOrder = 0
-    ExplicitLeft = -253
-    ExplicitWidth = 686
     object ToolButton11: TToolButton
       Left = 0
       Top = 0
-      Action = actDSNewInsert
+      Action = actNewAppend
       AutoSize = True
     end
     object ToolButton1: TToolButton
@@ -41,20 +39,14 @@ inherited fmeDTFDataSet: TfmeDTFDataSet
     Images = dmResource.vilToolButton
     Left = 72
     Top = 56
-    object actDSNewInsert: TDataSetInsert
+    object actNewAppend: TDataSetInsert
       Category = 'Dataset'
       Caption = #49352#47196#52628#44032
-      Hint = 'Insert'
+      Hint = #52628#44032
       ImageIndex = 0
       ImageName = 'icons8'
-      DataSource = dsDataSet
-    end
-    object actDSDelete: TDataSetDelete
-      Category = 'Dataset'
-      Caption = #49325#51228
-      Hint = 'Delete'
-      ImageIndex = 4
-      ImageName = 'icons8-trash'
+      ShortCut = 16429
+      OnExecute = actNewAppendExecute
       DataSource = dsDataSet
     end
     object actDSSavePost: TDataSetPost
@@ -63,6 +55,16 @@ inherited fmeDTFDataSet: TfmeDTFDataSet
       Hint = 'Post'
       ImageIndex = 3
       ImageName = 'icons8-save'
+      ShortCut = 4179
+      DataSource = dsDataSet
+    end
+    object actDSDelete: TDataSetDelete
+      Category = 'Dataset'
+      Caption = #49325#51228
+      Hint = 'Delete'
+      ImageIndex = 4
+      ImageName = 'icons8-trash'
+      ShortCut = 16430
       DataSource = dsDataSet
     end
     object actDSCancel: TDataSetCancel
@@ -75,7 +77,7 @@ inherited fmeDTFDataSet: TfmeDTFDataSet
     end
   end
   object dsDataSet: TDataSource
-    Left = 72
-    Top = 120
+    Left = 160
+    Top = 56
   end
 end

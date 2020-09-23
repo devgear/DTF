@@ -114,7 +114,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\Builders\DTF.Builder.Factory.pas"/>
-        <DCCReference Include="MenuFactory.pas"/>
+        <DCCReference Include="MenuTypes.pas"/>
         <DCCReference Include="..\Forms\DTF.Form.MDIChild.pas">
             <Form>frmDTFMDIChild</Form>
             <FormType>dfm</FormType>
@@ -132,12 +132,12 @@
             <Form>frmSYS1010</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\Forms\DTF.Frames.Base.pas">
+        <DCCReference Include="..\Forms\DTF.Frame.Base.pas">
             <Form>fmeDTFBase</Form>
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\Forms\DTF.Frames.DataSet.pas">
+        <DCCReference Include="..\Forms\DTF.Frame.DataSet.pas">
             <Form>fmeDTFDataSet</Form>
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
