@@ -11,7 +11,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, Vcl.WinXCalendars;
 
 type
   TfrmMain = class(TForm)
@@ -36,21 +36,6 @@ type
     Label1: TLabel;
     Panel4: TPanel;
     Panel1: TPanel;
-    qryMenuCates: TFDQuery;
-    IntegerField5: TIntegerField;
-    WideStringField4: TWideStringField;
-    WideStringField5: TWideStringField;
-    qryMenuGroups: TFDQuery;
-    IntegerField1: TIntegerField;
-    IntegerField2: TIntegerField;
-    WideStringField1: TWideStringField;
-    qryMenuItems: TFDQuery;
-    IntegerField3: TIntegerField;
-    IntegerField4: TIntegerField;
-    WideStringField2: TWideStringField;
-    WideStringField3: TWideStringField;
-    dsMenuCates: TDataSource;
-    dsMenuGroups: TDataSource;
     ImageCollection1: TImageCollection;
     VirtualImageList1: TVirtualImageList;
     ToolBar1: TToolBar;
@@ -64,6 +49,8 @@ type
     ToolButton9: TToolButton;
     ToolButton8: TToolButton;
     btnMenuExit: TToolButton;
+    qryMenuTree: TFDQuery;
+    qryMenuShortcut: TFDQuery;
     procedure FormCreate(Sender: TObject);
     procedure MDITabSetMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -73,8 +60,13 @@ type
     procedure btnMenuExitClick(Sender: TObject);
     procedure trvMenusDeletion(Sender: TObject; Node: TTreeNode);
     procedure trvMenusClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+    procedure MDITabSetChange(Sender: TObject; NewTab: Integer;
+      var AllowChange: Boolean);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
+
     function TabSetShortCut(AKey: Integer): Boolean;
 
     procedure ChildFormActivate(Sender: TObject);
@@ -94,11 +86,9 @@ implementation
 
 {$R *.dfm}
 
-uses DTF.Module.Resource;
+uses DTF.Module.Resource, DTF.Util.AutoComplete, DatabaseModule;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
-var
-  Group, Item: TTreeNode;
 begin
   FormStyle := fsMDIForm;
 
@@ -107,17 +97,56 @@ begin
 
   Application.OnMessage := AppMessage;
 
+  qryMenuTree.Open;
+  qryMenuShortcut.Open;
+
+  TAutoComplete.Setup(
+    Self,
+    edtShortCut,
+    TACDataSetFilterAdapter.Create(
+      qryMenuShortcut,
+      ['cate', 'menu_id', 'menu_name'],
+      ['menu_id', 'menu_name'],
+      procedure(AKeys: TArray<string>)
+      begin
+        CreateMDIForm(AKeys[0]);
+      end
+    )
+  );
+
   DisplayMenu('SYS');
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+var
+  Msg: TWMActivate;
+begin
+//  Self.Activate;
+  Msg.Active := WA_ACTIVE;
+//  Self.Perform()
+  SendMessage(Handle, WM_ACTIVATE, WA_ACTIVE, 0);
 end;
 
 procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);
 begin
   if Assigned(ActiveMDIChild) and (Msg.message = WM_KEYDOWN) and (GetKeyState(VK_CONTROL) < 0) then
     Handled := TabSetShortCut(Msg.wParam);
+
+  // Issue : MDIForm does not send CM_CANCELMODE
+  if (Msg.message = WM_LBUTTONDOWN) and Assigned(ActiveControl) then
+  begin
+    var Ctrl := FindControl(Msg.hwnd);
+    if not Assigned(Ctrl) then
+      Exit;
+
+    ActiveControl.Perform(CM_CANCELMODE, 0, Winapi.Windows.LPARAM(Ctrl));
+    Handled := False;
+  end;
 end;
 
 procedure TfrmMain.CreateMDIForm(AMenuId: string);
 var
+  I: Integer;
   Form: TDTFForm;
   FormClass: TDTFFormClass;
 begin
@@ -128,9 +157,16 @@ begin
     Exit
   end;
 
-  Form := FormClass.Create(Self);
-//  Form.Parent := Self;
+  for I := 0 to MDIChildCount - 1 do
+  begin
+    if MDIChildren[I].ClassType = FormClass then
+    begin
+      MDICHildren[I].Show;
+      Exit;
+    end;
+  end;
 
+  Form := FormClass.Create(Self);
   Form.OnMDIActivate := ChildFormActivate;
   Form.OnMDIDestroy := ChildFormDestroy;
 
@@ -143,37 +179,36 @@ end;
 
 procedure TfrmMain.DisplayMenu(ACateCode: string);
 var
+  GroupName: string;
   Group, Item: TTreeNode;
   MenuData: PMenuData;
 begin
-  if not qryMenuCates.FindKey([ACateCode]) then
-    Exit;
+  qryMenuTree.Close;
+  qryMenuTree.ParamByName('cate_code').AsString := ACateCode;
+  qryMenuTree.Open;
 
   trvMenus.Items.Clear;
-
-  qryMenuGroups.First;
-  trvMenus.Items.BeginUpdate;
-  while not qryMenuGroups.Eof do
+  Group := nil;
+  GroupName := '';
+  while not qryMenuTree.Eof do
   begin
-    Group := trvMenus.Items.Add(nil, qryMenuGroups.FieldByName('group_name').AsString);
-    Group.ImageIndex := 0;
-    Group.SelectedIndex := 0;
-
-    qryMenuItems.First;
-    while not qryMenuItems.Eof do
+    GroupName := qryMenuTree.FieldByName('group_name').AsString;
+    if not Assigned(Group) or (GroupName <> Group.Text) then
     begin
-      Item := trvMenus.Items.AddChild(Group, qryMenuItems.FieldByName('menu_name').AsString);
-      New(MenuData);
-      MenuData^.MenuId := qryMenuItems.FieldByName('menu_id').AsString;
-      MenuData^.MenuName := qryMenuItems.FieldByName('menu_name').AsString;
-      Item.Data := MenuData;
-      Item.ImageIndex := 1;
-      Item.SelectedIndex := 1;
-
-      qryMenuItems.Next;
+      Group := trvMenus.Items.Add(nil, GroupName);
+      Group.ImageIndex := 0;
+      Group.SelectedIndex := 0;
     end;
 
-    qryMenuGroups.Next;
+    Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString);
+    New(MenuData);
+    MenuData.MenuId := qryMenuTree.FieldByName('menu_id').AsString;
+    MenuData.MenuName := qryMenuTree.FieldByName('menu_name').AsString;
+    Item.Data := MenuData;
+    Item.ImageIndex := 1;
+    Item.SelectedIndex := 1;
+
+    qryMenuTree.Next;
   end;
 
   trvMenus.FullExpand;
@@ -212,7 +247,7 @@ procedure TfrmMain.ChildFormActivate(Sender: TObject);
 var
   I: Integer;
 begin
-  if not (csFreeNotification in TComponent(Sender).ComponentState) and (Sender is TForm) and (TForm(Sender).FormStyle = fsMDIChild) then
+  if (Sender is TForm) and (TForm(Sender).FormStyle = fsMDIChild) then
   begin
     for I := 0 to MDITabSet.Tabs.Count - 1 do
     begin
@@ -280,6 +315,13 @@ begin
   end;
 end;
 
+procedure TfrmMain.MDITabSetChange(Sender: TObject; NewTab: Integer;
+  var AllowChange: Boolean);
+begin
+  TForm(MDITabSet.Tabs.Objects[NewTab]).Show;
+//  ShowWindow(TForm(MDITabSet.Tabs.Objects[NewTab]).Handle, SW_RESTORE);
+end;
+
 procedure TfrmMain.MDITabSetMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
@@ -309,6 +351,11 @@ procedure TfrmMain.mnuMDICloseClick(Sender: TObject);
 begin
   ActiveMDIChild.Close;
 end;
+procedure TfrmMain.N3Click(Sender: TObject);
+begin
+  CreateMDIForm('test')
+end;
+
 {$ENDREGION}
 
 end.

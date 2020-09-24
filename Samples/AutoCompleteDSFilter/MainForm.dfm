@@ -14,6 +14,13 @@ object Form1: TForm1
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 336
+    Top = 222
+    Width = 31
+    Height = 13
+    Caption = 'Label1'
+  end
   object Edit1: TEdit
     Left = 56
     Top = 40
@@ -29,6 +36,27 @@ object Form1: TForm1
     Height = 25
     Caption = 'Button1'
     TabOrder = 1
+  end
+  object Panel1: TPanel
+    Left = 104
+    Top = 208
+    Width = 185
+    Height = 41
+    Caption = 'Panel1'
+    TabOrder = 2
+  end
+  object ComboBox1: TComboBox
+    Left = 40
+    Top = 426
+    Width = 145
+    Height = 21
+    TabOrder = 3
+    Text = 'ComboBox1'
+    Items.Strings = (
+      '12'
+      '23'
+      '34'
+      '233')
   end
   object FDConnection1: TFDConnection
     Params.Strings = (

@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   Menu = MainMenu
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnShow = FormShow
   DesignSize = (
     749
     501)
@@ -54,6 +55,7 @@ object frmMain: TfrmMain
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
+    OnChange = MDITabSetChange
     OnMouseUp = MDITabSetMouseUp
   end
   object pnlMenu: TPanel
@@ -65,8 +67,6 @@ object frmMain: TfrmMain
     BevelOuter = bvNone
     Constraints.MinWidth = 185
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitHeight = 480
     object pnlMenuTop: TPanel
       Left = 0
       Top = 0
@@ -93,7 +93,7 @@ object frmMain: TfrmMain
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
-          TextHint = #48148#47196#44032#44592
+          TextHint = #47700#45684' '#47749', '#53076#46300#47196' '#48148#47196#44032#44592
         end
       end
       object lstFavorites: TListView
@@ -104,8 +104,8 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
-        ExplicitTop = 41
-        ExplicitHeight = 191
+        ExplicitTop = 133
+        ExplicitHeight = 99
       end
       object Panel1: TPanel
         Left = 0
@@ -126,9 +126,7 @@ object frmMain: TfrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 2
-        ExplicitLeft = 1
-        ExplicitTop = 1
-        ExplicitWidth = 358
+        ExplicitTop = 113
       end
     end
     object trvMenus: TTreeView
@@ -147,8 +145,6 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnClick = trvMenusClick
       OnDeletion = trvMenusDeletion
-      ExplicitTop = 232
-      ExplicitHeight = 248
     end
     object Panel4: TPanel
       Left = 0
@@ -169,9 +165,6 @@ object frmMain: TfrmMain
       ParentBackground = False
       ParentFont = False
       TabOrder = 2
-      ExplicitLeft = 1
-      ExplicitTop = 1
-      ExplicitWidth = 358
     end
   end
   object ToolBar1: TToolBar
@@ -286,6 +279,7 @@ object frmMain: TfrmMain
     end
     object N3: TMenuItem
       Caption = #53580#49828#53944
+      OnClick = N3Click
     end
     object MDI1: TMenuItem
       Caption = #47700#45684
@@ -303,124 +297,6 @@ object frmMain: TfrmMain
       Caption = #47784#46160' '#45803#44592'(&L)'
       OnClick = mnuMDICloseAllClick
     end
-  end
-  object qryMenuCates: TFDQuery
-    Active = True
-    IndexFieldNames = 'CATE_CODE'
-    Connection = dmDatabase.FDConnection
-    UpdateOptions.AssignedValues = [uvGeneratorName]
-    UpdateOptions.GeneratorName = 'CATE_SEQ_GEN'
-    UpdateOptions.AutoIncFields = 'CATE_SEQ'
-    SQL.Strings = (
-      'SELECT * FROM menu_categories')
-    Left = 32
-    Top = 320
-    object IntegerField5: TIntegerField
-      AutoGenerateValue = arAutoInc
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'CATE_SEQ'
-      Origin = 'CATE_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object WideStringField4: TWideStringField
-      DisplayLabel = #52852#53580#44256#47532' '#53076#46300
-      DisplayWidth = 8
-      FieldName = 'CATE_CODE'
-      Origin = 'CATE_CODE'
-      Size = 32
-    end
-    object WideStringField5: TWideStringField
-      DisplayLabel = #47700#45684' '#52852#53580#44256#47532#47749
-      DisplayWidth = 40
-      FieldName = 'CATE_NAME'
-      Origin = 'CATE_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object qryMenuGroups: TFDQuery
-    Active = True
-    IndexFieldNames = 'CATE_SEQ'
-    MasterSource = dsMenuCates
-    MasterFields = 'CATE_SEQ'
-    Connection = dmDatabase.FDConnection
-    UpdateOptions.AssignedValues = [uvGeneratorName]
-    UpdateOptions.GeneratorName = 'GROUP_SEQ_GEN'
-    UpdateOptions.AutoIncFields = 'GROUP_SEQ'
-    SQL.Strings = (
-      'SELECT * FROM menu_groups')
-    Left = 32
-    Top = 376
-    object IntegerField1: TIntegerField
-      AutoGenerateValue = arAutoInc
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'GROUP_SEQ'
-      Origin = 'GROUP_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object IntegerField2: TIntegerField
-      FieldName = 'CATE_SEQ'
-      Origin = 'CATE_SEQ'
-      Visible = False
-    end
-    object WideStringField1: TWideStringField
-      DisplayLabel = #47700#45684' '#44536#47353#47749
-      DisplayWidth = 40
-      FieldName = 'GROUP_NAME'
-      Origin = 'GROUP_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object qryMenuItems: TFDQuery
-    Active = True
-    IndexFieldNames = 'GROUP_SEQ'
-    MasterSource = dsMenuGroups
-    MasterFields = 'GROUP_SEQ'
-    DetailFields = 'GROUP_SEQ'
-    Connection = dmDatabase.FDConnection
-    SQL.Strings = (
-      'SELECT * FROM menu_items')
-    Left = 32
-    Top = 440
-    object IntegerField3: TIntegerField
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'MENU_SEQ'
-      Origin = 'MENU_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object IntegerField4: TIntegerField
-      FieldName = 'GROUP_SEQ'
-      Origin = 'GROUP_SEQ'
-      Visible = False
-    end
-    object WideStringField2: TWideStringField
-      DisplayLabel = #47700#45684' ID'
-      DisplayWidth = 12
-      FieldName = 'MENU_ID'
-      Origin = 'MENU_ID'
-      Required = True
-      Size = 64
-    end
-    object WideStringField3: TWideStringField
-      DisplayLabel = #47700#45684' '#47749
-      DisplayWidth = 40
-      FieldName = 'MENU_NAME'
-      Origin = 'MENU_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object dsMenuCates: TDataSource
-    DataSet = qryMenuCates
-    Left = 112
-    Top = 320
-  end
-  object dsMenuGroups: TDataSource
-    DataSet = qryMenuGroups
-    Left = 112
-    Top = 376
   end
   object ImageCollection1: TImageCollection
     Images = <
@@ -1176,5 +1052,45 @@ object frmMain: TfrmMain
     Height = 32
     Left = 312
     Top = 168
+  end
+  object qryMenuTree: TFDQuery
+    Connection = dmDatabase.FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '  GROUP_NAME,'
+      '  MENU_NAME,'
+      '  MENU_ID'
+      'FROM'
+      '  menu_items item,'
+      '  menu_groups grp,'
+      '  menu_categories cate'
+      'WHERE'
+      '  item.group_seq = grp.group_seq'
+      '  AND grp.cate_seq = cate.cate_seq'
+      '  AND cate_code LIKE :cate_code'
+      'ORDER BY'
+      '  grp.cate_seq, grp.group_seq, menu_seq')
+    Left = 80
+    Top = 352
+    ParamData = <
+      item
+        Name = 'CATE_CODE'
+        ParamType = ptInput
+      end>
+  end
+  object qryMenuShortcut: TFDQuery
+    Connection = dmDatabase.FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '  menu_id, menu_name, cate_name||'#39'>'#39'||group_name as CATE'
+      'FROM'
+      '  menu_categories cate, '
+      '  menu_groups grp, '
+      '  menu_items item'
+      'WHERE'
+      '  cate.cate_seq = grp.cate_seq AND'
+      '  grp.group_seq = item.group_seq')
+    Left = 72
+    Top = 160
   end
 end

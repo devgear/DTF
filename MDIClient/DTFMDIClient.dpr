@@ -15,7 +15,9 @@ uses
   DTF.Frame.Base in '..\Forms\DTF.Frame.Base.pas' {fmeDTFBase: TFrame},
   DTF.Frame.DataSet in '..\Forms\DTF.Frame.DataSet.pas' {fmeDTFDataSet: TFrame},
   DTF.Module.Resource in '..\Forms\DTF.Module.Resource.pas' {dmResource: TDataModule},
-  DTF.Frame.DBGrid in '..\Forms\DTF.Frame.DBGrid.pas' {fmeDTFDBGrid: TFrame};
+  DTF.Frame.DBGrid in '..\Forms\DTF.Frame.DBGrid.pas' {fmeDTFDBGrid: TFrame},
+  DTF.Util.AutoCompleteForm in '..\Utils\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
+  DTF.Util.AutoComplete in '..\Utils\DTF.Util.AutoComplete.pas';
 
 {$R *.res}
 
@@ -23,7 +25,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);
-  Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TdmResource, dmResource);
+  Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.

@@ -7,10 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.DataSet, System.ImageList,
   Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection,
   Vcl.ImageCollection, Data.DB, Vcl.DBActns, System.Actions, Vcl.ActnList,
-  Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.ToolWin, Vcl.StdCtrls;
+  Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.ToolWin, Vcl.StdCtrls, Vcl.WinXCalendars;
 
 type
   TfrmTest = class(TfrmDTFDataSet)
+    CalendarPicker1: TCalendarPicker;
   private
     { Private declarations }
   public

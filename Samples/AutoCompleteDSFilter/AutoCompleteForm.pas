@@ -130,15 +130,15 @@ begin
   case Message.Msg of
   CM_CANCELMODE:
     begin
-      OutputDebugString(PChar('CM_CANCELMODE'));
+      OutputDebugString(PChar('Edit CM_CANCELMODE'));
       Sender := TControl(Message.LParam);
 
-      if Sender <> FSearchEdit then
+      if (Sender <> FSearchEdit) and (Sender <> ListView) then
         CloseUp;
     end;
   WM_KILLFOCUS:
     begin
-      OutputDebugString(PChar('WM_KILLFOCUS'));
+      OutputDebugString(PChar('Edit WM_KILLFOCUS'));
       if not ListView.Focused then
         CloseUp;
     end;
@@ -159,10 +159,10 @@ begin
   case Message.Msg of
   CM_CANCELMODE:
     begin
-      OutputDebugString(PChar('CM_CANCELMODE'));
+      OutputDebugString(PChar('List CM_CANCELMODE'));
       Sender := TControl(Message.LParam);
 
-      if Sender <> ListView then
+      if (Sender <> FSearchEdit) and (Sender <> ListView) then
       begin
         FSearchEdit.SetFocus;
         FSearchEdit.SelStart := Length(FSearchEdit.Text);
@@ -171,7 +171,7 @@ begin
     end;
   WM_KILLFOCUS:
     begin
-      OutputDebugString(PChar('WM_KILLFOCUS'));
+      OutputDebugString(PChar('List WM_KILLFOCUS'));
       if not FSearchEdit.Focused then
       begin
         FSearchEdit.SetFocus;
