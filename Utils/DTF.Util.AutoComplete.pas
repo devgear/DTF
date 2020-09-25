@@ -116,7 +116,7 @@ begin
   begin
     if Filter <> '' then
       Filter := Filter + ' OR ';
-    Filter := Filter + Keyword + ' LIKE ''%' + AText + '%''';
+    Filter := Filter + Format('Lower(%s) LIKE Lower(''%%%s%%'')', [Keyword, AText]);
   end;
   FDataSet.Filter := Filter;
   FDataSet.Filtered := (AText <> '');

@@ -64,6 +64,7 @@ type
     procedure N3Click(Sender: TObject);
     procedure MDITabSetChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
+    procedure FormDestroy(Sender: TObject);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
@@ -86,7 +87,7 @@ implementation
 
 {$R *.dfm}
 
-uses DTF.Module.Resource, DTF.Util.AutoComplete, DatabaseModule;
+uses DTF.Module.Resource, DTF.Util.AutoComplete, DatabaseModule, Environment;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
@@ -94,6 +95,10 @@ begin
 
   Constraints.MinWidth := 1024;
   Constraints.MinHeight := 768;
+
+  WindowState := Env.WindowState;
+  var R := Env.WindowBounds;
+  SetBounds(R.Left, R.Top, R.Width, R.Height);
 
   Application.OnMessage := AppMessage;
 
@@ -117,6 +122,16 @@ begin
   DisplayMenu('SYS');
 end;
 
+procedure TfrmMain.FormDestroy(Sender: TObject);
+begin
+  Env.WindowState := WindowState;
+  if WindowState <> wsMaximized then
+  begin
+    var R := Rect(Left, Top, Width, Height);
+    Env.WindowBounds := R;
+  end;
+end;
+
 procedure TfrmMain.FormShow(Sender: TObject);
 var
   Msg: TWMActivate;
@@ -130,10 +145,11 @@ end;
 procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);
 begin
   if Assigned(ActiveMDIChild) and (Msg.message = WM_KEYDOWN) and (GetKeyState(VK_CONTROL) < 0) then
-    Handled := TabSetShortCut(Msg.wParam);
-
+  begin
+    Handled := TabSetShortCut(Msg.wParam)
+  end
   // Issue : MDIForm does not send CM_CANCELMODE
-  if (Msg.message = WM_LBUTTONDOWN) and Assigned(ActiveControl) then
+  else if (Msg.message = WM_LBUTTONDOWN) and Assigned(ActiveControl) then
   begin
     var Ctrl := FindControl(Msg.hwnd);
     if not Assigned(Ctrl) then

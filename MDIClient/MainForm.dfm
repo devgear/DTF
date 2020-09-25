@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   Menu = MainMenu
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   DesignSize = (
     749
@@ -104,8 +105,6 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
-        ExplicitTop = 133
-        ExplicitHeight = 99
       end
       object Panel1: TPanel
         Left = 0
@@ -126,7 +125,6 @@ object frmMain: TfrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 2
-        ExplicitTop = 113
       end
     end
     object trvMenus: TTreeView

@@ -17,7 +17,8 @@ uses
   DTF.Module.Resource in '..\Forms\DTF.Module.Resource.pas' {dmResource: TDataModule},
   DTF.Frame.DBGrid in '..\Forms\DTF.Frame.DBGrid.pas' {fmeDTFDBGrid: TFrame},
   DTF.Util.AutoCompleteForm in '..\Utils\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
-  DTF.Util.AutoComplete in '..\Utils\DTF.Util.AutoComplete.pas';
+  DTF.Util.AutoComplete in '..\Utils\DTF.Util.AutoComplete.pas',
+  Environment in 'Environment.pas';
 
 {$R *.res}
 
