@@ -60,11 +60,12 @@ type
     procedure btnMenuExitClick(Sender: TObject);
     procedure trvMenusDeletion(Sender: TObject; Node: TTreeNode);
     procedure trvMenusClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure MDITabSetChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
     procedure FormDestroy(Sender: TObject);
+    procedure btnMenuCSClick(Sender: TObject);
+    procedure btnCateMenuClick(Sender: TObject);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
@@ -96,10 +97,6 @@ begin
   Constraints.MinWidth := 1024;
   Constraints.MinHeight := 768;
 
-  WindowState := Env.WindowState;
-  var R := Env.WindowBounds;
-  SetBounds(R.Left, R.Top, R.Width, R.Height);
-
   Application.OnMessage := AppMessage;
 
   qryMenuTree.Open;
@@ -120,26 +117,16 @@ begin
   );
 
   DisplayMenu('SYS');
+
+  WindowState := Env.WindowState;
+  BoundsRect := Env.WindowBounds;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   Env.WindowState := WindowState;
   if WindowState <> wsMaximized then
-  begin
-    var R := Rect(Left, Top, Width, Height);
-    Env.WindowBounds := R;
-  end;
-end;
-
-procedure TfrmMain.FormShow(Sender: TObject);
-var
-  Msg: TWMActivate;
-begin
-//  Self.Activate;
-  Msg.Active := WA_ACTIVE;
-//  Self.Perform()
-  SendMessage(Handle, WM_ACTIVATE, WA_ACTIVE, 0);
+    Env.WindowBounds := BoundsRect;
 end;
 
 procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);
@@ -199,6 +186,9 @@ var
   Group, Item: TTreeNode;
   MenuData: PMenuData;
 begin
+  if ACateCode = '' then
+    Exit;
+
   qryMenuTree.Close;
   qryMenuTree.ParamByName('cate_code').AsString := ACateCode;
   qryMenuTree.Open;
@@ -231,9 +221,19 @@ begin
   trvMenus.Items.EndUpdate;
 end;
 
+procedure TfrmMain.btnMenuCSClick(Sender: TObject);
+begin
+  ShowMessage(Left.ToString + ' / ' + Top.ToString)
+end;
+
 procedure TfrmMain.btnMenuExitClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmMain.btnCateMenuClick(Sender: TObject);
+begin
+  DisplayMenu(TToolButton(Sender).Hint);
 end;
 
 procedure TfrmMain.trvMenusClick(Sender: TObject);

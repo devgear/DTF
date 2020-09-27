@@ -51,15 +51,15 @@ end;
 
 function TEnv.GetWindowState: TWindowState;
 begin
-  Result := TWindowState(FIni.ReadInteger('Windows', 'State', 0));
+  Result := TWindowState(FIni.ReadInteger('Window', 'State', 0));
 end;
 
 function TEnv.GetWindowBounds: TRect;
 begin
-  Result.Top := FIni.ReadInteger('Windows', 'Top', 0);
-  Result.Left := FIni.ReadInteger('Windows', 'Left', 0);
-  Result.Width := FIni.ReadInteger('Windows', 'Width', 1280);
-  Result.Height := FIni.ReadInteger('Windows', 'Height', 1024);
+  Result.Top := FIni.ReadInteger('Window', 'Top', 0);
+  Result.Left := FIni.ReadInteger('Window', 'Left', 0);
+  Result.Width := FIni.ReadInteger('Window', 'Width', 1280);
+  Result.Height := FIni.ReadInteger('Window', 'Height', 1024);
 end;
 
 procedure TEnv.SetWidowState(const Value: TWindowState);
@@ -69,11 +69,10 @@ end;
 
 procedure TEnv.SetWindowBounds(const Value: TRect);
 begin
-  FIni.WriteInteger('Windows', 'Top', Value.Top);
-  FIni.WriteInteger('Windows', 'Left', Value.Left);
-  FIni.WriteInteger('Windows', 'Width', Value.Width);
-  FIni.WriteInteger('Windows', 'Height', Value.Height);
-
+  FIni.WriteInteger('Window', 'Top', Value.Top);
+  FIni.WriteInteger('Window', 'Left', Value.Left);
+  FIni.WriteInteger('Window', 'Width', Value.Width);
+  FIni.WriteInteger('Window', 'Height', Value.Height);
 end;
 
 end.

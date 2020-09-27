@@ -14,7 +14,6 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnShow = FormShow
   DesignSize = (
     749
     501)
@@ -190,9 +189,11 @@ object frmMain: TfrmMain
     object btnMenuShow: TToolButton
       Left = 17
       Top = 0
+      Hint = 'SYS'
       Caption = #47700#45684
       ImageIndex = 0
       ImageName = 'icons8-menu'
+      OnClick = btnCateMenuClick
     end
     object ToolButton3: TToolButton
       Left = 70
@@ -215,23 +216,29 @@ object frmMain: TfrmMain
     object btnMenuHR: TToolButton
       Left = 97
       Top = 0
+      Hint = 'HMR'
       Caption = #51064#49324
       ImageIndex = 2
       ImageName = 'icons8-conference_call'
+      OnClick = btnCateMenuClick
     end
     object btnMenuMkt: TToolButton
       Left = 150
       Top = 0
+      Hint = 'MKT'
       Caption = #47560#53011#54021
       ImageIndex = 3
       ImageName = 'icons8-planner'
+      OnClick = btnCateMenuClick
     end
     object btnMenuCS: TToolButton
       Left = 203
       Top = 0
+      Hint = 'CST'
       Caption = #44256#44061
       ImageIndex = 4
       ImageName = 'icons8-customer_support'
+      OnClick = btnCateMenuClick
     end
     object ToolButton9: TToolButton
       Left = 256
@@ -1073,7 +1080,9 @@ object frmMain: TfrmMain
     ParamData = <
       item
         Name = 'CATE_CODE'
+        DataType = ftString
         ParamType = ptInput
+        Value = 'HMR'
       end>
   end
   object qryMenuShortcut: TFDQuery
