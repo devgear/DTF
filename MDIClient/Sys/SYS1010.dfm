@@ -3,7 +3,6 @@ inherited frmSYS1010: TfrmSYS1010
   ClientHeight = 551
   ClientWidth = 705
   OnResize = FormResize
-  ExplicitTop = -3
   ExplicitWidth = 721
   ExplicitHeight = 590
   PixelsPerInch = 96
@@ -15,7 +14,6 @@ inherited frmSYS1010: TfrmSYS1010
     Height = 281
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 256
     object pnlCate: TPanel
       Left = 1
       Top = 1
@@ -24,7 +22,6 @@ inherited frmSYS1010: TfrmSYS1010
       Align = alLeft
       BevelOuter = bvLowered
       TabOrder = 0
-      ExplicitHeight = 254
       inline fmeCate: TfmeDTFDBGrid
         Left = 1
         Top = 21
@@ -35,7 +32,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitLeft = 1
         ExplicitTop = 21
         ExplicitWidth = 358
-        ExplicitHeight = 171
+        ExplicitHeight = 156
         inherited tlbDataSet: TToolBar
           Width = 358
           ExplicitWidth = 358
@@ -55,7 +52,6 @@ inherited frmSYS1010: TfrmSYS1010
         Height = 101
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 152
         DesignSize = (
           358
           101)
@@ -124,7 +120,6 @@ inherited frmSYS1010: TfrmSYS1010
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 1
-      ExplicitHeight = 254
       DesignSize = (
         343
         279)
@@ -188,7 +183,6 @@ inherited frmSYS1010: TfrmSYS1010
     Height = 270
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 256
     object pnlGroup: TPanel
       Left = 1
       Top = 1
@@ -207,7 +201,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitLeft = 1
         ExplicitTop = 21
         ExplicitWidth = 358
-        ExplicitHeight = 131
+        ExplicitHeight = 137
         inherited tlbDataSet: TToolBar
           Width = 358
           ExplicitWidth = 358
@@ -288,7 +282,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitLeft = 1
         ExplicitTop = 21
         ExplicitWidth = 341
-        ExplicitHeight = 131
+        ExplicitHeight = 137
         inherited tlbDataSet: TToolBar
           Width = 341
           ExplicitWidth = 341
@@ -296,6 +290,10 @@ inherited frmSYS1010: TfrmSYS1010
         inherited grdMaster: TDBGrid
           Width = 341
           Height = 115
+        end
+        inherited aclDataSet: TActionList
+          Left = 64
+          Top = 72
         end
         inherited dsDataSet: TDataSource
           DataSet = qryMenuItems
