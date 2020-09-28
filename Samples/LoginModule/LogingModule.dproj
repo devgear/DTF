@@ -102,6 +102,21 @@
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="DTF.Core.Auth.pas"/>
+        <DCCReference Include="UserAuthModule.pas">
+            <Form>dmUserAuth</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="UserAuthTypes.pas"/>
+        <DCCReference Include="DTF.Form.ChangePassword.pas">
+            <Form>frmDTFChangePwd</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DTF.Form.Login.pas">
+            <Form>frmDTFLogin</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
