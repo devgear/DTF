@@ -158,6 +158,13 @@
         </DCCReference>
         <DCCReference Include="..\Utils\DTF.Util.AutoComplete.pas"/>
         <DCCReference Include="Environment.pas"/>
+        <DCCReference Include="..\Cores\DTF.Core.Authentication.pas"/>
+        <DCCReference Include="..\Cores\DTF.Core.AuthTypes.pas"/>
+        <DCCReference Include="LoginModule.pas">
+            <Form>dmLogin</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

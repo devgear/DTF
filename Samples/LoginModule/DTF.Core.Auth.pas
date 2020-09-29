@@ -31,8 +31,6 @@ type
 
   ISignInResult = interface
     ['{EE330BFF-15D7-4FCE-864C-0A9C8CD1C17D}']
-//    property Code: Integer;
-//    property Message: string;
   end;
 
   TDTFAuth = class(TInterfacedObject, IAuth)

@@ -18,7 +18,10 @@ uses
   DTF.Frame.DBGrid in '..\Forms\DTF.Frame.DBGrid.pas' {fmeDTFDBGrid: TFrame},
   DTF.Util.AutoCompleteForm in '..\Utils\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
   DTF.Util.AutoComplete in '..\Utils\DTF.Util.AutoComplete.pas',
-  Environment in 'Environment.pas';
+  Environment in 'Environment.pas',
+  DTF.Core.Authentication in '..\Cores\DTF.Core.Authentication.pas',
+  DTF.Core.AuthTypes in '..\Cores\DTF.Core.AuthTypes.pas',
+  LoginModule in 'LoginModule.pas' {dmLogin: TDataModule};
 
 {$R *.res}
 
@@ -28,5 +31,6 @@ begin
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmResource, dmResource);
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TdmLogin, dmLogin);
   Application.Run;
 end.
