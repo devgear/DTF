@@ -13,17 +13,31 @@ type
     procedure SetWidowState(const Value: TWindowState);
     function GetWindowBounds: TRect;
     procedure SetWindowBounds(const Value: TRect);
+    function GetPasswordExpiredDays: Integer;
   public
     constructor Create;
     destructor Destroy; override;
 
     property WindowState: TWindowState read GetWindowState write SetWidowState;
     property WindowBounds: TRect read GetWindowBounds write SetWindowBounds;
+
+    property PasswordExpiredDays: Integer read GetPasswordExpiredDays;
+  end;
+
+  TUser = record
+    Signed: Boolean;
+    Name: string;
   end;
 
 function Env: TEnv;
 
+var
+  User: TUser;
+
 implementation
+
+const
+  PASSWORD_EXPIRED_DAYS = 180;
 
 var
   _Env: TEnv;
@@ -52,6 +66,11 @@ end;
 function TEnv.GetWindowState: TWindowState;
 begin
   Result := TWindowState(FIni.ReadInteger('Window', 'State', 0));
+end;
+
+function TEnv.GetPasswordExpiredDays: Integer;
+begin
+  Result := PASSWORD_EXPIRED_DAYS;
 end;
 
 function TEnv.GetWindowBounds: TRect;

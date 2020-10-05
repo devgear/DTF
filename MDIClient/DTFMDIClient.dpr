@@ -21,7 +21,8 @@ uses
   Environment in 'Environment.pas',
   DTF.Core.Authentication in '..\Cores\DTF.Core.Authentication.pas',
   DTF.Core.AuthTypes in '..\Cores\DTF.Core.AuthTypes.pas',
-  LoginModule in 'LoginModule.pas' {dmLogin: TDataModule};
+  LoginModule in 'LoginModule.pas' {dmLogin: TDataModule},
+  DTF.Form.UserLogin in '..\Forms\DTF.Form.UserLogin.pas' {frmUserLogin};
 
 {$R *.res}
 
@@ -31,6 +32,5 @@ begin
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmResource, dmResource);
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TdmLogin, dmLogin);
   Application.Run;
 end.
