@@ -17,6 +17,7 @@ type
   private
     FDroppedDown: Boolean;
 
+    FParent: TForm;
     FAdapter: IAutoCompleteAdapter;
     FSearchEdit: TEdit;
 
@@ -65,6 +66,7 @@ begin
   if not Assigned(AParent) or not Assigned(AEdit) or not Assigned(AAdapter) then
     raise Exception.Create('Not enough parameters.');
 
+  FParent := AParent;
   FAdapter := AAdapter;
 
   FSearchEdit := AEdit;
@@ -89,10 +91,15 @@ begin
     ListView.ItemIndex := 0;
     ListView.SetFocus;
     Exit;
-  end;
-
-  if Key = VK_ESCAPE then
+  end
+  else if Key = VK_ESCAPE then
   begin
+    CloseUp;
+    Exit;
+  end
+  else if Key = VK_RETURN then
+  begin
+    ShowMessage('');
     CloseUp;
     Exit;
   end;
@@ -119,12 +126,19 @@ begin
     FSearchEdit.SetFocus;
     FSearchEdit.SelStart := Length(FSearchEdit.Text);
     Exit;
-  end;
-
-  if Key = VK_ESCAPE then
+  end
+  else if Key = VK_ESCAPE then
   begin
     FSearchEdit.SetFocus;
     FSearchEdit.SelStart := Length(FSearchEdit.Text);
+    CloseUp;
+    Exit;
+  end
+  else if Key = VK_RETURN then
+  begin
+//    FSearchEdit.SetFocus;
+//    FSearchEdit.SelStart := Length(FSearchEdit.Text);
+    FParent.ActiveControl := nil;
     CloseUp;
     Exit;
   end;
