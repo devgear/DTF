@@ -109,9 +109,9 @@ begin
       qryMenuShortcut,
       ['cate', 'menu_id', 'menu_name'],
       ['menu_id', 'menu_name'],
-      procedure(AKeys: TArray<string>)
+      procedure(Values: TArray<string>)
       begin
-        CreateMDIForm(AKeys[0]);
+        CreateMDIForm(Values[0]);
       end
     )
   );

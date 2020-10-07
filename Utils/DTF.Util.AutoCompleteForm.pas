@@ -30,6 +30,8 @@ type
     procedure ListWndProc(var Message: TMessage);
     procedure SearchEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SearchEditClick(Sender: TObject);
+
+    procedure DoComplete;
   public
     procedure DropDown;
     procedure CloseUp;
@@ -99,8 +101,7 @@ begin
   end
   else if Key = VK_RETURN then
   begin
-    ShowMessage('');
-    CloseUp;
+    DoComplete;
     Exit;
   end;
 
@@ -136,12 +137,16 @@ begin
   end
   else if Key = VK_RETURN then
   begin
-//    FSearchEdit.SetFocus;
-//    FSearchEdit.SelStart := Length(FSearchEdit.Text);
-    FParent.ActiveControl := nil;
-    CloseUp;
+    DoComplete;
     Exit;
   end;
+end;
+
+procedure TfrmAutoComplete.DoComplete;
+begin
+  FSearchEdit.Clear;
+  FAdapter.Complete;
+  CloseUp;
 end;
 
 procedure TfrmAutoComplete.DropDown;

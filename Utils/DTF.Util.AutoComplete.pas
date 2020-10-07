@@ -14,6 +14,7 @@ type
   IAutoCompleteAdapter = interface
     procedure BindControl(AListView: TListView);
     procedure ChangeText(AText: string);
+    procedure Complete;
   end;
 
   IAutoCompleteForm = interface
@@ -34,6 +35,7 @@ type
     FDataSet: TDataSet;
     FListFields,
     FKeyFields: TArray<string>;
+    FCompleteProc: TProc<TArray<string>>;
 
     // Binding
     FBindSourceDB: TBindSourceDB;
@@ -43,6 +45,7 @@ type
     { IAutoCompleteAdapter }
     procedure BindControl(AListView: TListView);
     procedure ChangeText(AText: string);
+    procedure Complete;
   public
     constructor Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
     destructor Destroy; override;
@@ -122,11 +125,26 @@ begin
   FDataSet.Filtered := (AText <> '');
 end;
 
+procedure TACDataSetFilterAdapter.Complete;
+var
+  I: Integer;
+  Params: TArray<string>;
+begin
+  if (not FDataSet.Active) or (FDataSet.RecordCount = 0) then
+    Exit;
+  SetLength(Params, Length(FKeyFields));
+  for I := 0 to Length(FKeyFields) - 1 do
+    Params[I] := FDataSet.FieldByName(FKeyFields[I]).AsString;
+  if Assigned(FCompleteProc) then
+    FCompleteProc(Params);
+end;
+
 constructor TACDataSetFilterAdapter.Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
 begin
   FDataSet := ADataSet;
   FListFields := AListFields;
   FKeyFields := AKeyFields;
+  FCompleteProc := ACompleteProc;
 end;
 
 destructor TACDataSetFilterAdapter.Destroy;
