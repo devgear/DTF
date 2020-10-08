@@ -123,6 +123,7 @@ object frmAutoComplete: TfrmAutoComplete
     ShowColumnHeaders = False
     TabOrder = 0
     ViewStyle = vsReport
+    OnDblClick = ListViewDblClick
     OnKeyDown = ListViewKeyDown
   end
 end

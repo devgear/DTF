@@ -14,6 +14,7 @@ type
     procedure ListViewKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormShow(Sender: TObject);
+    procedure ListViewDblClick(Sender: TObject);
   private
     FDroppedDown: Boolean;
 
@@ -117,6 +118,11 @@ procedure TfrmAutoComplete.SearchEditClick(Sender: TObject);
 begin
   if FSearchEdit.Text <> '' then
     DropDown;
+end;
+
+procedure TfrmAutoComplete.ListViewDblClick(Sender: TObject);
+begin
+  DoComplete;
 end;
 
 procedure TfrmAutoComplete.ListViewKeyDown(Sender: TObject; var Key: Word;
