@@ -41,6 +41,12 @@ object dmResource: TdmResource
         CollectionName = 'icons8-download'
         Disabled = False
         Name = 'icons8-download'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = 'icons8-refresh'
+        Disabled = False
+        Name = 'icons8-refresh'
       end>
     ImageCollection = ImageCollection
     Left = 40

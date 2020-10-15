@@ -73,3 +73,4 @@ __recovery/
 /Resources/Icons/windows10/icons8-save.png
 /Resources/Icons/windows10/icons8-trash.png
 /Resources/Icons/windows10/icons8-user_male_circle.png
+/Samples/Logger/Win32/Debug/log/*.log

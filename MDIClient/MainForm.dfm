@@ -171,7 +171,7 @@ object frmMain: TfrmMain
     Height = 52
     AutoSize = True
     ButtonHeight = 52
-    ButtonWidth = 53
+    ButtonWidth = 65
     Caption = 'ToolBar1'
     Images = VirtualImageList1
     ShowCaptions = True
@@ -196,7 +196,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object ToolButton3: TToolButton
-      Left = 70
+      Left = 82
       Top = 0
       Width = 13
       Caption = 'ToolButton3'
@@ -206,7 +206,7 @@ object frmMain: TfrmMain
       Visible = False
     end
     object ToolButton10: TToolButton
-      Left = 83
+      Left = 95
       Top = 0
       Width = 14
       Caption = 'ToolButton10'
@@ -214,7 +214,7 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object btnMenuHR: TToolButton
-      Left = 97
+      Left = 109
       Top = 0
       Hint = 'HMR'
       Caption = #51064#49324
@@ -223,7 +223,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object btnMenuMkt: TToolButton
-      Left = 150
+      Left = 174
       Top = 0
       Hint = 'MKT'
       Caption = #47560#53011#54021
@@ -232,7 +232,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object btnMenuCS: TToolButton
-      Left = 203
+      Left = 239
       Top = 0
       Hint = 'CST'
       Caption = #44256#44061
@@ -241,7 +241,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object ToolButton9: TToolButton
-      Left = 256
+      Left = 304
       Top = 0
       Width = 11
       ImageIndex = 6
@@ -249,7 +249,7 @@ object frmMain: TfrmMain
       Visible = False
     end
     object ToolButton8: TToolButton
-      Left = 267
+      Left = 315
       Top = 0
       Width = 13
       Caption = 'ToolButton8'
@@ -257,12 +257,19 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object btnMenuExit: TToolButton
-      Left = 280
+      Left = 328
       Top = 0
       Caption = '    '#51333#47308'    '
       ImageIndex = 5
       ImageName = 'icons8-exit'
       OnClick = btnMenuExitClick
+    end
+    object ToolButton1: TToolButton
+      Left = 393
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 6
+      OnClick = ToolButton1Click
     end
   end
   object MainMenu: TMainMenu

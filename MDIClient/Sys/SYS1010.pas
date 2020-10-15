@@ -15,51 +15,38 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Buttons;
+  Vcl.Buttons, DTF.Frame.Title;
 
 type
   TfrmSYS1010 = class(TfrmDTFMDIChild)
     qryMenuCates: TFDQuery;
-    qryMenuCatesCATE_SEQ: TIntegerField;
     qryMenuCatesCATE_NAME: TWideStringField;
-    pnlClient: TPanel;
-    pnlBottom: TPanel;
     pnlCate: TPanel;
     pnlPreview: TPanel;
     pnlGroup: TPanel;
     pnlMenu: TPanel;
-    fmeCate: TfmeDTFDBGrid;
-    fmeGroup: TfmeDTFDBGrid;
+    fmeCate: TDTFDBGridFrame;
+    fmeGroup: TDTFDBGridFrame;
     qryMenuGroups: TFDQuery;
-    qryMenuGroupsGROUP_SEQ: TIntegerField;
     qryMenuGroupsGROUP_NAME: TWideStringField;
     Panel1: TPanel;
     Label3: TLabel;
-    DBEdit1: TDBEdit;
+    edtCateName: TDBEdit;
     Panel2: TPanel;
     Label4: TLabel;
-    DBEdit2: TDBEdit;
-    qryMenuGroupsCATE_SEQ: TIntegerField;
-    Panel4: TPanel;
-    Panel5: TPanel;
-    Panel6: TPanel;
-    fmeMenu: TfmeDTFDBGrid;
-    Panel3: TPanel;
+    edtGroupName: TDBEdit;
+    fmeMenu: TDTFDBGridFrame;
     qryMenuItems: TFDQuery;
-    qryMenuItemsMENU_SEQ: TIntegerField;
-    qryMenuItemsGROUP_SEQ: TIntegerField;
-    qryMenuItemsMENU_ID: TWideStringField;
     qryMenuItemsMENU_NAME: TWideStringField;
     Panel7: TPanel;
     Label1: TLabel;
-    DBEdit3: TDBEdit;
+    edtMenuCode: TDBEdit;
     Label2: TLabel;
-    DBEdit4: TDBEdit;
+    edtMenuName: TDBEdit;
     trvMenus: TTreeView;
     btnMenuRefresh: TSpeedButton;
-    qryMenuCatesCATE_CODE: TWideStringField;
     Label5: TLabel;
-    DBEdit5: TDBEdit;
+    edtCateCode: TDBEdit;
     qryPrvGroups: TFDQuery;
     IntegerField1: TIntegerField;
     IntegerField2: TIntegerField;
@@ -76,14 +63,31 @@ type
     WideStringField5: TWideStringField;
     dsPrvCates: TDataSource;
     cbxPrvCates: TDBLookupComboBox;
-    procedure FormResize(Sender: TObject);
+    DTFTitleFrame1: TDTFTitleFrame;
+    DTFTitleFrame2: TDTFTitleFrame;
+    DTFTitleFrame3: TDTFTitleFrame;
+    DTFTitleFrame4: TDTFTitleFrame;
+    qryMenuCatesCATE_CODE: TWideStringField;
+    qryMenuGroupsGROUP_CODE: TWideStringField;
+    qryMenuGroupsCATE_CODE: TWideStringField;
+    qryMenuGroupsSORT_INDEX: TIntegerField;
+    qryCateLookup: TFDQuery;
+    qryMenuGroupsCATE_NAME: TStringField;
+    GridPanel1: TGridPanel;
+    Label6: TLabel;
+    edtGroupCode: TDBEdit;
+    qryMenuItemsMENU_CODE: TWideStringField;
+    qryMenuItemsGROUP_CODE: TWideStringField;
+    qryMenuItemsSORT_INDEX: TIntegerField;
+    qryGroupLookup: TFDQuery;
+    qryMenuItemsGROUP_NAME: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure btnMenuRefreshClick(Sender: TObject);
     procedure dsPrvCatesDataChange(Sender: TObject; Field: TField);
     procedure qryMenuCatesAfterPost(DataSet: TDataSet);
+    procedure qryMenuGroupsAfterPost(DataSet: TDataSet);
   private
     { Private declarations }
-    procedure PanelResize;
     procedure DisplayMenus(ACateCode: string; ATreeView: TTreeView);
   public
     { Public declarations }
@@ -103,38 +107,26 @@ procedure TfrmSYS1010.FormCreate(Sender: TObject);
 begin
   inherited;
 
-{$REGION 'Applied at design time' }
-  qryMenuCates.FieldByName('cate_seq').DisplayLabel := '일련번호';
-  qryMenuCates.FieldByName('cate_name').DisplayLabel := '카테고리 명';
-  qryMenuCates.FieldByName('cate_name').DisplayWidth := 40;
-  qryMenuCates.UpdateOptions.GeneratorName := 'CATE_SEQ_GEN';
-
-  qryMenuGroups.FieldByName('group_seq').DisplayLabel := '일련번호';
-  qryMenuGroups.FieldByName('group_name').DisplayLabel := '그룹 명';
-  qryMenuGroups.FieldByName('group_name').DisplayWidth := 40;
-  qryMenuGroups.MasterSource := fmeCate.dsDataSet;
-  qryMenuGroups.MasterFields := 'cate_seq';
-  qryMenuGroups.IndexFieldNames := 'cate_seq';
-//  qryMenuGroups.DetailFields := 'cate_seq';
-  qryMenuGroups.UpdateOptions.GeneratorName := 'GROUP_SEQ_GEN';
-
-  qryMenuItems.FieldByName('menu_seq').DisplayLabel := '일련번호';
-  qryMenuItems.FieldByName('menu_id').DisplayLabel := '메뉴 ID';
-  qryMenuItems.FieldByName('menu_name').DisplayLabel := '메뉴 명';
-  qryMenuItems.FieldByName('menu_id').DisplayWidth := 12;
-  qryMenuItems.FieldByName('menu_name').DisplayWidth := 40;
-  qryMenuItems.MasterSource := fmeGroup.dsDataSet;
-  qryMenuItems.MasterFields := 'group_seq';
-  qryMenuItems.IndexFieldNames := 'group_seq';
-//  qryMenuItems.DetailFields := 'group_seq';
-  qryMenuItems.UpdateOptions.GeneratorName := 'MENU_SEQ_GEN';
-{$ENDREGION}
-
   qryMenuCates.Open;
   qryMenuGroups.Open;
   qryMenuItems.Open;
 
-  cbxPrvCates.KeyValue := qryPrvCates.FieldByName('CATE_SEQ').Value;
+  qryCateLookup.Open;
+  qryGroupLookup.Open;
+
+  fmeCate.FocusControl := edtCateCode;
+  fmeGroup.FocusControl := edtGroupCode;
+  fmeMenu.FocusControl := edtMenuCode;
+end;
+
+procedure TfrmSYS1010.qryMenuCatesAfterPost(DataSet: TDataSet);
+begin
+  qryCateLookup.Refresh;
+end;
+
+procedure TfrmSYS1010.qryMenuGroupsAfterPost(DataSet: TDataSet);
+begin
+  qryGroupLookup.Refresh;
 end;
 
 procedure TfrmSYS1010.btnMenuRefreshClick(Sender: TObject);
@@ -184,26 +176,6 @@ end;
 procedure TfrmSYS1010.dsPrvCatesDataChange(Sender: TObject; Field: TField);
 begin
   DisplayMenus(qryPrvCates.FieldByName('cate_code').AsString, trvMenus);
-end;
-
-procedure TfrmSYS1010.FormResize(Sender: TObject);
-begin
-  PanelResize;
-end;
-
-procedure TfrmSYS1010.PanelResize;
-begin
-  pnlBottom.Height := Height div 2;
-
-  pnlCate.Width := Width div 2;
-  pnlGroup.Width := Width div 2;
-end;
-
-procedure TfrmSYS1010.qryMenuCatesAfterPost(DataSet: TDataSet);
-begin
-  inherited;
-
-  qryPrvCates.Refresh;
 end;
 
 initialization

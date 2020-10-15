@@ -7,7 +7,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
 type
-  TfmeDTFBase = class(TFrame)
+  TDTFBaseFrame = class(TFrame)
   private
     { Private declarations }
   public

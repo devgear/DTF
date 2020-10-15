@@ -51,6 +51,7 @@ type
     btnMenuExit: TToolButton;
     qryMenuTree: TFDQuery;
     qryMenuShortcut: TFDQuery;
+    ToolButton1: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure MDITabSetMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -66,6 +67,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure btnMenuCSClick(Sender: TObject);
     procedure btnCateMenuClick(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
@@ -99,24 +101,24 @@ begin
 
   Application.OnMessage := AppMessage;
 
-  qryMenuTree.Open;
-  qryMenuShortcut.Open;
+//  qryMenuTree.Open;
+//  qryMenuShortcut.Open;
 
-  TAutoComplete.Setup(
-    Self,
-    edtShortCut,
-    TACDataSetFilterAdapter.Create(
-      qryMenuShortcut,
-      ['cate', 'menu_id', 'menu_name'],
-      ['menu_id', 'menu_name'],
-      procedure(Values: TArray<string>)
-      begin
-        CreateMDIForm(Values[0]);
-      end
-    )
-  );
+//  TAutoComplete.Setup(
+//    Self,
+//    edtShortCut,
+//    TACDataSetFilterAdapter.Create(
+//      qryMenuShortcut,
+//      ['cate', 'menu_id', 'menu_name'],
+//      ['menu_id', 'menu_name'],
+//      procedure(Values: TArray<string>)
+//      begin
+//        CreateMDIForm(Values[0]);
+//      end
+//    )
+//  );
 
-  DisplayMenu('SYS');
+//  DisplayMenu('SYS');
 
   WindowState := Env.WindowState;
   BoundsRect := Env.WindowBounds;
@@ -329,6 +331,11 @@ begin
       ActiveMDIChild.Close;
     end;
   end;
+end;
+
+procedure TfrmMain.ToolButton1Click(Sender: TObject);
+begin
+  CreateMDIForm('SYS1010');
 end;
 
 procedure TfrmMain.MDITabSetChange(Sender: TObject; NewTab: Integer;

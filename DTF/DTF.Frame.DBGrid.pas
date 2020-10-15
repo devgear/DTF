@@ -10,7 +10,7 @@ uses
   Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls;
 
 type
-  TfmeDTFDBGrid = class(TfmeDTFDataSet)
+  TDTFDBGridFrame = class(TDTFDataSetFrame)
     grdMaster: TDBGrid;
   private
     { Private declarations }
@@ -19,7 +19,7 @@ type
   end;
 
 var
-  fmeDTFDBGrid: TfmeDTFDBGrid;
+  DTFDBGridFrame: TDTFDBGridFrame;
 
 implementation
 
