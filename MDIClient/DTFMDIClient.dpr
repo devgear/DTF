@@ -4,11 +4,10 @@ uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {frmMain},
   DatabaseModule in 'DatabaseModule.pas' {dmDatabase: TDataModule},
-  DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {frmDTFBase},
+  DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {DTFBaseForm},
   DTF.Builder.Factory in '..\DTF\DTF.Builder.Factory.pas',
   MenuTypes in 'MenuTypes.pas',
-  DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {frmDTFMDIChild},
-  DTF.Form.DataSet in '..\DTF\DTF.Form.DataSet.pas' {frmDTFDataSet},
+  DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
   TestForm in 'TestForm.pas' {frmTest},
   DTF.Types in '..\DTF\DTF.Types.pas',
   SYS1010 in 'Sys\SYS1010.pas' {frmSYS1010},
@@ -22,7 +21,6 @@ uses
   DTF.Core.Authentication in '..\DTF\DTF.Core.Authentication.pas',
   DTF.Core.AuthTypes in '..\DTF\DTF.Core.AuthTypes.pas',
   LoginModule in 'LoginModule.pas' {dmLogin: TDataModule},
-  DTF.Form.UserLogin in '..\DTF\DTF.Form.UserLogin.pas' {frmUserLogin},
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame};
 
 {$R *.res}

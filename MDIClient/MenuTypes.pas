@@ -2,17 +2,20 @@ unit MenuTypes;
 
 interface
 uses
-  DTF.Builder.Factory, DTF.Form.MDIChild;
+  DTF.Builder.Factory, DTF.Form.MDIChild, Vcl.ComCtrls;
 
 type
-  PMenuData = ^TMenuData;
-  TMenuData = record
-    MenuId: string;
-    MenuName: string;
+  TMenuNode = class(TTreeNode)
+  private
+    FCode: string;
+    FParentCode: string;
+  public
+    property Code: string read FCode write FCode;
+    property ParentCode: string read FParentCode write FParentCode;
   end;
 
-  TDTFForm = TfrmDTFMDIChild;
-  TDTFFormClass = class of TfrmDTFMDIChild;
+  TDTFForm = TDTFMDIChildForm;
+  TDTFFormClass = class of TDTFMDIChildForm;
 
   TMenuFactory = TAbstractFactory<string, TDTFFormClass>;
 

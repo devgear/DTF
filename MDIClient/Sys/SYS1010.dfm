@@ -12,7 +12,6 @@ inherited frmSYS1010: TfrmSYS1010
     Width = 804
     Height = 496
     Align = alClient
-    Caption = 'GridPanel1'
     ColumnCollection = <
       item
         Value = 50.000000000000000000
@@ -81,6 +80,7 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuCates
+          OnDataChange = fmeCateDataSourceDataChange
         end
       end
       object Panel1: TPanel
@@ -163,8 +163,8 @@ inherited frmSYS1010: TfrmSYS1010
         401
         247)
       object btnMenuRefresh: TSpeedButton
-        Left = 345
-        Top = 58
+        Left = 353
+        Top = 47
         Width = 36
         Height = 36
         Anchors = [akTop, akRight]
@@ -172,27 +172,58 @@ inherited frmSYS1010: TfrmSYS1010
         ImageName = 'icons8-refresh'
         Images = dmResource.vilMenus
         OnClick = btnMenuRefreshClick
-        ExplicitLeft = 287
+      end
+      object SpeedButton1: TSpeedButton
+        Left = 353
+        Top = 89
+        Width = 36
+        Height = 36
+        Anchors = [akTop, akRight]
+        ImageIndex = 4
+        ImageName = 'icons8-up'
+        Images = dmResource.vilMenus
+        OnClick = btnMenuRefreshClick
+      end
+      object SpeedButton2: TSpeedButton
+        Left = 353
+        Top = 124
+        Width = 36
+        Height = 36
+        Anchors = [akTop, akRight]
+        ImageIndex = 5
+        ImageName = 'icons8-down'
+        Images = dmResource.vilMenus
+        OnClick = btnMenuRefreshClick
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 353
+        Top = 166
+        Width = 36
+        Height = 36
+        Anchors = [akTop, akRight]
+        ImageIndex = 3
+        ImageName = 'icons8-save'
+        Images = dmResource.vilMenus
+        OnClick = btnMenuRefreshClick
+      end
+      object Label7: TLabel
+        Left = 12
+        Top = 28
+        Width = 317
+        Height = 13
+        AutoSize = False
+        Caption = #47700#45684' '#49692#49436#47484' '#48320#44221'('#47560#50864#49828#47196' '#46300#47000#44536', '#50629'/'#45796#50868' '#48260#53948') '#54980' '#51200#51109#54616#49464#50836'.'
       end
       object trvMenus: TTreeView
-        Left = 16
-        Top = 58
-        Width = 323
-        Height = 176
+        Left = 10
+        Top = 47
+        Width = 337
+        Height = 191
         Anchors = [akLeft, akTop, akRight, akBottom]
         Images = dmResource.vilMenus
         Indent = 19
         TabOrder = 0
-      end
-      object cbxPrvCates: TDBLookupComboBox
-        Left = 16
-        Top = 31
-        Width = 145
-        Height = 21
-        KeyField = 'CATE_SEQ'
-        ListField = 'CATE_NAME'
-        ListSource = dsPrvCates
-        TabOrder = 1
+        OnCreateNodeClass = trvMenusCreateNodeClass
       end
       inline DTFTitleFrame2: TDTFTitleFrame
         Left = 1
@@ -203,7 +234,7 @@ inherited frmSYS1010: TfrmSYS1010
         Color = clActiveCaption
         ParentBackground = False
         ParentColor = False
-        TabOrder = 2
+        TabOrder = 1
         ExplicitLeft = 1
         ExplicitTop = 1
         ExplicitWidth = 399
@@ -550,121 +581,6 @@ inherited frmSYS1010: TfrmSYS1010
       Visible = False
     end
   end
-  object qryPrvGroups: TFDQuery
-    IndexFieldNames = 'CATE_SEQ'
-    MasterSource = dsPrvCates
-    MasterFields = 'CATE_SEQ'
-    Connection = dmDatabase.FDConnection
-    UpdateOptions.AssignedValues = [uvGeneratorName]
-    UpdateOptions.GeneratorName = 'GROUP_SEQ_GEN'
-    UpdateOptions.AutoIncFields = 'GROUP_SEQ'
-    SQL.Strings = (
-      'SELECT * FROM menu_groups')
-    Left = 416
-    Top = 136
-    object IntegerField1: TIntegerField
-      AutoGenerateValue = arAutoInc
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'GROUP_SEQ'
-      Origin = 'GROUP_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object IntegerField2: TIntegerField
-      FieldName = 'CATE_SEQ'
-      Origin = 'CATE_SEQ'
-      Visible = False
-    end
-    object WideStringField1: TWideStringField
-      DisplayLabel = #47700#45684' '#44536#47353#47749
-      DisplayWidth = 40
-      FieldName = 'GROUP_NAME'
-      Origin = 'GROUP_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object qryPrvItems: TFDQuery
-    IndexFieldNames = 'GROUP_SEQ'
-    MasterSource = dsPrvGroups
-    MasterFields = 'GROUP_SEQ'
-    DetailFields = 'GROUP_SEQ'
-    Connection = dmDatabase.FDConnection
-    SQL.Strings = (
-      'SELECT * FROM menu_items')
-    Left = 416
-    Top = 200
-    object IntegerField3: TIntegerField
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'MENU_SEQ'
-      Origin = 'MENU_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object IntegerField4: TIntegerField
-      FieldName = 'GROUP_SEQ'
-      Origin = 'GROUP_SEQ'
-      Visible = False
-    end
-    object WideStringField2: TWideStringField
-      DisplayLabel = #47700#45684' ID'
-      DisplayWidth = 12
-      FieldName = 'MENU_ID'
-      Origin = 'MENU_ID'
-      Required = True
-      Size = 64
-    end
-    object WideStringField3: TWideStringField
-      DisplayLabel = #47700#45684' '#47749
-      DisplayWidth = 40
-      FieldName = 'MENU_NAME'
-      Origin = 'MENU_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object dsPrvGroups: TDataSource
-    DataSet = qryPrvGroups
-    Left = 496
-    Top = 136
-  end
-  object qryPrvCates: TFDQuery
-    Connection = dmDatabase.FDConnection
-    UpdateOptions.AssignedValues = [uvGeneratorName]
-    UpdateOptions.GeneratorName = 'CATE_SEQ_GEN'
-    UpdateOptions.AutoIncFields = 'CATE_SEQ'
-    SQL.Strings = (
-      'SELECT * FROM menu_categories')
-    Left = 416
-    Top = 80
-    object IntegerField5: TIntegerField
-      AutoGenerateValue = arAutoInc
-      DisplayLabel = #51068#47144#48264#54840
-      FieldName = 'CATE_SEQ'
-      Origin = 'CATE_SEQ'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object WideStringField4: TWideStringField
-      DisplayLabel = #52852#53580#44256#47532' '#53076#46300
-      DisplayWidth = 8
-      FieldName = 'CATE_CODE'
-      Origin = 'CATE_CODE'
-      Size = 32
-    end
-    object WideStringField5: TWideStringField
-      DisplayLabel = #47700#45684' '#52852#53580#44256#47532#47749
-      DisplayWidth = 40
-      FieldName = 'CATE_NAME'
-      Origin = 'CATE_NAME'
-      Required = True
-      Size = 400
-    end
-  end
-  object dsPrvCates: TDataSource
-    DataSet = qryPrvCates
-    OnDataChange = dsPrvCatesDataChange
-    Left = 496
-    Top = 80
-  end
   object qryCateLookup: TFDQuery
     Active = True
     Connection = dmDatabase.FDConnection
@@ -680,5 +596,29 @@ inherited frmSYS1010: TfrmSYS1010
       'SELECT group_code, group_name FROM menu_groups')
     Left = 704
     Top = 352
+  end
+  object qryMenuTree: TFDQuery
+    Connection = dmDatabase.FDConnection
+    SQL.Strings = (
+      'SELECT'
+      '  group_code, group_name,'
+      '  menu_code, menu_name'
+      'FROM'
+      '  menu_items item,'
+      '  menu_groups grp'
+      'WHERE'
+      '  item.group_code = grp.group_code'
+      '  AND Upper(cate_code) = Upper(:cate_code)'
+      'ORDER BY'
+      '  grp.sort_index, item.sort_index')
+    Left = 456
+    Top = 112
+    ParamData = <
+      item
+        Name = 'CATE_CODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = 'HMR'
+      end>
   end
 end

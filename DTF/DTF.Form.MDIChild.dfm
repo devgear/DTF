@@ -1,4 +1,4 @@
-inherited frmDTFMDIChild: TfrmDTFMDIChild
+inherited DTFMDIChildForm: TDTFMDIChildForm
   Caption = 'DTF:: MDIChild Base form'
   OnActivate = FormActivate
   OnClose = FormClose

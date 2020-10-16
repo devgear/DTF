@@ -110,17 +110,13 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Form.Base.pas">
-            <Form>frmDTFBase</Form>
+            <Form>DTFBaseForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Builder.Factory.pas"/>
         <DCCReference Include="MenuTypes.pas"/>
         <DCCReference Include="..\DTF\DTF.Form.MDIChild.pas">
-            <Form>frmDTFMDIChild</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Form.DataSet.pas">
-            <Form>frmDTFDataSet</Form>
+            <Form>DTFMDIChildForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="TestForm.pas">
@@ -164,10 +160,6 @@
             <Form>dmLogin</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Form.UserLogin.pas">
-            <Form>frmUserLogin</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Frame.Title.pas">
             <Form>DTFTitleFrame</Form>

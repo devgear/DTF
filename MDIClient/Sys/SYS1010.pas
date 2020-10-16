@@ -7,7 +7,7 @@ uses
   DTF.Form.Base, DTF.Form.MDIChild,
   DTF.Frame.Base, DTF.Frame.DataSet, DTF.Frame.DBGrid,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.DataSet,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.BaseImageCollection, Vcl.ImageCollection, System.ImageList, Vcl.ImgList,
   Vcl.VirtualImageList, Vcl.DBActns, System.Actions, Vcl.ActnList, Data.DB,
   Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.ToolWin,
@@ -18,7 +18,7 @@ uses
   Vcl.Buttons, DTF.Frame.Title;
 
 type
-  TfrmSYS1010 = class(TfrmDTFMDIChild)
+  TfrmSYS1010 = class(TDTFMDIChildForm)
     qryMenuCates: TFDQuery;
     qryMenuCatesCATE_NAME: TWideStringField;
     pnlCate: TPanel;
@@ -47,22 +47,6 @@ type
     btnMenuRefresh: TSpeedButton;
     Label5: TLabel;
     edtCateCode: TDBEdit;
-    qryPrvGroups: TFDQuery;
-    IntegerField1: TIntegerField;
-    IntegerField2: TIntegerField;
-    WideStringField1: TWideStringField;
-    qryPrvItems: TFDQuery;
-    IntegerField3: TIntegerField;
-    IntegerField4: TIntegerField;
-    WideStringField2: TWideStringField;
-    WideStringField3: TWideStringField;
-    dsPrvGroups: TDataSource;
-    qryPrvCates: TFDQuery;
-    IntegerField5: TIntegerField;
-    WideStringField4: TWideStringField;
-    WideStringField5: TWideStringField;
-    dsPrvCates: TDataSource;
-    cbxPrvCates: TDBLookupComboBox;
     DTFTitleFrame1: TDTFTitleFrame;
     DTFTitleFrame2: TDTFTitleFrame;
     DTFTitleFrame3: TDTFTitleFrame;
@@ -81,14 +65,21 @@ type
     qryMenuItemsSORT_INDEX: TIntegerField;
     qryGroupLookup: TFDQuery;
     qryMenuItemsGROUP_NAME: TStringField;
+    qryMenuTree: TFDQuery;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    Label7: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnMenuRefreshClick(Sender: TObject);
-    procedure dsPrvCatesDataChange(Sender: TObject; Field: TField);
     procedure qryMenuCatesAfterPost(DataSet: TDataSet);
     procedure qryMenuGroupsAfterPost(DataSet: TDataSet);
+    procedure fmeCateDataSourceDataChange(Sender: TObject; Field: TField);
+    procedure trvMenusCreateNodeClass(Sender: TCustomTreeView;
+      var NodeClass: TTreeNodeClass);
   private
     { Private declarations }
-    procedure DisplayMenus(ACateCode: string; ATreeView: TTreeView);
+    procedure LoadMenus(ACateCode: string);
   public
     { Public declarations }
   end;
@@ -102,6 +93,14 @@ implementation
 
 uses
   MenuTypes, DTF.Module.Resource;
+
+procedure TfrmSYS1010.fmeCateDataSourceDataChange(Sender: TObject;
+  Field: TField);
+begin
+  inherited;
+
+  LoadMenus(qryMenuCates.FieldByName('cate_code').AsString);
+end;
 
 procedure TfrmSYS1010.FormCreate(Sender: TObject);
 begin
@@ -129,53 +128,55 @@ begin
   qryGroupLookup.Refresh;
 end;
 
+procedure TfrmSYS1010.trvMenusCreateNodeClass(Sender: TCustomTreeView;
+  var NodeClass: TTreeNodeClass);
+begin
+  NodeClass := TMenuNode;
+end;
+
 procedure TfrmSYS1010.btnMenuRefreshClick(Sender: TObject);
 begin
-  qryPrvCates.Refresh;
-
-  DisplayMenus(qryPrvCates.FieldByName('cate_code').AsString, trvMenus);
+//  qryPrvCates.Refresh;
+//
+//  DisplayMenus(qryPrvCates.FieldByName('cate_code').AsString, trvMenus);
 end;
 
-procedure TfrmSYS1010.DisplayMenus(ACateCode: string; ATreeView: TTreeView);
+procedure TfrmSYS1010.LoadMenus(ACateCode: string);
 var
-  Group, Item: TTreeNode;
+  GroupName: string;
+  Group, Item: TMenuNode;
 begin
-  qryPrvGroups.Refresh;
-  qryPrvItems.Refresh;
+  trvMenus.Items.Clear;
 
-  ATreeView.Items.Clear;
+  qryMenuTree.Close;
+  qryMenuTree.ParamByName('cate_code').AsString := ACateCode;
+  qryMenuTree.Open;
 
-  qryPrvGroups.First;
-  qryPrvItems.First;
-
-  ATreeView.Items.BeginUpdate;
-  while not qryPrvGroups.Eof do
+  trvMenus.Items.Clear;
+  Group := nil;
+  GroupName := '';
+  while not qryMenuTree.Eof do
   begin
-    Group := ATreeView.Items.Add(nil, qryPrvGroups.FieldByName('group_name').AsString);
-    Group.ImageIndex := 0;
-    Group.SelectedIndex := 0;
-
-    qryPrvItems.First;
-    while not qryPrvItems.Eof do
+    GroupName := qryMenuTree.FieldByName('group_name').AsString;
+    if not Assigned(Group) or (GroupName <> Group.Text) then
     begin
-      Item := ATreeView.Items.AddChild(Group, qryPrvItems.FieldByName('menu_name').AsString);
-      Item.Data := nil;
-      Item.ImageIndex := 1;
-      Item.SelectedIndex := 1;
-
-      qryPrvItems.Next;
+      Group := trvMenus.Items.Add(nil, GroupName) as TMenuNode;
+      Group.Code := qryMenuTree.FieldByName('menu_code').AsString;
+      Group.ImageIndex := 0;
+      Group.SelectedIndex := 0;
     end;
 
-    qryPrvGroups.Next;
+    Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
+    Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
+    Item.ParentCode := qryMenuTree.FieldByName('group_code').AsString;
+    Item.ImageIndex := 1;
+    Item.SelectedIndex := 1;
+
+    qryMenuTree.Next;
   end;
 
-  ATreeView.FullExpand;
-  ATreeView.Items.EndUpdate;
-end;
-
-procedure TfrmSYS1010.dsPrvCatesDataChange(Sender: TObject; Field: TField);
-begin
-  DisplayMenus(qryPrvCates.FieldByName('cate_code').AsString, trvMenus);
+  trvMenus.FullExpand;
+  trvMenus.Items.EndUpdate;
 end;
 
 initialization

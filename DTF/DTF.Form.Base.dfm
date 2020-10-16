@@ -1,4 +1,4 @@
-object frmDTFBase: TfrmDTFBase
+object DTFBaseForm: TDTFBaseForm
   Left = 0
   Top = 0
   ClientHeight = 487

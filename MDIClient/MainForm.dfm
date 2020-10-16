@@ -136,12 +136,11 @@ object frmMain: TfrmMain
       Indent = 19
       ParentShowHint = False
       RowSelect = True
-      ShowButtons = False
       ShowHint = True
       ShowRoot = False
       TabOrder = 1
       OnClick = trvMenusClick
-      OnDeletion = trvMenusDeletion
+      OnCreateNodeClass = trvMenusCreateNodeClass
     end
     object Panel4: TPanel
       Left = 0
@@ -171,7 +170,7 @@ object frmMain: TfrmMain
     Height = 52
     AutoSize = True
     ButtonHeight = 52
-    ButtonWidth = 65
+    ButtonWidth = 47
     Caption = 'ToolBar1'
     Images = VirtualImageList1
     ShowCaptions = True
@@ -196,7 +195,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object ToolButton3: TToolButton
-      Left = 82
+      Left = 64
       Top = 0
       Width = 13
       Caption = 'ToolButton3'
@@ -206,7 +205,7 @@ object frmMain: TfrmMain
       Visible = False
     end
     object ToolButton10: TToolButton
-      Left = 95
+      Left = 77
       Top = 0
       Width = 14
       Caption = 'ToolButton10'
@@ -214,7 +213,7 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object btnMenuHR: TToolButton
-      Left = 109
+      Left = 91
       Top = 0
       Hint = 'HMR'
       Caption = #51064#49324
@@ -223,16 +222,16 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object btnMenuMkt: TToolButton
-      Left = 174
+      Left = 138
       Top = 0
       Hint = 'MKT'
-      Caption = #47560#53011#54021
+      Caption = ' '#47560#53011#54021' '
       ImageIndex = 3
       ImageName = 'icons8-planner'
       OnClick = btnCateMenuClick
     end
     object btnMenuCS: TToolButton
-      Left = 239
+      Left = 185
       Top = 0
       Hint = 'CST'
       Caption = #44256#44061
@@ -241,7 +240,7 @@ object frmMain: TfrmMain
       OnClick = btnCateMenuClick
     end
     object ToolButton9: TToolButton
-      Left = 304
+      Left = 232
       Top = 0
       Width = 11
       ImageIndex = 6
@@ -249,7 +248,7 @@ object frmMain: TfrmMain
       Visible = False
     end
     object ToolButton8: TToolButton
-      Left = 315
+      Left = 243
       Top = 0
       Width = 13
       Caption = 'ToolButton8'
@@ -257,19 +256,12 @@ object frmMain: TfrmMain
       Style = tbsSeparator
     end
     object btnMenuExit: TToolButton
-      Left = 328
+      Left = 256
       Top = 0
-      Caption = '    '#51333#47308'    '
+      Caption = '   '#45803#44592'   '
       ImageIndex = 5
       ImageName = 'icons8-exit'
       OnClick = btnMenuExitClick
-    end
-    object ToolButton1: TToolButton
-      Left = 393
-      Top = 0
-      Caption = 'ToolButton1'
-      ImageIndex = 6
-      OnClick = ToolButton1Click
     end
   end
   object MainMenu: TMainMenu
@@ -291,11 +283,9 @@ object frmMain: TfrmMain
     end
     object N3: TMenuItem
       Caption = #53580#49828#53944
-      OnClick = N3Click
     end
     object MDI1: TMenuItem
       Caption = #47700#45684
-      OnClick = MDI1Click
     end
   end
   object pmnMDI: TPopupMenu
@@ -1016,8 +1006,8 @@ object frmMain: TfrmMain
               0000000049454E44AE426082}
           end>
       end>
-    Left = 312
-    Top = 120
+    Left = 304
+    Top = 72
   end
   object VirtualImageList1: TVirtualImageList
     DisabledGrayscale = False
@@ -1062,26 +1052,23 @@ object frmMain: TfrmMain
     ImageCollection = ImageCollection1
     Width = 32
     Height = 32
-    Left = 312
-    Top = 168
+    Left = 416
+    Top = 72
   end
   object qryMenuTree: TFDQuery
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT'
-      '  GROUP_NAME,'
-      '  MENU_NAME,'
-      '  MENU_ID'
+      '  group_code, group_name,'
+      '  menu_code, menu_name'
       'FROM'
       '  menu_items item,'
-      '  menu_groups grp,'
-      '  menu_categories cate'
+      '  menu_groups grp'
       'WHERE'
-      '  item.group_seq = grp.group_seq'
-      '  AND grp.cate_seq = cate.cate_seq'
-      '  AND cate_code LIKE :cate_code'
+      '  item.group_code = grp.group_code'
+      '  AND Upper(cate_code) = Upper(:cate_code)'
       'ORDER BY'
-      '  grp.cate_seq, grp.group_seq, menu_seq')
+      '  grp.sort_index, item.sort_index')
     Left = 80
     Top = 352
     ParamData = <
@@ -1096,14 +1083,14 @@ object frmMain: TfrmMain
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT'
-      '  menu_id, menu_name, cate_name||'#39'>'#39'||group_name as CATE'
+      '  menu_code, menu_name, cate_name||'#39'>'#39'||group_name as CATE'
       'FROM'
       '  menu_categories cate, '
       '  menu_groups grp, '
       '  menu_items item'
       'WHERE'
-      '  cate.cate_seq = grp.cate_seq AND'
-      '  grp.group_seq = item.group_seq')
+      '  cate.cate_code = grp.cate_code AND'
+      '  grp.group_code = item.group_code')
     Left = 72
     Top = 160
   end
