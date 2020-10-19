@@ -167,44 +167,36 @@ inherited frmSYS1010: TfrmSYS1010
         Top = 47
         Width = 36
         Height = 36
+        Action = actMenuTreeRefresh
         Anchors = [akTop, akRight]
-        ImageIndex = 2
-        ImageName = 'icons8-refresh'
         Images = dmResource.vilMenus
-        OnClick = btnMenuRefreshClick
       end
       object SpeedButton1: TSpeedButton
         Left = 353
         Top = 89
         Width = 36
         Height = 36
+        Action = actMenuTreeUp
         Anchors = [akTop, akRight]
-        ImageIndex = 4
-        ImageName = 'icons8-up'
         Images = dmResource.vilMenus
-        OnClick = btnMenuRefreshClick
       end
       object SpeedButton2: TSpeedButton
         Left = 353
         Top = 124
         Width = 36
         Height = 36
+        Action = actMenuTreeDown
         Anchors = [akTop, akRight]
-        ImageIndex = 5
-        ImageName = 'icons8-down'
         Images = dmResource.vilMenus
-        OnClick = btnMenuRefreshClick
       end
       object SpeedButton3: TSpeedButton
         Left = 353
         Top = 166
         Width = 36
         Height = 36
+        Action = actMenuTreeSave
         Anchors = [akTop, akRight]
-        ImageIndex = 3
-        ImageName = 'icons8-save'
         Images = dmResource.vilMenus
-        OnClick = btnMenuRefreshClick
       end
       object Label7: TLabel
         Left = 12
@@ -220,10 +212,14 @@ inherited frmSYS1010: TfrmSYS1010
         Width = 337
         Height = 191
         Anchors = [akLeft, akTop, akRight, akBottom]
+        DragMode = dmAutomatic
         Images = dmResource.vilMenus
         Indent = 19
+        ShowButtons = False
         TabOrder = 0
         OnCreateNodeClass = trvMenusCreateNodeClass
+        OnDragDrop = trvMenusDragDrop
+        OnDragOver = trvMenusDragOver
       end
       inline DTFTitleFrame2: TDTFTitleFrame
         Left = 1
@@ -601,8 +597,8 @@ inherited frmSYS1010: TfrmSYS1010
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT'
-      '  group_code, group_name,'
-      '  menu_code, menu_name'
+      '  group_code, group_name, grp.sort_index grp_idx,'
+      '  menu_code, menu_name, item.sort_index item_idx'
       'FROM'
       '  menu_items item,'
       '  menu_groups grp'
@@ -620,5 +616,33 @@ inherited frmSYS1010: TfrmSYS1010
         ParamType = ptInput
         Value = 'HMR'
       end>
+  end
+  object actMenuTree: TActionList
+    Images = dmResource.vilMenus
+    Left = 552
+    Top = 112
+    object actMenuTreeRefresh: TAction
+      ImageIndex = 2
+      ImageName = 'icons8-refresh'
+      OnExecute = actMenuTreeRefreshExecute
+    end
+    object actMenuTreeSave: TAction
+      ImageIndex = 3
+      ImageName = 'icons8-save'
+      OnExecute = actMenuTreeSaveExecute
+      OnUpdate = actMenuTreeSaveUpdate
+    end
+    object actMenuTreeUp: TAction
+      ImageIndex = 4
+      ImageName = 'icons8-up'
+      OnExecute = actMenuTreeUpExecute
+      OnUpdate = actMenuTreeUpUpdate
+    end
+    object actMenuTreeDown: TAction
+      ImageIndex = 5
+      ImageName = 'icons8-down'
+      OnExecute = actMenuTreeDownExecute
+      OnUpdate = actMenuTreeDownUpdate
+    end
   end
 end

@@ -70,15 +70,30 @@ type
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
     Label7: TLabel;
+    actMenuTree: TActionList;
+    actMenuTreeRefresh: TAction;
+    actMenuTreeSave: TAction;
+    actMenuTreeUp: TAction;
+    actMenuTreeDown: TAction;
     procedure FormCreate(Sender: TObject);
-    procedure btnMenuRefreshClick(Sender: TObject);
     procedure qryMenuCatesAfterPost(DataSet: TDataSet);
     procedure qryMenuGroupsAfterPost(DataSet: TDataSet);
     procedure fmeCateDataSourceDataChange(Sender: TObject; Field: TField);
     procedure trvMenusCreateNodeClass(Sender: TCustomTreeView;
       var NodeClass: TTreeNodeClass);
+    procedure actMenuTreeRefreshExecute(Sender: TObject);
+    procedure actMenuTreeUpExecute(Sender: TObject);
+    procedure actMenuTreeDownExecute(Sender: TObject);
+    procedure actMenuTreeUpUpdate(Sender: TObject);
+    procedure actMenuTreeDownUpdate(Sender: TObject);
+    procedure trvMenusDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure trvMenusDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure actMenuTreeSaveExecute(Sender: TObject);
+    procedure actMenuTreeSaveUpdate(Sender: TObject);
   private
     { Private declarations }
+    FIsChagnedMenuTree: Boolean;
     procedure LoadMenus(ACateCode: string);
   public
     { Public declarations }
@@ -93,6 +108,61 @@ implementation
 
 uses
   MenuTypes, DTF.Module.Resource;
+
+procedure TfrmSYS1010.actMenuTreeDownExecute(Sender: TObject);
+var
+  Src, Dst: TTreeNode;
+begin
+  Src := trvMenus.Selected;
+  Dst := Src.getNextSibling;
+  if not Assigned(Dst) then
+    Exit;
+
+  Dst.MoveTo(Src, naInsert);
+  trvMenus.FullExpand;
+
+  FIsChagnedMenuTree := True;
+end;
+
+procedure TfrmSYS1010.actMenuTreeDownUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := Assigned(trvMenus.Selected) and (trvMenus.Selected.getNextSibling <> nil);
+end;
+
+procedure TfrmSYS1010.actMenuTreeRefreshExecute(Sender: TObject);
+begin
+  qryMenuTree.Refresh;
+end;
+
+procedure TfrmSYS1010.actMenuTreeSaveExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TfrmSYS1010.actMenuTreeSaveUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := FIsChagnedMenuTree;
+end;
+
+procedure TfrmSYS1010.actMenuTreeUpExecute(Sender: TObject);
+var
+  Src, Dst: TTreeNode;
+begin
+  Src := trvMenus.Selected;
+  Dst := Src.getPrevSibling;
+  if not Assigned(Dst) then
+    Exit;
+
+  Src.MoveTo(Dst, naInsert);
+  trvMenus.FullExpand;
+
+  FIsChagnedMenuTree := True;
+end;
+
+procedure TfrmSYS1010.actMenuTreeUpUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := Assigned(trvMenus.Selected) and (trvMenus.Selected.getPrevSibling <> nil);
+end;
 
 procedure TfrmSYS1010.fmeCateDataSourceDataChange(Sender: TObject;
   Field: TField);
@@ -134,11 +204,90 @@ begin
   NodeClass := TMenuNode;
 end;
 
-procedure TfrmSYS1010.btnMenuRefreshClick(Sender: TObject);
+procedure TfrmSYS1010.trvMenusDragDrop(Sender, Source: TObject; X, Y: Integer);
+  function Sort(AList: TArray<TTreeNode>): TArray<TTreeNode>;
+  var
+    I, J, Idx: Integer;
+    Item: TTreeNode;
+    Temps: TArray<TTreeNode>;
+  begin
+    SetLength(Temps, Length(AList));
+
+    for I := 0 to Length(AList) - 1 do
+    begin
+      Idx := I;
+      Item := AList[I];
+
+      // Temps에는 I-1개가 담겨 있음
+      for J := 0 to I-1 do
+      begin
+        // 이번에 담을 것이 기존에 담긴 것보다 작으면
+        if Item.Index < Temps[J].Index then
+        begin
+          Idx := J;
+          Break;
+        end;
+      end;
+      if Idx <> I then
+      begin
+        for J := I-1 downto Idx do
+          Temps[J+1] := Temps[J];
+      end;
+
+      Temps[Idx] := AList[I];
+    end;
+
+    Result := Temps;
+  end;
+var
+  I: Integer;
+  Src, Dst: TTreeNode;
+  Selections: TArray<TTreeNode>;
 begin
-//  qryPrvCates.Refresh;
-//
-//  DisplayMenus(qryPrvCates.FieldByName('cate_code').AsString, trvMenus);
+  if trvMenus.SelectionCount = 1 then
+  begin
+    Src := trvMenus.Selected;
+    Dst := trvMenus.GetNodeAt(X, Y);
+
+    if Dst.Level = 0 then
+      Src.MoveTo(Dst, naAddChild)
+    else
+      Src.MoveTo(Dst, naInsert);
+  end
+  else
+  // Multi select
+  begin
+    Dst := trvMenus.GetNodeAt(X, Y);
+    SetLength(Selections, trvMenus.SelectionCount);
+
+    // 정렬
+    for I := 0 to trvMenus.SelectionCount - 1 do
+      Selections[I] := trvMenus.Selections[I];
+    Selections := Sort(Selections);
+
+    for I := 0 to Length(Selections) - 1 do
+    begin
+      Src := Selections[I];
+      if Dst.Level = 0 then
+        Src.MoveTo(Dst, naAddChild)
+      else
+        Src.MoveTo(Dst, naInsert);
+
+      OutputDebugString(PChar(Format('%d / %d(%s)', [Dst.Index, Src.Index, Src.Text])));
+    end;
+  end;
+  FIsChagnedMenuTree := True;
+end;
+
+procedure TfrmSYS1010.trvMenusDragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+var
+  Src, Dst: TTreeNode;
+begin
+  Src := trvMenus.Selected;
+  Dst := trvMenus.GetNodeAt(X, Y);
+
+  Accept := Assigned(Dst) and (Src <> Dst) and (Src.Level > 0);
 end;
 
 procedure TfrmSYS1010.LoadMenus(ACateCode: string);
@@ -146,6 +295,7 @@ var
   GroupName: string;
   Group, Item: TMenuNode;
 begin
+  FIsChagnedMenuTree := False;
   trvMenus.Items.Clear;
 
   qryMenuTree.Close;
