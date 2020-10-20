@@ -9,8 +9,14 @@ type
   private
     FCode: string;
     FParentCode: string;
+    FSortIndex: Integer;
+    FTest: string;
+    procedure SetCode(const Value: string);
+    procedure SetTest(const Value: string);
   public
-    property Code: string read FCode write FCode;
+    property Code: string read FCode write SetCode;
+    property Test: string read FTest write SetTest;
+    property SortIndex: Integer read FSortIndex write FSortIndex;
     property ParentCode: string read FParentCode write FParentCode;
   end;
 
@@ -20,6 +26,18 @@ type
   TMenuFactory = TAbstractFactory<string, TDTFFormClass>;
 
 implementation
+
+{ TMenuNode }
+
+procedure TMenuNode.SetCode(const Value: string);
+begin
+  FCode := Value;
+end;
+
+procedure TMenuNode.SetTest(const Value: string);
+begin
+  FTest := Value;
+end;
 
 initialization
 finalization

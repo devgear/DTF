@@ -2,6 +2,7 @@ inherited frmSYS1010: TfrmSYS1010
   Caption = #49884#49828#53596':: '#47700#45684' '#44288#47532
   ClientHeight = 496
   ClientWidth = 804
+  OnShow = FormShow
   ExplicitWidth = 820
   ExplicitHeight = 535
   PixelsPerInch = 96
@@ -597,14 +598,14 @@ inherited frmSYS1010: TfrmSYS1010
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT'
-      '  group_code, group_name, grp.sort_index grp_idx,'
-      '  menu_code, menu_name, item.sort_index item_idx'
+      '  grp.group_code, group_name, grp.sort_index grp_idx,'
+      '  menu_code, menu_name, item.sort_index menu_idx'
       'FROM'
-      '  menu_items item,'
       '  menu_groups grp'
+      '    LEFT OUTER JOIN menu_items item'
+      '    ON item.group_code = grp.group_code'
       'WHERE'
-      '  item.group_code = grp.group_code'
-      '  AND Upper(cate_code) = Upper(:cate_code)'
+      '  Upper(cate_code) = Upper(:cate_code)'
       'ORDER BY'
       '  grp.sort_index, item.sort_index')
     Left = 456
@@ -614,7 +615,7 @@ inherited frmSYS1010: TfrmSYS1010
         Name = 'CATE_CODE'
         DataType = ftString
         ParamType = ptInput
-        Value = 'HMR'
+        Value = 'HOME'
       end>
   end
   object actMenuTree: TActionList
@@ -644,5 +645,10 @@ inherited frmSYS1010: TfrmSYS1010
       OnExecute = actMenuTreeDownExecute
       OnUpdate = actMenuTreeDownUpdate
     end
+  end
+  object qryMenuUpdate: TFDQuery
+    Connection = dmDatabase.FDConnection
+    Left = 456
+    Top = 168
   end
 end

@@ -27,7 +27,7 @@ ACTIVE BEFORE INSERT POSITION 0
 AS
 DECLARE VARIABLE max_idx	INT;
 BEGIN
-	SELECT COALESCE(MAX(sort_index),0)+1 FROM menu_groups WHERE cate_code = NEW.cate_code INTO :max_idx;
+	SELECT COALESCE(MAX(sort_index),-1)+1 FROM menu_groups WHERE cate_code = NEW.cate_code INTO :max_idx;
 	NEW.sort_index = max_idx;
 END;
 
@@ -50,6 +50,6 @@ ACTIVE BEFORE INSERT POSITION 0
 AS
 DECLARE VARIABLE max_idx	INT;
 BEGIN
-	SELECT COALESCE(MAX(sort_index),0)+1 FROM menu_items WHERE group_code = NEW.group_code INTO :max_idx;
+	SELECT COALESCE(MAX(sort_index),-1)+1 FROM menu_items WHERE group_code = NEW.group_code INTO :max_idx;
 	NEW.sort_index = max_idx;
 END;
