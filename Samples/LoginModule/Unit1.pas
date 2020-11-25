@@ -7,10 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
 
 type
-  TForm1 = class(TForm)
+  TfrmMain = class(TForm)
     Button1: TButton;
     Edit1: TEdit;
     Edit2: TEdit;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
@@ -19,7 +20,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frmMain: TfrmMain;
 
 implementation
 
@@ -28,7 +29,7 @@ uses
 
 {$R *.dfm}
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TfrmMain.Button1Click(Sender: TObject);
 begin
   Edit2.Text := THashSHA2.GetHashString(Edit1.Text, THashSHA2.TSHA2Version.SHA256);
 end;
