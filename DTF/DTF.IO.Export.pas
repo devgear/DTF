@@ -11,7 +11,8 @@ type
 
   TExportDataSetHelper = class helper for TDataSet
   public
-    procedure ExportToXls(AFilename: string; ASheetName: string = '');
+    procedure ExportToXls(AFilename: string; ASheetName: string = '';
+      AIncludeLabel: Boolean = True; AShowAfterSave: Boolean = True);
   end;
 
 implementation
@@ -22,7 +23,8 @@ uses
 
 { TExportDataSetHelper }
 
-procedure TExportDataSetHelper.ExportToXls(AFilename: string; ASheetName: string = '');
+procedure TExportDataSetHelper.ExportToXls(AFilename: string; ASheetName: string = '';
+      AIncludeLabel: Boolean = True; AShowAfterSave: Boolean = True);
 var
   I: Integer;
   LExcel: Variant;
@@ -31,7 +33,7 @@ var
   LDatas: Variant;
   LoadedBook: Boolean;
 
-  Row, Col, Rows, Cols: Integer;
+  Row, Rows, Cols: Integer;
   ColIdxs: TArray<Integer>;
   LRange: string;
 
@@ -43,6 +45,9 @@ begin
   except
     raise EDTFIOException.Create('Excel OLE server not found');
   end;
+
+  if AShowAfterSave then
+    LExcel.Visible := True;
 
   ///////////////////////
   // Open WorkBook & WorkSheet
@@ -57,10 +62,10 @@ begin
 
   if ASheetName = '' then
   begin
-    if LWorkBook.Sheets.Count > 0 then
-      LWorkSheet := LWorkBook.ActiveSheet
-    else
-      LWorkSheet := LWorkBook.Add;
+//    if LWorkBook.Sheets.Count > 0 then
+//      LWorkSheet := LWorkBook.ActiveSheet
+//    else
+      LWorkSheet := LWorkBook.WorkSheets.Add;
   end
   else
   begin
@@ -82,10 +87,13 @@ begin
     end;
   end;
 
+
   ///////////////////////
   // Export data
-  Rows := Self.RecordCount;
-//  Cols := Self.FieldCount;
+  Rows := RecordCount;
+  if AIncludeLabel then
+    Rows := Rows + 1;
+
   Cols := 0;
   SetLength(ColIdxs, FieldCount);
   for I := 0 to FieldCount -1 do
@@ -93,16 +101,21 @@ begin
   for I := 0 to FieldCount - 1 do
   begin
     Field := Fields[I];
-    if (not Field.Visible) or not (Field.FieldKind in [fkData]) then
+    if (not Field.Visible) or not (Field.FieldKind in [fkData, fkLookup, fkCalculated]) then
       Continue;
 
     ColIdxs[Cols] := I;
     Inc(Cols);
   end;
 
-
   Row := 0;
   LDatas := VarArrayCreate([0, Rows-1,0, Cols-1], VarVariant);
+  if AIncludeLabel then
+  begin
+    for I := 0 to Cols - 1 do
+      LDatas[0, I] := Fields[ColIdxs[I]].DisplayLabel;
+    Row := 1;
+  end;
   LBookmark := GetBookmark;
   DisableControls;
   try
@@ -110,7 +123,7 @@ begin
     while not Eof do
     begin
       for I := 0 to Cols - 1 do
-        LDatas[Row, ColIdxs[I] := Fields[I].AsVariant;
+        LDatas[Row, I] := Fields[ColIdxs[I]].DisplayText;
 
       Inc(Row);
       Next
@@ -153,7 +166,8 @@ begin
   except
   end;
 
-  LExcel.Quit;
+  if not AShowAfterSave then
+    LExcel.Quit;
   LExcel := unAssigned;
 end;
 

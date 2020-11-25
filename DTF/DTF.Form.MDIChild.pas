@@ -20,9 +20,6 @@ type
     property OnMDIDestroy: TNotifyEvent read FOnMDIDestroy write FOnMDIDestroy;
   end;
 
-var
-  DTFMDIChildForm: TDTFMDIChildForm;
-
 implementation
 
 {$R *.dfm}

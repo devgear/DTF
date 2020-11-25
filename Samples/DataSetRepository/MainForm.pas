@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Vcl.StdCtrls, FireDAC.Comp.Client,
-  FireDAC.Comp.DataSet, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI;
+  FireDAC.Comp.DataSet, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI,
+  FireDAC.Phys.SQLiteVDataSet;
 
 type
   TForm1 = class(TForm)
@@ -18,6 +19,7 @@ type
     FDMemTable1: TFDMemTable;
     Button1: TButton;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    FDLocalSQL1: TFDLocalSQL;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }

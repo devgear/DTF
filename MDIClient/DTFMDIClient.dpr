@@ -3,10 +3,10 @@ program DTFMDIClient;
 uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {frmMain},
-  DatabaseModule in 'DatabaseModule.pas' {dmDatabase: TDataModule},
+  DatabaseModule in 'Modules\DatabaseModule.pas' {dmDatabase: TDataModule},
   DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {DTFBaseForm},
   DTF.Builder.Factory in '..\DTF\DTF.Builder.Factory.pas',
-  MenuTypes in 'MenuTypes.pas',
+  MenuTypes in 'Common\MenuTypes.pas',
   DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
   TestForm in 'TestForm.pas' {frmTest},
   DTF.Types in '..\DTF\DTF.Types.pas',
@@ -17,18 +17,29 @@ uses
   DTF.Frame.DBGrid in '..\DTF\DTF.Frame.DBGrid.pas' {DTFDBGridFrame: TFrame},
   DTF.Util.AutoCompleteForm in '..\DTF\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
   DTF.Util.AutoComplete in '..\DTF\DTF.Util.AutoComplete.pas',
-  Environment in 'Environment.pas',
+  Environment in 'Common\Environment.pas',
   DTF.Core.Authentication in '..\DTF\DTF.Core.Authentication.pas',
   DTF.Core.AuthTypes in '..\DTF\DTF.Core.AuthTypes.pas',
-  LoginModule in 'LoginModule.pas' {dmLogin: TDataModule},
-  DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame};
+  UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
+  DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
+  DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
+  SignInForm in 'User\SignInForm.pas' {frmSignIn};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  Application.Title := '::: DTF MDI Client :::';
+
   Application.CreateForm(TdmDatabase, dmDatabase);
+  Application.CreateForm(TdmUser, dmUser);
+  if (Env.UseSignup) and (not ExecSignIn) then
+  begin
+    Application.Terminate;
+    Exit;
+  end;
+
+  Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmResource, dmResource);
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;

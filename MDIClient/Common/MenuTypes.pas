@@ -21,7 +21,7 @@ type
   end;
 
   TDTFForm = TDTFMDIChildForm;
-  TDTFFormClass = class of TDTFMDIChildForm;
+  TDTFFormClass = class of TDTFForm;
 
   TMenuFactory = TAbstractFactory<string, TDTFFormClass>;
 

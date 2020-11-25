@@ -1,17 +1,17 @@
 inherited frmSYS1010: TfrmSYS1010
   Caption = #49884#49828#53596':: '#47700#45684' '#44288#47532
-  ClientHeight = 496
-  ClientWidth = 804
+  ClientHeight = 558
+  ClientWidth = 927
   OnShow = FormShow
-  ExplicitWidth = 820
-  ExplicitHeight = 535
+  ExplicitWidth = 943
+  ExplicitHeight = 597
   PixelsPerInch = 96
   TextHeight = 13
   object GridPanel1: TGridPanel
     Left = 0
     Top = 0
-    Width = 804
-    Height = 496
+    Width = 927
+    Height = 558
     Align = alClient
     ColumnCollection = <
       item
@@ -49,19 +49,23 @@ inherited frmSYS1010: TfrmSYS1010
         Value = 50.000000000000000000
       end>
     TabOrder = 0
+    ExplicitWidth = 804
+    ExplicitHeight = 496
     object pnlCate: TPanel
       Left = 1
       Top = 1
-      Width = 401
-      Height = 247
+      Width = 462
+      Height = 278
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 0
+      ExplicitWidth = 401
+      ExplicitHeight = 247
       inline fmeCate: TDTFDBGridFrame
         Left = 1
         Top = 21
-        Width = 399
-        Height = 124
+        Width = 460
+        Height = 155
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
@@ -72,12 +76,20 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitWidth = 399
         ExplicitHeight = 124
         inherited tlbDataSet: TToolBar
-          Width = 383
+          Width = 444
           ExplicitWidth = 383
+          inherited ToolButton2: TToolButton [2]
+            Left = 160
+            ExplicitLeft = 160
+          end
+          inherited ToolButton1: TToolButton [3]
+            Left = 235
+            ExplicitLeft = 235
+          end
         end
         inherited grdMaster: TDBGrid
-          Width = 383
-          Height = 98
+          Width = 444
+          Height = 129
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuCates
@@ -86,13 +98,15 @@ inherited frmSYS1010: TfrmSYS1010
       end
       object Panel1: TPanel
         Left = 1
-        Top = 145
-        Width = 399
+        Top = 176
+        Width = 460
         Height = 101
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 145
+        ExplicitWidth = 399
         DesignSize = (
-          399
+          460
           101)
         object Label3: TLabel
           Left = 8
@@ -113,12 +127,13 @@ inherited frmSYS1010: TfrmSYS1010
         object edtCateName: TDBEdit
           Left = 8
           Top = 68
-          Width = 314
+          Width = 375
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           DataField = 'CATE_NAME'
           DataSource = fmeCate.DataSource
           TabOrder = 1
+          ExplicitWidth = 314
         end
         object edtCateCode: TDBEdit
           Left = 8
@@ -133,7 +148,7 @@ inherited frmSYS1010: TfrmSYS1010
       inline DTFTitleFrame1: TDTFTitleFrame
         Left = 1
         Top = 1
-        Width = 399
+        Width = 460
         Height = 20
         Align = alTop
         Color = clActiveCaption
@@ -144,7 +159,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitTop = 1
         ExplicitWidth = 399
         inherited Title: TLabel
-          Width = 388
+          Width = 449
           Height = 15
           Caption = #50629#47924' '#44396#48516'('#52852#53580#44256#47532')'
           ExplicitWidth = 104
@@ -152,52 +167,59 @@ inherited frmSYS1010: TfrmSYS1010
       end
     end
     object pnlPreview: TPanel
-      Left = 402
+      Left = 463
       Top = 1
-      Width = 401
-      Height = 247
+      Width = 463
+      Height = 278
       Align = alClient
       Anchors = []
       BevelOuter = bvLowered
       TabOrder = 1
+      ExplicitLeft = 402
+      ExplicitWidth = 401
+      ExplicitHeight = 247
       DesignSize = (
-        401
-        247)
+        463
+        278)
       object btnMenuRefresh: TSpeedButton
-        Left = 353
+        Left = 415
         Top = 47
         Width = 36
         Height = 36
         Action = actMenuTreeRefresh
         Anchors = [akTop, akRight]
         Images = dmResource.vilMenus
+        ExplicitLeft = 353
       end
       object SpeedButton1: TSpeedButton
-        Left = 353
+        Left = 415
         Top = 89
         Width = 36
         Height = 36
         Action = actMenuTreeUp
         Anchors = [akTop, akRight]
         Images = dmResource.vilMenus
+        ExplicitLeft = 353
       end
       object SpeedButton2: TSpeedButton
-        Left = 353
+        Left = 415
         Top = 124
         Width = 36
         Height = 36
         Action = actMenuTreeDown
         Anchors = [akTop, akRight]
         Images = dmResource.vilMenus
+        ExplicitLeft = 353
       end
       object SpeedButton3: TSpeedButton
-        Left = 353
+        Left = 415
         Top = 166
         Width = 36
         Height = 36
         Action = actMenuTreeSave
         Anchors = [akTop, akRight]
         Images = dmResource.vilMenus
+        ExplicitLeft = 353
       end
       object Label7: TLabel
         Left = 12
@@ -210,8 +232,8 @@ inherited frmSYS1010: TfrmSYS1010
       object trvMenus: TTreeView
         Left = 10
         Top = 47
-        Width = 337
-        Height = 191
+        Width = 399
+        Height = 222
         Anchors = [akLeft, akTop, akRight, akBottom]
         DragMode = dmAutomatic
         Images = dmResource.vilMenus
@@ -221,11 +243,13 @@ inherited frmSYS1010: TfrmSYS1010
         OnCreateNodeClass = trvMenusCreateNodeClass
         OnDragDrop = trvMenusDragDrop
         OnDragOver = trvMenusDragOver
+        ExplicitWidth = 337
+        ExplicitHeight = 191
       end
       inline DTFTitleFrame2: TDTFTitleFrame
         Left = 1
         Top = 1
-        Width = 399
+        Width = 461
         Height = 20
         Align = alTop
         Color = clActiveCaption
@@ -236,7 +260,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitTop = 1
         ExplicitWidth = 399
         inherited Title: TLabel
-          Width = 388
+          Width = 450
           Height = 15
           Caption = #48120#47532#48372#44592
           ExplicitWidth = 44
@@ -245,17 +269,20 @@ inherited frmSYS1010: TfrmSYS1010
     end
     object pnlGroup: TPanel
       Left = 1
-      Top = 248
-      Width = 401
-      Height = 247
+      Top = 279
+      Width = 462
+      Height = 278
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 2
+      ExplicitTop = 248
+      ExplicitWidth = 401
+      ExplicitHeight = 247
       inline fmeGroup: TDTFDBGridFrame
         Left = 1
         Top = 21
-        Width = 399
-        Height = 116
+        Width = 460
+        Height = 147
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
@@ -266,12 +293,20 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitWidth = 399
         ExplicitHeight = 116
         inherited tlbDataSet: TToolBar
-          Width = 383
+          Width = 444
           ExplicitWidth = 383
+          inherited ToolButton2: TToolButton [2]
+            Left = 160
+            ExplicitLeft = 160
+          end
+          inherited ToolButton1: TToolButton [3]
+            Left = 235
+            ExplicitLeft = 235
+          end
         end
         inherited grdMaster: TDBGrid
-          Width = 383
-          Height = 90
+          Width = 444
+          Height = 121
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuGroups
@@ -279,13 +314,15 @@ inherited frmSYS1010: TfrmSYS1010
       end
       object Panel2: TPanel
         Left = 1
-        Top = 137
-        Width = 399
+        Top = 168
+        Width = 460
         Height = 109
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 137
+        ExplicitWidth = 399
         DesignSize = (
-          399
+          460
           109)
         object Label4: TLabel
           Left = 8
@@ -306,12 +343,13 @@ inherited frmSYS1010: TfrmSYS1010
         object edtGroupName: TDBEdit
           Left = 8
           Top = 72
-          Width = 314
+          Width = 375
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           DataField = 'GROUP_NAME'
           DataSource = fmeGroup.DataSource
           TabOrder = 1
+          ExplicitWidth = 314
         end
         object edtGroupCode: TDBEdit
           Left = 8
@@ -326,7 +364,7 @@ inherited frmSYS1010: TfrmSYS1010
       inline DTFTitleFrame3: TDTFTitleFrame
         Left = 1
         Top = 1
-        Width = 399
+        Width = 460
         Height = 20
         Align = alTop
         Color = clActiveCaption
@@ -337,7 +375,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitTop = 1
         ExplicitWidth = 399
         inherited Title: TLabel
-          Width = 388
+          Width = 449
           Height = 15
           Caption = #47700#45684' '#44536#47353
           ExplicitWidth = 48
@@ -345,19 +383,23 @@ inherited frmSYS1010: TfrmSYS1010
       end
     end
     object pnlMenu: TPanel
-      Left = 402
-      Top = 248
-      Width = 401
-      Height = 247
+      Left = 463
+      Top = 279
+      Width = 463
+      Height = 278
       Align = alClient
       Anchors = []
       BevelOuter = bvLowered
       TabOrder = 3
+      ExplicitLeft = 402
+      ExplicitTop = 248
+      ExplicitWidth = 401
+      ExplicitHeight = 247
       inline fmeMenu: TDTFDBGridFrame
         Left = 1
         Top = 21
-        Width = 399
-        Height = 116
+        Width = 461
+        Height = 147
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
@@ -368,16 +410,27 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitWidth = 399
         ExplicitHeight = 116
         inherited tlbDataSet: TToolBar
-          Width = 383
+          Width = 445
           ExplicitWidth = 383
+          inherited ToolButton2: TToolButton [2]
+            Left = 160
+            ExplicitLeft = 160
+          end
+          inherited ToolButton1: TToolButton [3]
+            Left = 235
+            ExplicitLeft = 235
+          end
         end
         inherited grdMaster: TDBGrid
-          Width = 383
-          Height = 90
+          Width = 445
+          Height = 121
         end
         inherited ActionList: TActionList
           Left = 64
           Top = 72
+          inherited actDSExportXls: TAction
+            Visible = True
+          end
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuItems
@@ -385,11 +438,13 @@ inherited frmSYS1010: TfrmSYS1010
       end
       object Panel7: TPanel
         Left = 1
-        Top = 137
-        Width = 399
+        Top = 168
+        Width = 461
         Height = 109
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 137
+        ExplicitWidth = 399
         object Label1: TLabel
           Left = 16
           Top = 12
@@ -428,7 +483,7 @@ inherited frmSYS1010: TfrmSYS1010
       inline DTFTitleFrame4: TDTFTitleFrame
         Left = 1
         Top = 1
-        Width = 399
+        Width = 461
         Height = 20
         Align = alTop
         Color = clActiveCaption
@@ -439,7 +494,7 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitTop = 1
         ExplicitWidth = 399
         inherited Title: TLabel
-          Width = 388
+          Width = 450
           Height = 15
           Caption = #47700#45684
         end

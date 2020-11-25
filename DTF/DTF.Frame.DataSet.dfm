@@ -1,43 +1,52 @@
 inherited DTFDataSetFrame: TDTFDataSetFrame
+  Width = 504
+  ExplicitWidth = 504
   object tlbDataSet: TToolBar
     Left = 0
     Top = 0
-    Width = 433
+    Width = 504
     Height = 22
     AutoSize = True
-    ButtonWidth = 71
+    ButtonWidth = 85
     Images = dmResource.vilToolButton
     List = True
     ShowCaptions = True
     TabOrder = 0
-    object ToolButton4: TToolButton
+    ExplicitWidth = 433
+    ExplicitHeight = 44
+    object tbnDSRefresh: TToolButton
       Left = 0
       Top = 0
       Action = actDSRefresh
     end
     object ToolButton11: TToolButton
-      Left = 71
+      Left = 85
       Top = 0
       Action = actDSNewAppend
       AutoSize = True
     end
     object ToolButton1: TToolButton
-      Left = 146
+      Left = 160
       Top = 0
       Action = actDSSavePost
       AutoSize = True
     end
     object ToolButton2: TToolButton
-      Left = 199
+      Left = 213
       Top = 0
       Action = actDSCancel
       AutoSize = True
     end
     object ToolButton3: TToolButton
-      Left = 274
+      Left = 288
       Top = 0
       Action = actDSDelete
       AutoSize = True
+    end
+    object ToolButton5: TToolButton
+      Left = 341
+      Top = 0
+      Action = actDSExportXls
     end
   end
   object ActionList: TActionList
@@ -88,6 +97,15 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
       ImageIndex = 1
       ImageName = 'icons8-delete_sign'
       DataSource = DataSource
+    end
+    object actDSExportXls: TAction
+      Category = 'Dataset'
+      Caption = #50641#49472#47196' '#51200#51109
+      ImageIndex = 7
+      ImageName = 'icons8-xls'
+      Visible = False
+      OnExecute = actDSExportXlsExecute
+      OnUpdate = actDSExportXlsUpdate
     end
   end
   object DataSource: TDataSource

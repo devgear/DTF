@@ -1,8 +1,8 @@
-object dmLogin: TdmLogin
+object dmUser: TdmUser
   OldCreateOrder = False
-  Height = 432
-  Width = 597
-  object qryLogin: TFDQuery
+  Height = 298
+  Width = 477
+  object qrySignin: TFDQuery
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       
@@ -19,67 +19,67 @@ object dmLogin: TdmLogin
         Size = 256
         Value = Null
       end>
-    object qryLoginUSER_SEQ: TIntegerField
+    object qrySigninUSER_SEQ: TIntegerField
       FieldName = 'USER_SEQ'
       Origin = 'USER_SEQ'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object qryLoginUSER_NAME: TWideStringField
+    object qrySigninUSER_NAME: TWideStringField
       FieldName = 'USER_NAME'
       Origin = 'USER_NAME'
       Required = True
       Size = 256
     end
-    object qryLoginUSER_ID: TWideStringField
+    object qrySigninUSER_ID: TWideStringField
       FieldName = 'USER_ID'
       Origin = 'USER_ID'
       Required = True
       Size = 256
     end
-    object qryLoginUSER_ENC_PWD: TWideStringField
+    object qrySigninUSER_ENC_PWD: TWideStringField
       FieldName = 'USER_ENC_PWD'
       Origin = 'USER_ENC_PWD'
       Required = True
       Size = 256
     end
-    object qryLoginPHONE_NO: TWideStringField
+    object qrySigninPHONE_NO: TWideStringField
       FieldName = 'PHONE_NO'
       Origin = 'PHONE_NO'
       Size = 128
     end
-    object qryLoginEMAIL: TWideStringField
+    object qrySigninEMAIL: TWideStringField
       FieldName = 'EMAIL'
       Origin = 'EMAIL'
       Size = 1024
     end
-    object qryLoginPOSTCODE: TWideStringField
+    object qrySigninPOSTCODE: TWideStringField
       FieldName = 'POSTCODE'
       Origin = 'POSTCODE'
       Size = 48
     end
-    object qryLoginADDRESS: TWideStringField
+    object qrySigninADDRESS: TWideStringField
       FieldName = 'ADDRESS'
       Origin = 'ADDRESS'
       Size = 1024
     end
-    object qryLoginLAST_PWD_UPDATED_AT: TSQLTimeStampField
+    object qrySigninLAST_PWD_UPDATED_AT: TSQLTimeStampField
       FieldName = 'LAST_PWD_UPDATED_AT'
       Origin = 'LAST_PWD_UPDATED_AT'
     end
-    object qryLoginCREATED_AT: TSQLTimeStampField
+    object qrySigninCREATED_AT: TSQLTimeStampField
       FieldName = 'CREATED_AT'
       Origin = 'CREATED_AT'
     end
-    object qryLoginCREATED_USER: TIntegerField
+    object qrySigninCREATED_USER: TIntegerField
       FieldName = 'CREATED_USER'
       Origin = 'CREATED_USER'
     end
-    object qryLoginUPDATED_AT: TSQLTimeStampField
+    object qrySigninUPDATED_AT: TSQLTimeStampField
       FieldName = 'UPDATED_AT'
       Origin = 'UPDATED_AT'
     end
-    object qryLoginUPDATED_USER: TIntegerField
+    object qrySigninUPDATED_USER: TIntegerField
       FieldName = 'UPDATED_USER'
       Origin = 'UPDATED_USER'
     end

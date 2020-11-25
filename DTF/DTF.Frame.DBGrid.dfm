@@ -7,27 +7,15 @@ inherited DTFDBGridFrame: TDTFDBGridFrame
   inherited tlbDataSet: TToolBar
     Left = 8
     Top = 4
-    Width = 417
+    Width = 488
     ExplicitLeft = 8
     ExplicitTop = 4
     ExplicitWidth = 417
-    inherited ToolButton11: TToolButton
-      ExplicitWidth = 75
-    end
-    inherited ToolButton1: TToolButton
-      ExplicitWidth = 53
-    end
-    inherited ToolButton2: TToolButton
-      ExplicitWidth = 75
-    end
-    inherited ToolButton3: TToolButton
-      ExplicitWidth = 53
-    end
   end
   object grdMaster: TDBGrid [1]
     Left = 8
     Top = 26
-    Width = 417
+    Width = 488
     Height = 199
     TabStop = False
     Align = alClient

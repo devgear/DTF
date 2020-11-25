@@ -1,4 +1,4 @@
-unit LoginModule;
+unit UserModule;
 
 interface
 
@@ -10,21 +10,21 @@ uses
   Environment;
 
 type
-  TdmLogin = class(TDataModule, IAuthService)
-    qryLogin: TFDQuery;
-    qryLoginUSER_SEQ: TIntegerField;
-    qryLoginUSER_NAME: TWideStringField;
-    qryLoginUSER_ID: TWideStringField;
-    qryLoginUSER_ENC_PWD: TWideStringField;
-    qryLoginPHONE_NO: TWideStringField;
-    qryLoginEMAIL: TWideStringField;
-    qryLoginPOSTCODE: TWideStringField;
-    qryLoginADDRESS: TWideStringField;
-    qryLoginLAST_PWD_UPDATED_AT: TSQLTimeStampField;
-    qryLoginCREATED_AT: TSQLTimeStampField;
-    qryLoginCREATED_USER: TIntegerField;
-    qryLoginUPDATED_AT: TSQLTimeStampField;
-    qryLoginUPDATED_USER: TIntegerField;
+  TdmUser = class(TDataModule, IAuthService)
+    qrySignin: TFDQuery;
+    qrySigninUSER_SEQ: TIntegerField;
+    qrySigninUSER_NAME: TWideStringField;
+    qrySigninUSER_ID: TWideStringField;
+    qrySigninUSER_ENC_PWD: TWideStringField;
+    qrySigninPHONE_NO: TWideStringField;
+    qrySigninEMAIL: TWideStringField;
+    qrySigninPOSTCODE: TWideStringField;
+    qrySigninADDRESS: TWideStringField;
+    qrySigninLAST_PWD_UPDATED_AT: TSQLTimeStampField;
+    qrySigninCREATED_AT: TSQLTimeStampField;
+    qrySigninCREATED_USER: TIntegerField;
+    qrySigninUPDATED_AT: TSQLTimeStampField;
+    qrySigninUPDATED_USER: TIntegerField;
   private
     { Private declarations }
   public
@@ -33,7 +33,7 @@ type
   end;
 
 var
-  dmLogin: TdmLogin;
+  dmUser: TdmUser;
 
 implementation
 
@@ -46,27 +46,27 @@ uses
 
 { TdmLogin }
 
-function TdmLogin.SignIn(AId, APassword: string): TSignInResult;
+function TdmUser.SignIn(AId, APassword: string): TSignInResult;
 var
   Pwd, EncPwd: string;
   LastUpdate: TDateTime;
   Period: Integer;
 begin
-  qryLogin.Close;
-  qryLogin.ParamByName('USER_ID').AsString := AId;
-  qryLogin.Open;
+  qrySignin.Close;
+  qrySignin.ParamByName('USER_ID').AsString := AId;
+  qrySignin.Open;
 
-  if qryLogin.RecordCount = 0 then
+  if qrySignin.RecordCount = 0 then
     Exit(srNotFound);
 
   // 잘못된 비밀번호
-  Pwd := qryLogin.FieldByName('USER_ENC_PWD').AsString;
+  Pwd := qrySignin.FieldByName('USER_ENC_PWD').AsString;
   EncPwd := THashSHA2.GetHashString(APassword, THashSHA2.TSHA2Version.SHA256);
   if Pwd <> EncPwd then
     Exit(srIncorrectPassword);
 
   // 비밀번호 유효기간 확인
-  LastUpdate := qryLogin.FieldByName('LAST_PWD_UPDATED_AT').AsDateTime;
+  LastUpdate := qrySignin.FieldByName('LAST_PWD_UPDATED_AT').AsDateTime;
   Period := Trunc(DaySpan(Now, LastUpdate));
   if Period >= Env.PasswordExpiredDays then
     Exit(srExpiredPassword);

@@ -60,4 +60,11 @@ object Form1: TForm1
     Left = 552
     Top = 336
   end
+  object FDLocalSQL1: TFDLocalSQL
+    DataSets = <
+      item
+      end>
+    Left = 328
+    Top = 248
+  end
 end

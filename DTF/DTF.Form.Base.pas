@@ -11,15 +11,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
-    { Private declarations }
   public
-    { Public declarations }
   end;
-
-  TDTFFormClass = class of TDTFBaseForm;
-
-var
-  DTFBaseForm: TDTFBaseForm;
 
 implementation
 
@@ -28,9 +21,6 @@ implementation
 procedure TDTFBaseForm.FormCreate(Sender: TObject);
 begin
   KeyPreview := True;
-
-//  Constraints.MinWidth := 1024;
-//  Constraints.MinHeight := 768;
 end;
 
 procedure TDTFBaseForm.FormKeyDown(Sender: TObject; var Key: Word;

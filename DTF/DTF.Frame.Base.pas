@@ -9,9 +9,7 @@ uses
 type
   TDTFBaseFrame = class(TFrame)
   private
-    { Private declarations }
   public
-    { Public declarations }
   end;
 
 implementation

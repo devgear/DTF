@@ -3,7 +3,7 @@ unit DTF.Core.AuthTypes;
 interface
 
 type
-  TSignInResult = (srOk, srNotFound, srIncorrectPassword, srExpiredPassword);
+  TSignInResult = (srOk, srNotFound, srShortPassword, srIncorrectPassword, srExpiredPassword);
 
   IAuthentication = interface
     ['{10D258F7-635D-44DB-A118-E9B5CDCECE63}']

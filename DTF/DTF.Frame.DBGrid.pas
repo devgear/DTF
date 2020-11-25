@@ -13,9 +13,7 @@ type
   TDTFDBGridFrame = class(TDTFDataSetFrame)
     grdMaster: TDBGrid;
   private
-    { Private declarations }
   public
-    { Public declarations }
   end;
 
 var

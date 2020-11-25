@@ -3,7 +3,7 @@ program DSRepDemo;
 uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {Form1},
-  DTF.DataSetRepository in 'DTF.DataSetRepository.pas';
+  DTF.Data.DataSetRepository in 'DTF.Data.DataSetRepository.pas';
 
 {$R *.res}
 
