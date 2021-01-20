@@ -104,15 +104,25 @@ begin
   TAutoComplete.Setup(
     Self,
     edtShortCut,
-    TACDataSetFilterAdapter.Create(
-      qryMenuShortcut,
-      ['menu_name', 'menu_code', 'cate'],
-      ['menu_code', 'menu_name'],
-      procedure(Values: TArray<string>)
-      begin
-        CreateMDIForm(Values[0]);
-      end
-    )
+    TACDataSetFilterAdapter.Create
+      .SetDataSet(qryMenuShortcut)
+      .SetListFields(['menu_name', 'menu_code', 'cate'])
+      .SetKeyFields(['menu_code', 'menu_name'])
+      .SetCompleteProc(
+        procedure(Values: TArray<string>)
+        begin
+          CreateMDIForm(Values[0]);
+        end)
+
+//    TACDataSetFilterAdapter.Create(
+//      qryMenuShortcut,
+//      ['menu_name', 'menu_code', 'cate'], // List
+//      ['menu_code', 'menu_name'],         // Key(Return)
+//      procedure(Values: TArray<string>)
+//      begin
+//        CreateMDIForm(Values[0]);
+//      end
+//    )
   );
 
   WindowState := Env.WindowState;

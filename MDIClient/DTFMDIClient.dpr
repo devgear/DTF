@@ -33,11 +33,11 @@ begin
 
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmUser, dmUser);
-  if (Env.UseSignup) and (not ExecSignIn) then
-  begin
-    Application.Terminate;
-    Exit;
-  end;
+//  if (Env.UseSignup) and (not ExecSignIn) then
+//  begin
+//    Application.Terminate;
+//    Exit;
+//  end;
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmResource, dmResource);

@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  System.Types;
+  System.Types, System.Math;
 
 {$R *.dfm}
 
@@ -77,9 +77,8 @@ begin
   FSearchEdit.OnClick := SearchEditClick;
 
   FEditWndProc := FSearchEdit.WindowProc;
-  FSearchEdit.WindowProc := EditWndProc;
-
   FListWndProc := ListView.WindowProc;
+
   ListView.WindowProc := ListWndProc;
 
   FAdapter.BindControl(ListView);
@@ -91,7 +90,7 @@ begin
   if Key = VK_DOWN then
   begin
     DropDown;
-    ListView.ItemIndex := 0;
+    ListView.ItemIndex := Min(0, ListView.ItemIndex);
     ListView.SetFocus;
     Exit;
   end
@@ -157,7 +156,12 @@ end;
 
 procedure TfrmAutoComplete.DropDown;
 begin
+  if FDroppedDown then
+    Exit;
+
   Visible := True;
+
+  FSearchEdit.WindowProc := EditWndProc;
 
   FDroppedDown := True;
 end;
@@ -166,6 +170,7 @@ procedure TfrmAutoComplete.CloseUp;
 begin
   if FDroppedDown then
   begin
+    FSearchEdit.WindowProc := FEditWndProc;
     Visible := False;
     FDroppedDown := False;
     ListView.ItemIndex := -1;
@@ -177,11 +182,8 @@ var
   Sender: TControl;
 begin
   case Message.Msg of
-  { TODO : MDIForm does not send CM_CANCELMODE }
   CM_CANCELMODE:
     begin
-      OutputDebugString(PChar('Edit.CM_CANCELMODE'));
-
       Sender := TControl(Message.LParam);
 
       if (Sender <> FSearchEdit) and (Sender <> ListView) then
@@ -204,7 +206,6 @@ begin
   case Message.Msg of
   CM_CANCELMODE:
     begin
-      OutputDebugString(PChar('List.CM_CANCELMODE'));
       Sender := TControl(Message.LParam);
 
       if (Sender <> FSearchEdit) and (Sender <> ListView) then
@@ -216,7 +217,6 @@ begin
     end;
   WM_KILLFOCUS:
     begin
-      OutputDebugString(PChar('List.WM_KILLFOCUS'));
       if csDestroying in ComponentState then
         Exit;
       if not FSearchEdit.Focused then

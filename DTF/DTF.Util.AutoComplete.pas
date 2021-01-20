@@ -15,6 +15,7 @@ type
     procedure BindControl(AListView: TListView);
     procedure ChangeText(AText: string);
     procedure Complete;
+    procedure CheckAdapter;
   end;
 
   IAutoCompleteForm = interface
@@ -46,15 +47,24 @@ type
     procedure BindControl(AListView: TListView);
     procedure ChangeText(AText: string);
     procedure Complete;
+    procedure CheckAdapter;
   public
-    constructor Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
+    constructor Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>;
+      ACompleteProc: TProc<TArray<string>>); overload;
     destructor Destroy; override;
+
+    // Builder
+    function SetDataSet(AValue: TDataSet): TACDataSetFilterAdapter;
+    function SetListFields(AValue: TArray<string>): TACDataSetFilterAdapter;
+    function SetKeyFields(AValue: TArray<string>): TACDataSetFilterAdapter;
+    function SetCompleteProc(AValue: TProc<TArray<string>>): TACDataSetFilterAdapter;
   end;
 
 implementation
 
 uses
-  DTF.Util.AutoCompleteForm;
+  DTF.Util.AutoCompleteForm,
+  System.JSON.Builders;
 
 { TAutoComplete }
 
@@ -68,6 +78,8 @@ class procedure TAutoComplete.Setup(AParent: TForm; AEdit: TEdit; AAdapter: IAut
 var
   Form: IAutoCompleteForm;
 begin
+  AAdapter.CheckAdapter;
+
   if not Assigned(FList) then
     FList := TList<IAutoCompleteForm>.Create;
   Form := TfrmAutoComplete.Create(AParent);
@@ -77,6 +89,68 @@ begin
 end;
 
 { TACDataSetFilterAdapter }
+
+procedure TACDataSetFilterAdapter.CheckAdapter;
+begin
+  if not Assigned(FDataSet) then
+    raise Exception.Create('Not assigned dataset.');
+  if Length(FListFields) = 0 then
+    raise Exception.Create('List field is empty.');
+  if Length(FKeyFields) = 0 then
+    raise Exception.Create('Key field is empty.');
+  if not Assigned(FCompleteProc) then
+    raise Exception.Create('Not assigned complete procedure.');
+end;
+
+constructor TACDataSetFilterAdapter.Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
+begin
+  FDataSet := ADataSet;
+  FListFields := AListFields;
+  FKeyFields := AKeyFields;
+  FCompleteProc := ACompleteProc;
+end;
+
+destructor TACDataSetFilterAdapter.Destroy;
+begin
+  if Assigned(FBindSourceDB) then
+    FBindSourceDB.Free;
+  if Assigned(FBindingsList) then
+    FBindingsList.Free;
+  if Assigned(FLinkListControlToField) then
+    FLinkListControlToField.Free;
+
+  inherited;
+end;
+
+{$REGION 'Builder'}
+function TACDataSetFilterAdapter.SetCompleteProc(
+  AValue: TProc<TArray<string>>): TACDataSetFilterAdapter;
+begin
+  FCompleteProc := AValue;
+  Result := Self;
+end;
+
+function TACDataSetFilterAdapter.SetDataSet(
+  AValue: TDataSet): TACDataSetFilterAdapter;
+begin
+  FDataSet := AValue;
+  Result := Self;
+end;
+
+function TACDataSetFilterAdapter.SetKeyFields(
+  AValue: TArray<string>): TACDataSetFilterAdapter;
+begin
+  FKeyFields := AValue;
+  Result := Self;
+end;
+
+function TACDataSetFilterAdapter.SetListFields(
+  AValue: TArray<string>): TACDataSetFilterAdapter;
+begin
+  FListFields := AValue;
+  Result := Self;
+end;
+{$ENDREGION 'Builder'}
 
 procedure TACDataSetFilterAdapter.BindControl(AListView: TListView);
 var
@@ -137,26 +211,6 @@ begin
     Params[I] := FDataSet.FieldByName(FKeyFields[I]).AsString;
   if Assigned(FCompleteProc) then
     FCompleteProc(Params);
-end;
-
-constructor TACDataSetFilterAdapter.Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
-begin
-  FDataSet := ADataSet;
-  FListFields := AListFields;
-  FKeyFields := AKeyFields;
-  FCompleteProc := ACompleteProc;
-end;
-
-destructor TACDataSetFilterAdapter.Destroy;
-begin
-  if Assigned(FBindSourceDB) then
-    FBindSourceDB.Free;
-  if Assigned(FBindingsList) then
-    FBindingsList.Free;
-  if Assigned(FLinkListControlToField) then
-    FLinkListControlToField.Free;
-
-  inherited;
 end;
 
 initialization
