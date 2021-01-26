@@ -49,8 +49,6 @@ inherited frmSYS1010: TfrmSYS1010
         Value = 50.000000000000000000
       end>
     TabOrder = 0
-    ExplicitWidth = 804
-    ExplicitHeight = 496
     object pnlCate: TPanel
       Left = 1
       Top = 1
@@ -59,8 +57,6 @@ inherited frmSYS1010: TfrmSYS1010
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 0
-      ExplicitWidth = 401
-      ExplicitHeight = 247
       inline fmeCate: TDTFDBGridFrame
         Left = 1
         Top = 21
@@ -73,18 +69,22 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 0
         ExplicitLeft = 1
         ExplicitTop = 21
-        ExplicitWidth = 399
-        ExplicitHeight = 124
+        ExplicitWidth = 460
+        ExplicitHeight = 155
         inherited tlbDataSet: TToolBar
           Width = 444
-          ExplicitWidth = 383
-          inherited ToolButton2: TToolButton [2]
-            Left = 160
-            ExplicitLeft = 160
+          ExplicitWidth = 444
+          inherited ToolButton11: TToolButton
+            ExplicitWidth = 75
           end
-          inherited ToolButton1: TToolButton [3]
-            Left = 235
-            ExplicitLeft = 235
+          inherited ToolButton1: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited ToolButton2: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited ToolButton3: TToolButton
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -103,8 +103,6 @@ inherited frmSYS1010: TfrmSYS1010
         Height = 101
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 145
-        ExplicitWidth = 399
         DesignSize = (
           460
           101)
@@ -133,7 +131,6 @@ inherited frmSYS1010: TfrmSYS1010
           DataField = 'CATE_NAME'
           DataSource = fmeCate.DataSource
           TabOrder = 1
-          ExplicitWidth = 314
         end
         object edtCateCode: TDBEdit
           Left = 8
@@ -157,7 +154,7 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 2
         ExplicitLeft = 1
         ExplicitTop = 1
-        ExplicitWidth = 399
+        ExplicitWidth = 460
         inherited Title: TLabel
           Width = 449
           Height = 15
@@ -175,9 +172,6 @@ inherited frmSYS1010: TfrmSYS1010
       Anchors = []
       BevelOuter = bvLowered
       TabOrder = 1
-      ExplicitLeft = 402
-      ExplicitWidth = 401
-      ExplicitHeight = 247
       DesignSize = (
         463
         278)
@@ -243,8 +237,6 @@ inherited frmSYS1010: TfrmSYS1010
         OnCreateNodeClass = trvMenusCreateNodeClass
         OnDragDrop = trvMenusDragDrop
         OnDragOver = trvMenusDragOver
-        ExplicitWidth = 337
-        ExplicitHeight = 191
       end
       inline DTFTitleFrame2: TDTFTitleFrame
         Left = 1
@@ -258,7 +250,7 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 1
         ExplicitLeft = 1
         ExplicitTop = 1
-        ExplicitWidth = 399
+        ExplicitWidth = 461
         inherited Title: TLabel
           Width = 450
           Height = 15
@@ -275,9 +267,6 @@ inherited frmSYS1010: TfrmSYS1010
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 2
-      ExplicitTop = 248
-      ExplicitWidth = 401
-      ExplicitHeight = 247
       inline fmeGroup: TDTFDBGridFrame
         Left = 1
         Top = 21
@@ -290,18 +279,22 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 0
         ExplicitLeft = 1
         ExplicitTop = 21
-        ExplicitWidth = 399
-        ExplicitHeight = 116
+        ExplicitWidth = 460
+        ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 444
-          ExplicitWidth = 383
-          inherited ToolButton2: TToolButton [2]
-            Left = 160
-            ExplicitLeft = 160
+          ExplicitWidth = 444
+          inherited ToolButton11: TToolButton
+            ExplicitWidth = 75
           end
-          inherited ToolButton1: TToolButton [3]
-            Left = 235
-            ExplicitLeft = 235
+          inherited ToolButton1: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited ToolButton2: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited ToolButton3: TToolButton
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -319,8 +312,6 @@ inherited frmSYS1010: TfrmSYS1010
         Height = 109
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 137
-        ExplicitWidth = 399
         DesignSize = (
           460
           109)
@@ -349,7 +340,6 @@ inherited frmSYS1010: TfrmSYS1010
           DataField = 'GROUP_NAME'
           DataSource = fmeGroup.DataSource
           TabOrder = 1
-          ExplicitWidth = 314
         end
         object edtGroupCode: TDBEdit
           Left = 8
@@ -373,7 +363,7 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 2
         ExplicitLeft = 1
         ExplicitTop = 1
-        ExplicitWidth = 399
+        ExplicitWidth = 460
         inherited Title: TLabel
           Width = 449
           Height = 15
@@ -391,10 +381,6 @@ inherited frmSYS1010: TfrmSYS1010
       Anchors = []
       BevelOuter = bvLowered
       TabOrder = 3
-      ExplicitLeft = 402
-      ExplicitTop = 248
-      ExplicitWidth = 401
-      ExplicitHeight = 247
       inline fmeMenu: TDTFDBGridFrame
         Left = 1
         Top = 21
@@ -407,18 +393,22 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 0
         ExplicitLeft = 1
         ExplicitTop = 21
-        ExplicitWidth = 399
-        ExplicitHeight = 116
+        ExplicitWidth = 461
+        ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 445
-          ExplicitWidth = 383
-          inherited ToolButton2: TToolButton [2]
-            Left = 160
-            ExplicitLeft = 160
+          ExplicitWidth = 445
+          inherited ToolButton11: TToolButton
+            ExplicitWidth = 75
           end
-          inherited ToolButton1: TToolButton [3]
-            Left = 235
-            ExplicitLeft = 235
+          inherited ToolButton1: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited ToolButton2: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited ToolButton3: TToolButton
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -443,8 +433,6 @@ inherited frmSYS1010: TfrmSYS1010
         Height = 109
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 137
-        ExplicitWidth = 399
         object Label1: TLabel
           Left = 16
           Top = 12
@@ -492,7 +480,7 @@ inherited frmSYS1010: TfrmSYS1010
         TabOrder = 2
         ExplicitLeft = 1
         ExplicitTop = 1
-        ExplicitWidth = 399
+        ExplicitWidth = 461
         inherited Title: TLabel
           Width = 450
           Height = 15

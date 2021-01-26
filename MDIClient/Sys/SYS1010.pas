@@ -110,6 +110,7 @@ implementation
 {$R *.dfm}
 
 uses
+  DTF.Types,
   DTF.Module.Resource;
 
 procedure TfrmSYS1010.actMenuTreeDownExecute(Sender: TObject);

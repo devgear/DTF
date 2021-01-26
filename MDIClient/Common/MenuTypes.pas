@@ -2,7 +2,7 @@ unit MenuTypes;
 
 interface
 uses
-  DTF.Builder.Factory, DTF.Form.MDIChild, Vcl.ComCtrls;
+  Vcl.ComCtrls;
 
 type
   TMenuNode = class(TTreeNode)
@@ -20,11 +20,6 @@ type
     property ParentCode: string read FParentCode write FParentCode;
   end;
 
-  TDTFForm = TDTFMDIChildForm;
-  TDTFFormClass = class of TDTFForm;
-
-  TMenuFactory = TAbstractFactory<string, TDTFFormClass>;
-
 implementation
 
 { TMenuNode }
@@ -38,9 +33,5 @@ procedure TMenuNode.SetTest(const Value: string);
 begin
   FTest := Value;
 end;
-
-initialization
-finalization
-  TMenuFactory.Instance.Release;
 
 end.

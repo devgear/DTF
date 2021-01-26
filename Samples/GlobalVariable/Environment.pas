@@ -14,12 +14,14 @@ type
   TEnv = record
     UserId: string;
     ShopCode: string;
+    User: TUserInfo;
   end;
 
   // 객체 이용, 환경파일 저장 등(지속적 사용)
   TEnvObj = class
   private
     FIni: TIniFile;
+
     FUserId: string;
     function GetUserId: string;
     procedure SetUserId(const Value: string);
@@ -32,6 +34,8 @@ type
 // 전역변수 사용 시 그룹
 var
   Env: TEnv;
+//  UserId: string;
+//  UserName: string;
 
 // Sigleton patterun
 function EnvObj: TEnvObj;

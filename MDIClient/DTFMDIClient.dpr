@@ -5,10 +5,8 @@ uses
   MainForm in 'MainForm.pas' {frmMain},
   DatabaseModule in 'Modules\DatabaseModule.pas' {dmDatabase: TDataModule},
   DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {DTFBaseForm},
-  DTF.Builder.Factory in '..\DTF\DTF.Builder.Factory.pas',
   MenuTypes in 'Common\MenuTypes.pas',
   DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
-  TestForm in 'TestForm.pas' {frmTest},
   DTF.Types in '..\DTF\DTF.Types.pas',
   SYS1010 in 'Sys\SYS1010.pas' {frmSYS1010},
   DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
@@ -23,7 +21,8 @@ uses
   UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
   DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
-  SignInForm in 'User\SignInForm.pas' {frmSignIn};
+  SignInForm in 'User\SignInForm.pas' {frmSignIn},
+  Test1Form in 'Test\Test1Form.pas' {frmTest1};
 
 {$R *.res}
 
@@ -33,7 +32,7 @@ begin
 
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmUser, dmUser);
-//  if (Env.UseSignup) and (not ExecSignIn) then
+  //  if (Env.UseSignup) and (not ExecSignIn) then
 //  begin
 //    Application.Terminate;
 //    Exit;

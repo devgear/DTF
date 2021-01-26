@@ -113,14 +113,9 @@
             <Form>DTFBaseForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Builder.Factory.pas"/>
         <DCCReference Include="Common\MenuTypes.pas"/>
         <DCCReference Include="..\DTF\DTF.Form.MDIChild.pas">
             <Form>DTFMDIChildForm</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="TestForm.pas">
-            <Form>frmTest</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Types.pas"/>
@@ -171,6 +166,10 @@
             <Form>frmSignIn</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Test\Test1Form.pas">
+            <Form>frmTest1</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -192,9 +191,9 @@
                     <Source Name="MainSource">DTFMDIClient.dpr</Source>
                 </Source>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcboffice2k270.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\bcbofficexp270.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>

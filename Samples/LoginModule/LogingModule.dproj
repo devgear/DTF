@@ -101,18 +101,6 @@
         <DCCReference Include="Unit1.pas">
             <Form>frmMain</Form>
         </DCCReference>
-        <DCCReference Include="DTF.Core.Auth.pas"/>
-        <DCCReference Include="UserAuthModule.pas">
-            <Form>dmUserAuth</Form>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
-        <DCCReference Include="UserAuthTypes.pas"/>
-        <DCCReference Include="DTF.Form.ChangePassword.pas">
-            <Form>frmDTFChangePwd</Form>
-        </DCCReference>
-        <DCCReference Include="DTF.Form.Login.pas">
-            <Form>frmDTFLogin</Form>
-        </DCCReference>
         <DCCReference Include="LoginForm.pas">
             <Form>frmLogin</Form>
         </DCCReference>

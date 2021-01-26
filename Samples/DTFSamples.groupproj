@@ -15,6 +15,15 @@
         <Projects Include="ViewBilder\ViewBilderDemo.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ExportXls\ExportDataSetToXls.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="LoginModule\LogingModule.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GlobalVariable\EnvironmentSample.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +68,41 @@
     <Target Name="ViewBilderDemo:Make">
         <MSBuild Projects="ViewBilder\ViewBilderDemo.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ExportDataSetToXls">
+        <MSBuild Projects="ExportXls\ExportDataSetToXls.dproj"/>
+    </Target>
+    <Target Name="ExportDataSetToXls:Clean">
+        <MSBuild Projects="ExportXls\ExportDataSetToXls.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ExportDataSetToXls:Make">
+        <MSBuild Projects="ExportXls\ExportDataSetToXls.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LogingModule">
+        <MSBuild Projects="LoginModule\LogingModule.dproj"/>
+    </Target>
+    <Target Name="LogingModule:Clean">
+        <MSBuild Projects="LoginModule\LogingModule.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LogingModule:Make">
+        <MSBuild Projects="LoginModule\LogingModule.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="EnvironmentSample">
+        <MSBuild Projects="GlobalVariable\EnvironmentSample.dproj"/>
+    </Target>
+    <Target Name="EnvironmentSample:Clean">
+        <MSBuild Projects="GlobalVariable\EnvironmentSample.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="EnvironmentSample:Make">
+        <MSBuild Projects="GlobalVariable\EnvironmentSample.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ACDSF;MDITabSetDemo;InheritedForm;ViewBilderDemo"/>
+        <CallTarget Targets="ACDSF;MDITabSetDemo;InheritedForm;ViewBilderDemo;ExportDataSetToXls;LogingModule;EnvironmentSample"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ACDSF:Clean;MDITabSetDemo:Clean;InheritedForm:Clean;ViewBilderDemo:Clean"/>
+        <CallTarget Targets="ACDSF:Clean;MDITabSetDemo:Clean;InheritedForm:Clean;ViewBilderDemo:Clean;ExportDataSetToXls:Clean;LogingModule:Clean;EnvironmentSample:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ACDSF:Make;MDITabSetDemo:Make;InheritedForm:Make;ViewBilderDemo:Make"/>
+        <CallTarget Targets="ACDSF:Make;MDITabSetDemo:Make;InheritedForm:Make;ViewBilderDemo:Make;ExportDataSetToXls:Make;LogingModule:Make;EnvironmentSample:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -89,6 +89,7 @@ implementation
 uses
   DatabaseModule,
   Environment,
+  DTF.Types,
   DTF.Module.Resource,
   DTF.Util.AutoComplete;
 
@@ -113,16 +114,6 @@ begin
         begin
           CreateMDIForm(Values[0]);
         end)
-
-//    TACDataSetFilterAdapter.Create(
-//      qryMenuShortcut,
-//      ['menu_name', 'menu_code', 'cate'], // List
-//      ['menu_code', 'menu_name'],         // Key(Return)
-//      procedure(Values: TArray<string>)
-//      begin
-//        CreateMDIForm(Values[0]);
-//      end
-//    )
   );
 
   WindowState := Env.WindowState;
@@ -160,7 +151,7 @@ var
   Form: TDTFForm;
   FormClass: TDTFFormClass;
 begin
-  FormClass := TMenuFactory.Instance.Get(AMenuId);
+  FormClass := TMenuFactory.Instance.GetClass(AMenuId);
   if not Assigned(FormClass) then
   begin
     ShowMessage(Format('해당 메뉴의 폼을 찾을 수 없습니다.(Menu Id: %s)', [AMenuId]));

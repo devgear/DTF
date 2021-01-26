@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'Devgear Training Framework - MDI Client'
+  Caption = 'DTF'
   ClientHeight = 501
   ClientWidth = 749
   Color = clBtnFace
@@ -188,7 +188,7 @@ object frmMain: TfrmMain
     object btnMenuShow: TToolButton
       Left = 17
       Top = 0
-      Hint = 'SYS'
+      Hint = 'HOME'
       Caption = #47700#45684
       ImageIndex = 0
       ImageName = 'icons8-menu'
