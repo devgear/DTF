@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{71D640CA-F414-46CB-B295-B4710D2D473A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ACDSF.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ACDSF2.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ACDSF">
+        <MSBuild Projects="ACDSF.dproj"/>
+    </Target>
+    <Target Name="ACDSF:Clean">
+        <MSBuild Projects="ACDSF.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ACDSF:Make">
+        <MSBuild Projects="ACDSF.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ACDSF2">
+        <MSBuild Projects="ACDSF2.dproj"/>
+    </Target>
+    <Target Name="ACDSF2:Clean">
+        <MSBuild Projects="ACDSF2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ACDSF2:Make">
+        <MSBuild Projects="ACDSF2.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ACDSF;ACDSF2"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ACDSF:Clean;ACDSF2:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ACDSF:Make;ACDSF2:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
