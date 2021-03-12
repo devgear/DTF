@@ -83,7 +83,7 @@ begin
   if not Assigned(FList) then
     FList := TList<IAutoCompleteForm>.Create;
   Form := TfrmAutoComplete.Create(AParent);
-  TfrmAutoComplete(Form).Parent := AParent;
+//  TfrmAutoComplete(Form).Parent := AParent;
   Form.Initialize(AParent, AEdit, AAdapter);
   FList.Add(Form);
 end;

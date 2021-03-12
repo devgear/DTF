@@ -27,10 +27,14 @@ type
     procedure Initialize(AParent: TForm; AEdit: TEdit;
       AAdapter: IAutoCompleteAdapter);
 
+    procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
+    procedure CMVisibleChanged(var Message: TMessage);// message CM_VISIBLECHANGED;
+
     procedure EditWndProc(var Message: TMessage);
     procedure ListWndProc(var Message: TMessage);
     procedure SearchEditKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SearchEditClick(Sender: TObject);
+    procedure SearchEditExit(Sender: TObject);
 
     procedure DoComplete;
   public
@@ -56,7 +60,8 @@ end;
 procedure TfrmAutoComplete.FormShow(Sender: TObject);
 begin
   // Set position
-  with FSearchEdit.ClientToParent(Point(0, 0), Parent) do
+//  with FSearchEdit.ClientToParent(Point(0, 0), Parent) do
+  with FSearchEdit.ClientOrigin do
   begin
     Left := X;
     Top := Y + FSearchEdit.Height;
@@ -75,11 +80,16 @@ begin
   FSearchEdit := AEdit;
   FSearchEdit.OnKeyUp := SearchEditKeyUp;
   FSearchEdit.OnClick := SearchEditClick;
+  FSearchEdit.OnExit := SearchEditExit;
 
-  FEditWndProc := FSearchEdit.WindowProc;
-  FListWndProc := ListView.WindowProc;
+//  FListWndProc := ListView.WindowProc;
+//  ListView.WindowProc := ListWndProc;
 
-  ListView.WindowProc := ListWndProc;
+//  if FParent.FormStyle <> fsMDIForm then
+//  begin
+    FEditWndProc := FSearchEdit.WindowProc;
+    FSearchEdit.WindowProc := EditWndProc;
+//  end;
 
   FAdapter.BindControl(ListView);
 end;
@@ -87,7 +97,7 @@ end;
 procedure TfrmAutoComplete.SearchEditKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_DOWN then
+  if Key in [VK_DOWN] then
   begin
     DropDown;
     ListView.ItemIndex := Min(0, ListView.ItemIndex);
@@ -113,10 +123,25 @@ begin
     DropDown;
 end;
 
+procedure TfrmAutoComplete.WMActivate(var Message: TWMActivate);
+begin
+  OutputDebugString(PChar('TfrmAutoComplete.WMActivate'));
+end;
+
 procedure TfrmAutoComplete.SearchEditClick(Sender: TObject);
 begin
   if FSearchEdit.Text <> '' then
     DropDown;
+end;
+
+procedure TfrmAutoComplete.SearchEditExit(Sender: TObject);
+var
+  ActCtl: TWinControl;
+begin
+  ActCtl := Screen.ActiveControl;
+
+//  if (ActCtl <> FSearchEdit) and (ActCtl <> ListView) then
+//    CloseUp;
 end;
 
 procedure TfrmAutoComplete.ListViewDblClick(Sender: TObject);
@@ -147,6 +172,22 @@ begin
   end;
 end;
 
+procedure TfrmAutoComplete.CMVisibleChanged(var Message: TMessage);
+begin
+  if Visible then
+  begin
+    SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE or SWP_NOMOVE or SWP_NOSIZE);
+    ShowWindow(Handle, SW_SHOWNOACTIVATE);
+  end
+  else
+  begin
+    ShowWindow(Handle, SW_HIDE);
+  end;
+
+  OutputDebugString(PChar('TfrmAutoComplete.CMVisibleChanged'));
+
+end;
+
 procedure TfrmAutoComplete.DoComplete;
 begin
   FSearchEdit.Clear;
@@ -159,9 +200,19 @@ begin
   if FDroppedDown then
     Exit;
 
-  Visible := True;
+//  SetWindowPos(Handle, HWND_TOP, Left, Top, Width, Height, SWP_NOACTIVATE);
+//  ShowWindow(Self.Handle, SW_SHOWNOACTIVATE);
+//  SetWindowPos(WindowHandle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE or SWP_NOMOVE);
 
-  FSearchEdit.WindowProc := EditWndProc;
+//  Self.DefocusControl(Self, True);
+
+  SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE or SWP_NOMOVE or SWP_NOSIZE);
+  ShowWindow(Handle, SW_SHOWNOACTIVATE);
+  Visible := True;
+//  Show;
+
+//  if FParent.FormStyle <> fsMDIForm then
+//    FSearchEdit.WindowProc := EditWndProc;
 
   FDroppedDown := True;
 end;
@@ -170,7 +221,8 @@ procedure TfrmAutoComplete.CloseUp;
 begin
   if FDroppedDown then
   begin
-    FSearchEdit.WindowProc := FEditWndProc;
+//    if FParent.FormStyle <> fsMDIForm then
+//      FSearchEdit.WindowProc := FEditWndProc;
     Visible := False;
     FDroppedDown := False;
     ListView.ItemIndex := -1;
@@ -197,6 +249,7 @@ begin
   else
     FEditWndProc(Message);
   end;
+//  Dispatch(Message);
 end;
 
 procedure TfrmAutoComplete.ListWndProc(var Message: TMessage);
