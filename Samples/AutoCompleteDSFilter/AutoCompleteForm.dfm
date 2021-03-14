@@ -132,15 +132,15 @@ object frmAutoComplete: TfrmAutoComplete
     object LinkListControlToField1: TLinkListControlToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDB1
-      FieldName = 'FIRST_NAME'
+      FieldName = 'MenuId'
       Control = ListView
       FillExpressions = <
         item
-          SourceMemberName = 'LAST_NAME'
+          SourceMemberName = 'MenuName'
           ControlMemberName = 'SubItems[0]'
         end
         item
-          SourceMemberName = 'JOB_COUNTRY'
+          SourceMemberName = 'MenuDesc'
           ControlMemberName = 'SubItems[1]'
         end>
       FillHeaderExpressions = <>

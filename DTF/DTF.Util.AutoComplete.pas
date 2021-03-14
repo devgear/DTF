@@ -19,6 +19,7 @@ type
   end;
 
   IAutoCompleteForm = interface
+  ['{7D7117EA-7EBC-4274-8747-AE4745125A2D}']
     procedure Initialize(AParent: TForm; AEdit: TEdit; AAdapter: IAutoCompleteAdapter);
   end;
 
@@ -27,11 +28,12 @@ type
     class var
       FList: TList<IAutoCompleteForm>;
   public
-    class procedure Setup(AParent: TForm; AEdit: TEdit; AAdapter: IAutoCompleteAdapter);
+    class procedure Setup(AParent: TForm; AEdit: TEdit;
+      AAdapter: IAutoCompleteAdapter; AFormClass: TFormClass = nil);
     class procedure ReleaseInstances;
   end;
 
-  TACDataSetFilterAdapter = class(TInterfacedObject, IAutoCompleteAdapter)
+  TAutoCompleteDSFilterAdapter = class(TInterfacedObject, IAutoCompleteAdapter)
   private
     FDataSet: TDataSet;
     FListFields,
@@ -54,19 +56,46 @@ type
     destructor Destroy; override;
 
     // Builder
-    function SetDataSet(AValue: TDataSet): TACDataSetFilterAdapter;
-    function SetListFields(AValue: TArray<string>): TACDataSetFilterAdapter;
-    function SetKeyFields(AValue: TArray<string>): TACDataSetFilterAdapter;
-    function SetCompleteProc(AValue: TProc<TArray<string>>): TACDataSetFilterAdapter;
+    function SetDataSet(AValue: TDataSet): TAutoCompleteDSFilterAdapter;
+    function SetListFields(AValue: TArray<string>): TAutoCompleteDSFilterAdapter;
+    function SetKeyFields(AValue: TArray<string>): TAutoCompleteDSFilterAdapter;
+    function SetCompleteProc(AValue: TProc<TArray<string>>): TAutoCompleteDSFilterAdapter;
   end;
 
 implementation
 
 uses
-  DTF.Util.AutoCompleteForm,
-  System.JSON.Builders;
+  DTF.Util.AutoCompleteForm;
+
+const
+  DefaultAutoCompleteFormClass: TFormClass = TfrmAutoComplete;
 
 { TAutoComplete }
+
+class procedure TAutoComplete.Setup(
+  AParent: TForm;
+  AEdit: TEdit;
+  AAdapter: IAutoCompleteAdapter;
+  AFormClass: TFormClass
+);
+var
+  Form: IAutoCompleteForm;
+begin
+  AAdapter.CheckAdapter;
+
+  if not Assigned(AFormClass) then
+    AFormClass := DefaultAutoCompleteFormClass;
+
+  if not Supports(AFormClass, IAutoCompleteForm) then
+    raise Exception.Create('Error Message');
+
+  if not Assigned(FList) then
+    FList := TList<IAutoCompleteForm>.Create;
+  Form := AFormClass.Create(AParent) as IAutoCompleteForm;
+
+  Form.Initialize(AParent, AEdit, AAdapter);
+  FList.Add(Form);
+end;
 
 class procedure TAutoComplete.ReleaseInstances;
 begin
@@ -74,23 +103,9 @@ begin
     FList.Free;
 end;
 
-class procedure TAutoComplete.Setup(AParent: TForm; AEdit: TEdit; AAdapter: IAutoCompleteAdapter);
-var
-  Form: IAutoCompleteForm;
-begin
-  AAdapter.CheckAdapter;
-
-  if not Assigned(FList) then
-    FList := TList<IAutoCompleteForm>.Create;
-  Form := TfrmAutoComplete.Create(AParent);
-//  TfrmAutoComplete(Form).Parent := AParent;
-  Form.Initialize(AParent, AEdit, AAdapter);
-  FList.Add(Form);
-end;
-
 { TACDataSetFilterAdapter }
 
-procedure TACDataSetFilterAdapter.CheckAdapter;
+procedure TAutoCompleteDSFilterAdapter.CheckAdapter;
 begin
   if not Assigned(FDataSet) then
     raise Exception.Create('Not assigned dataset.');
@@ -102,7 +117,7 @@ begin
     raise Exception.Create('Not assigned complete procedure.');
 end;
 
-constructor TACDataSetFilterAdapter.Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
+constructor TAutoCompleteDSFilterAdapter.Create(ADataSet: TDataSet; AListFields, AKeyFields: TArray<string>; ACompleteProc: TProc<TArray<string>>);
 begin
   FDataSet := ADataSet;
   FListFields := AListFields;
@@ -110,7 +125,7 @@ begin
   FCompleteProc := ACompleteProc;
 end;
 
-destructor TACDataSetFilterAdapter.Destroy;
+destructor TAutoCompleteDSFilterAdapter.Destroy;
 begin
   if Assigned(FBindSourceDB) then
     FBindSourceDB.Free;
@@ -123,36 +138,36 @@ begin
 end;
 
 {$REGION 'Builder'}
-function TACDataSetFilterAdapter.SetCompleteProc(
-  AValue: TProc<TArray<string>>): TACDataSetFilterAdapter;
+function TAutoCompleteDSFilterAdapter.SetCompleteProc(
+  AValue: TProc<TArray<string>>): TAutoCompleteDSFilterAdapter;
 begin
   FCompleteProc := AValue;
   Result := Self;
 end;
 
-function TACDataSetFilterAdapter.SetDataSet(
-  AValue: TDataSet): TACDataSetFilterAdapter;
+function TAutoCompleteDSFilterAdapter.SetDataSet(
+  AValue: TDataSet): TAutoCompleteDSFilterAdapter;
 begin
   FDataSet := AValue;
   Result := Self;
 end;
 
-function TACDataSetFilterAdapter.SetKeyFields(
-  AValue: TArray<string>): TACDataSetFilterAdapter;
+function TAutoCompleteDSFilterAdapter.SetKeyFields(
+  AValue: TArray<string>): TAutoCompleteDSFilterAdapter;
 begin
   FKeyFields := AValue;
   Result := Self;
 end;
 
-function TACDataSetFilterAdapter.SetListFields(
-  AValue: TArray<string>): TACDataSetFilterAdapter;
+function TAutoCompleteDSFilterAdapter.SetListFields(
+  AValue: TArray<string>): TAutoCompleteDSFilterAdapter;
 begin
   FListFields := AValue;
   Result := Self;
 end;
 {$ENDREGION 'Builder'}
 
-procedure TACDataSetFilterAdapter.BindControl(AListView: TListView);
+procedure TAutoCompleteDSFilterAdapter.BindControl(AListView: TListView);
 var
   I: Integer;
   Item: TFormatExpressionItem;
@@ -184,7 +199,7 @@ begin
   end;
 end;
 
-procedure TACDataSetFilterAdapter.ChangeText(AText: string);
+procedure TAutoCompleteDSFilterAdapter.ChangeText(AText: string);
 var
   Filter, Keyword: string;
 begin
@@ -199,7 +214,7 @@ begin
   FDataSet.Filtered := (AText <> '');
 end;
 
-procedure TACDataSetFilterAdapter.Complete;
+procedure TAutoCompleteDSFilterAdapter.Complete;
 var
   I: Integer;
   Params: TArray<string>;
