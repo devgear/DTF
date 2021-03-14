@@ -105,7 +105,7 @@ begin
   TAutoComplete.Setup(
     Self,
     edtShortCut,
-    TACDataSetFilterAdapter.Create
+    TAutoCompleteDSFilterAdapter.Create
       .SetDataSet(qryMenuShortcut)
       .SetListFields(['menu_name', 'menu_code', 'cate'])
       .SetKeyFields(['menu_code', 'menu_name'])

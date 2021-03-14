@@ -2,7 +2,7 @@ program ACDSFDemo;
 
 uses
   Vcl.Forms,
-  MainForm2 in 'MainForm2.pas' {frmACDemo},
+  AutoComlpleteDemoForm in 'AutoComlpleteDemoForm.pas' {frmACDemo},
   DTF.Util.AutoComplete in '..\..\DTF\DTF.Util.AutoComplete.pas',
   DTF.Util.AutoCompleteForm in '..\..\DTF\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete};
 

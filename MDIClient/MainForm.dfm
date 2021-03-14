@@ -215,7 +215,7 @@ object frmMain: TfrmMain
     object btnMenuHR: TToolButton
       Left = 91
       Top = 0
-      Hint = 'HMR'
+      Hint = 'HR'
       Caption = #51064#49324
       ImageIndex = 2
       ImageName = 'icons8-conference_call'

@@ -98,7 +98,7 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="MainForm2.pas">
+        <DCCReference Include="AutoComlpleteDemoForm.pas">
             <Form>frmACDemo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
