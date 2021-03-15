@@ -11,81 +11,52 @@ uses
   System.IniFiles;
 
 type
-  IniBooleanAttribute = class(TCustomAttribute)
+  TCusumtIniAttribute = class(TCustomAttribute)
   private
     FSection: string;
-    FValue: Boolean;
+    FIdent: string;
   public
-    constructor Create(const ASection: string; const AValue: Boolean);
-
     property Section: string read FSection;
-    property Value: Boolean read FValue;
+    property Ident: string read FIdent write FIdent;
+
+    function ReadData(AIniFile: TIniFile): TValue; virtual; abstract;
+    procedure WriteData(AIniFile: TIniFile; AValue: TValue); virtual; abstract;
   end;
 
-  IniDateTimeAttribute = class(TCustomAttribute)
+  IniAttribute<T> = class(TCusumtIniAttribute)
   private
-    FSection: string;
-    FValue: TDateTime;
+    FDefault: T;
   public
-    constructor Create(const ASection, AValue: string);
+    constructor Create(const ASection: string; ADefault: T); overload;
+    constructor Create(const ASection, AIdent: string; ADefault: T); overload;
 
-    property Section: string read FSection;
-    property Value: TDateTime read FValue;
+    property Default: T read FDefault;
   end;
 
-  IniFloatAttribute = class(TCustomAttribute)
-  private
-    FSection: string;
-    FValue: Double;
+  IniBooleanAttribute = class(IniAttribute<Boolean>)
   public
-    constructor Create(const ASection: string; const AValue: Double);
-
-    property Section: string read FSection;
-    property Value: Double read FValue;
+    function ReadData(AIniFile: TIniFile): TValue; override;
+    procedure WriteData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
-  IniInt64Attribute = class(TCustomAttribute)
-  private
-    FSection: string;
-    FValue: Int64;
+  IniDateTimeAttribute = class(IniAttribute<Double>)
   public
-    constructor Create(const ASection: string; const AValue: Int64);
-
-    property Section: string read FSection;
-    property Value: Int64 read FValue;
+    constructor Create(const ASection, ADefault: string); overload;
   end;
 
-  IniIntegerAttribute = class(TCustomAttribute)
-  private
-    FSection: string;
-    FValue: Integer;
-  public
-    constructor Create(const ASection: string; const AValue: Integer);
-
-    property Section: string read FSection;
-    property Value: Integer read FValue;
+  IniFloatAttribute = class(IniAttribute<Double>)
   end;
 
-  IniStringAttribute = class(TCustomAttribute)
-  private
-    FSection: string;
-    FValue: string;
-  public
-    constructor Create(const ASection, AValue: string);
-
-    property Section: string read FSection;
-    property Value: string read FValue;
+  IniInt64Attribute = class(IniAttribute<Int64>)
   end;
 
-  IniAttribute<T> = class(TCustomAttribute)
-  private
-    FSection: string;
-    FValue: T;
-  public
-    constructor Create(const ASection: string; AValue: T);
+  IniIntegerAttribute = class(IniAttribute<Integer>)
+  end;
 
-    property Section: string read FSection;
-    property Value: T read FValue;
+  IniStringAttribute = class(IniAttribute<string>)
+  public
+    function ReadData(AIniFile: TIniFile): TValue; override;
+    procedure WriteData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   TIniConfig = class(TObject)
@@ -104,63 +75,57 @@ type
 
 implementation
 
-{ IniBooleanAttribute }
 
-constructor IniBooleanAttribute.Create(const ASection: string; const AValue: Boolean);
+{ IniAttribute<T> }
+
+constructor IniAttribute<T>.Create(const ASection: string; ADefault: T);
 begin
   FSection := UpperCase(ASection);
-  FValue := AValue;
+  FDefault := ADefault;
+end;
+
+constructor IniAttribute<T>.Create(const ASection, AIdent: string; ADefault: T);
+begin
+  FSection := UpperCase(ASection);
+  FIdent   := AIdent;
+  FDefault := ADefault;
+end;
+
+{ IniBooleanAttribute }
+
+function IniBooleanAttribute.ReadData(AIniFile: TIniFile): TValue;
+begin
+  Result := AIniFile.ReadBool(FSection, FIdent, FDefault);
+end;
+
+procedure IniBooleanAttribute.WriteData(AIniFile: TIniFile; AValue: TValue);
+begin
+  inherited;
+
 end;
 
 { IniDateTimeAttribute }
 
-constructor IniDateTimeAttribute.Create(const ASection, AValue: string);
+constructor IniDateTimeAttribute.Create(const ASection, ADefault: string);
 begin
   FSection := UpperCase(ASection);
-  if (AValue <> '') then
-    FValue := StrToDateTime(AValue)
+  if (ADefault <> '') then
+    FDefault := StrToDateTime(ADefault)
   else
-    FValue := 0;
-end;
-
-{ IniFloatAttribute }
-
-constructor IniFloatAttribute.Create(const ASection: string; const AValue: Double);
-begin
-  FSection := UpperCase(ASection);
-  FValue := AValue;
-end;
-
-{ IniInt64Attribute }
-
-constructor IniInt64Attribute.Create(const ASection: string; const AValue: Int64);
-begin
-  FSection := UpperCase(ASection);
-  FValue := AValue;
-end;
-
-{ IniIntegerAttribute }
-
-constructor IniIntegerAttribute.Create(const ASection: string; const AValue: Integer);
-begin
-  FSection := UpperCase(ASection);
-  FValue := AValue;
+    FDefault := 0;
 end;
 
 { IniStringAttribute }
 
-constructor IniStringAttribute.Create(const ASection, AValue: string);
+function IniStringAttribute.ReadData(AIniFile: TIniFile): TValue;
 begin
-  FSection := UpperCase(ASection);
-  FValue := AValue;
+  Result := AIniFile.ReadString(FSection, FIdent, FDefault);
 end;
 
-{ IniAttribute<T> }
-
-constructor IniAttribute<T>.Create(const ASection: string; AValue: T);
+procedure IniStringAttribute.WriteData(AIniFile: TIniFile; AValue: TValue);
 begin
-  FSection := UpperCase(ASection);
-  FValue := AValue;
+  inherited;
+
 end;
 
 { TIniConfig }
@@ -194,6 +159,7 @@ end;
 procedure TIniConfig.LoadFromFile;
 var
   LAttribute: TCustomAttribute;
+  LIniAttribute: TCusumtIniAttribute;
   LProp: TRttiProperty;
   LRttiContext: TRttiContext;
   LRttiType: TRttiType;
@@ -205,27 +171,30 @@ begin
     begin
       for LAttribute in LProp.GetAttributes do
       begin
-        if LAttribute is IniBooleanAttribute then
-          LProp.SetValue(Self, FIniFile.ReadBool(IniBooleanAttribute(LAttribute).Section, LProp.Name, IniBooleanAttribute(LAttribute).Value))
-        else
-        if LAttribute is IniDateTimeAttribute then
-          LProp.SetValue(Self, FIniFile.ReadDateTime(IniDateTimeAttribute(LAttribute).Section, LProp.Name, IniDateTimeAttribute(LAttribute).Value))
-        else
-        if LAttribute is IniFloatAttribute then
-          LProp.SetValue(Self, FIniFile.ReadFloat(IniFloatAttribute(LAttribute).Section, LProp.Name, IniFloatAttribute(LAttribute).Value))
-        else
-        if LAttribute is IniInt64Attribute then
-          LProp.SetValue(Self, FIniFile.ReadInt64(IniStringAttribute(LAttribute).Section, LProp.Name, IniInt64Attribute(LAttribute).Value))
-        else
-        if LAttribute is IniIntegerAttribute then
-          LProp.SetValue(Self, FIniFile.ReadInteger(IniIntegerAttribute(LAttribute).Section, LProp.Name, IniIntegerAttribute(LAttribute).Value))
-        else
-        if LAttribute is IniStringAttribute then
-          LProp.SetValue(Self, FIniFile.ReadString(IniStringAttribute(LAttribute).Section, LProp.Name, IniStringAttribute(LAttribute).Value))
+        LIniAttribute := TCusumtIniAttribute(LAttribute);
+        if LIniAttribute.Ident = '' then
+          LIniAttribute.Ident := LProp.Name;
+
+        LProp.SetValue(Self, LIniAttribute.ReadData(FIniFile));
+//
+//        if LAttribute is IniBooleanAttribute then
+//          LProp.SetValue(Self, FIniFile.ReadBool(LSection, LIdent, IniBooleanAttribute(LAttribute).Default))
 //        else
-//        if LAttribute is IniAttribute then
-//          LProp.SetValue(Self, FIniFile.ReadString(IniStringAttribute(LAttribute).Section, LProp.Name, IniStringAttribute(LAttribute).Value))
-        ;
+//        if LAttribute is IniDateTimeAttribute then
+//          LProp.SetValue(Self, FIniFile.ReadDateTime(LSection, LIdent, IniDateTimeAttribute(LAttribute).Default))
+//        else
+//        if LAttribute is IniFloatAttribute then
+//          LProp.SetValue(Self, FIniFile.ReadFloat(LSection, LIdent, IniFloatAttribute(LAttribute).Default))
+//        else
+//        if LAttribute is IniInt64Attribute then
+//          LProp.SetValue(Self, FIniFile.ReadInt64(LSection, LIdent, IniInt64Attribute(LAttribute).Default))
+//        else
+//        if LAttribute is IniIntegerAttribute then
+//          LProp.SetValue(Self, FIniFile.ReadInteger(LSection, LIdent, IniIntegerAttribute(LAttribute).Default))
+//        else
+//        if LAttribute is IniStringAttribute then
+//          LProp.SetValue(Self, FIniFile.ReadString(LSection, LIdent, IniStringAttribute(LAttribute).Default))
+//        ;
       end;
     end;
   finally

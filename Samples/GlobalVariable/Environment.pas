@@ -22,10 +22,13 @@ type
   private
     FUserId: string;
     FWindowState: TWindowState;
+    FUserName: string;
   public
     [IniString('User', '')]
     property UserId: string read FUserId write FUserId;
-    [Ini<TWindowState>('User', '')]
+    [IniString('User', '')]
+    property UserName: string read FUserName write FUserName;
+    [Ini('Windows', '')]
     property WindowState: TWindowState read FWindowState write FWindowState;
   end;
 
