@@ -3,7 +3,7 @@ unit Environment;
 interface
 
 uses
-  System.IniFiles;
+  System.IniFiles, uIniConfig, Vcl.Forms;
 
 type
   // 레코드를 이용, 단순 데이터 사용(휘발성)
@@ -18,17 +18,15 @@ type
   end;
 
   // 객체 이용, 환경파일 저장 등(지속적 사용)
-  TEnvObj = class
+  TEnvObj = class(TIniConfig)
   private
-    FIni: TIniFile;
-
     FUserId: string;
-    function GetUserId: string;
-    procedure SetUserId(const Value: string);
+    FWindowState: TWindowState;
   public
-    constructor Create;
-    destructor Destroy; override;
-    property UserId: string read GetUserId write SetUserId;
+    [IniString('User', '')]
+    property UserId: string read FUserId write FUserId;
+    [Ini<TWindowState>('User', '')]
+    property WindowState: TWindowState read FWindowState write FWindowState;
   end;
 
 // 전역변수 사용 시 그룹
@@ -48,36 +46,11 @@ var
 function EnvObj: TEnvObj;
 begin
   if not Assigned(_EnvObj) then
-    _EnvObj := TEnvObj.Create;
+    _EnvObj := TEnvObj.Create('Env.ini');
   Result := _EnvObj;
 end;
 
 { TEnvObj }
-
-constructor TEnvObj.Create;
-begin
-  FIni := TIniFile.Create('.\Env.ini');
-  FUserId := FIni.ReadString('User', 'Id', '');
-end;
-
-destructor TEnvObj.Destroy;
-begin
-  FIni.WriteString('User', 'Id', FUserId);
-
-  FIni.Free;
-
-  inherited;
-end;
-
-function TEnvObj.GetUserId: string;
-begin
-  Result := FUserId;
-end;
-
-procedure TEnvObj.SetUserId(const Value: string);
-begin
-  FUserId := Value;
-end;
 
 initialization
 finalization

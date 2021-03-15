@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {Form3},
   Environment in 'Environment.pas',
-  SubForm in 'SubForm.pas' {Form2};
+  SubForm in 'SubForm.pas' {Form2},
+  uIniConfig in '..\..\ThirdParty\CustomAttribute\uIniConfig.pas';
 
 {$R *.res}
 

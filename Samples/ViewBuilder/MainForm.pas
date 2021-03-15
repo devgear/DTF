@@ -34,7 +34,7 @@ var
   Form: TForm;
   FormClass: TFormClass;
 begin
-  FormClass := TViewFactory.Instance.Get(AId);
+  FormClass := TViewFactory.Instance.GetClass(AId);
   if not Assigned(FormClass) then
     Exit;
 

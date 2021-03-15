@@ -1,12 +1,12 @@
-program ViewBilderDemo;
+program ViewBuilderDemo;
 
 uses
   Vcl.Forms,
   MainForm in 'MainForm.pas' {Form1},
-  DTF.Builder.Factory in '..\..\Sources\DTF.Builder.Factory.pas',
   Sub1Form in 'Sub1Form.pas' {frmSub1},
   ViewFactory in 'ViewFactory.pas',
-  Sub2Form in 'Sub2Form.pas' {frmSub2};
+  Sub2Form in 'Sub2Form.pas' {frmSub2},
+  DMX.DesignPattern in '..\..\ThirdParty\DMX\DMX.DesignPattern.pas';
 
 {$R *.res}
 

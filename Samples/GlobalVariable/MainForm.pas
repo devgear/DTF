@@ -31,7 +31,7 @@ uses Environment, SubForm;
 procedure TForm3.Button1Click(Sender: TObject);
 begin
   Memo1.Lines.Clear;
-  Memo1.Lines.Add(Format('Env.Id: %s', [Env.UserId]));
+  Memo1.Lines.Add(Format('Env.Id: %s',    [Env.UserId]));
   Memo1.Lines.Add(Format('EnvObj.Id: %s', [EnvObj.UserId]));
 end;
 
