@@ -27,13 +27,13 @@ type
     FNum: Integer;
     FDtm: TDatetime;
   public
-    [IniString('User', 'TempId')]
+//    [IniString('User', 'TempId')]
     property UserId: string read FUserId write FUserId;
-    [IniInteger('User', 8000)]
+//    [IniInteger('User', 8000)]
     property Num: Integer read FNum write FNum;
-    [IniDateTime('User', '2021-01-16 19:25:00')]
+//    [IniDateTime('User', '2021-01-16 19:25:00')]
     property Dtm: TDatetime read FDtm write FDtm;
-    [IniEnum('User', 0)]
+    [IniEnum('User', Ord(wsNormal))] // Ord()를 없앨수 없을까?
     property WindowState: TWindowState read FWindowState write FWindowState;
 
     property UserName: string read FUserName write FUserName;

@@ -20,8 +20,8 @@ type
     property Section: string read FSection;
     property Ident: string read FIdent write FIdent;
 
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; virtual; abstract;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); virtual; abstract;
+    function ReadIniData(AIniFile: TIniFile): TValue; virtual; abstract;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); virtual; abstract;
   end;
 
   IniAttribute<T> = class(TCusumtIniAttribute)
@@ -36,45 +36,45 @@ type
 
   IniBooleanAttribute = class(IniAttribute<Boolean>)
   public
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   IniDateTimeAttribute = class(IniAttribute<Double>)
   public
     constructor Create(const ASection, ADefault: string); overload;
 
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   IniFloatAttribute = class(IniAttribute<Double>)
   public
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   IniInt64Attribute = class(IniAttribute<Int64>)
   public
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   IniIntegerAttribute = class(IniAttribute<Integer>)
   public
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   IniStringAttribute = class(IniAttribute<string>)
   public
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
-  IniEnumAttribute = class(IniIntegerAttribute)
-    function ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue; override;
-    procedure WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo); override;
+  IniEnumAttribute = class(IniAttribute<Integer>)
+    function ReadIniData(AIniFile: TIniFile): TValue; override;
+    procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
   TIniConfig = class(TObject)
@@ -111,12 +111,12 @@ end;
 
 { IniBooleanAttribute }
 
-function IniBooleanAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniBooleanAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadBool(FSection, FIdent, FDefault);
 end;
 
-procedure IniBooleanAttribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniBooleanAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteBool(FSection, FIdent, AValue.AsBoolean);
 end;
@@ -132,82 +132,74 @@ begin
     FDefault := 0;
 end;
 
-function IniDateTimeAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniDateTimeAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadDateTime(FSection, FIdent, FDefault);
 end;
 
-procedure IniDateTimeAttribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniDateTimeAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteDateTime(FSection, FIdent, AValue.AsExtended);
 end;
 
 { IniFloatAttribute }
 
-function IniFloatAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniFloatAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadFloat(FSection, FIdent, FDefault);
 end;
 
-procedure IniFloatAttribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniFloatAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteFloat(FSection, FIdent, AValue.AsExtended);
 end;
 
 { IniInt64Attribute }
 
-function IniInt64Attribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniInt64Attribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadInt64(FSection, FIdent, FDefault);
 end;
 
-procedure IniInt64Attribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniInt64Attribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteInt64(FSection, FIdent, AValue.AsInt64);
 end;
 
 { IniIntegerAttribute }
 
-function IniIntegerAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniIntegerAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadInteger(FSection, FIdent, FDefault);
 end;
 
-procedure IniIntegerAttribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniIntegerAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteInteger(FSection, FIdent, AValue.AsInteger);
 end;
 
 { IniStringAttribute }
 
-function IniStringAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
+function IniStringAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
   Result := AIniFile.ReadString(FSection, FIdent, FDefault);
 end;
 
-procedure IniStringAttribute.WriteData(AIniFile: TIniFile; AValue: TValue; ATypInf: PTypeInfo);
+procedure IniStringAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
   AIniFile.WriteString(FSection, FIdent, AValue.AsString);
 end;
 
 { IniEnumAttribute }
 
-function IniEnumAttribute.ReadData(AIniFile: TIniFile; ATypInf: PTypeInfo): TValue;
-var
-  LValue: Integer;
+function IniEnumAttribute.ReadIniData(AIniFile: TIniFile): TValue;
 begin
-  LValue := AIniFile.ReadInteger(FSection, FIdent, FDefault);
-  TValue.Make(LValue, ATypInf, Result);
+  Result := AIniFile.ReadInteger(FSection, FIdent, FDefault);
 end;
 
-procedure IniEnumAttribute.WriteData(AIniFile: TIniFile; AValue: TValue;
-  ATypInf: PTypeInfo);
-var
-  LValue: Integer;
+procedure IniEnumAttribute.WriteIniData(AIniFile: TIniFile; AValue: TValue);
 begin
-  LValue := AValue.AsOrdinal;
-
-  AIniFile.WriteInteger(FSection, FIdent, LValue);
+  AIniFile.WriteInteger(FSection, FIdent, AValue.AsOrdinal);
 end;
 
 { TIniConfig }
@@ -245,6 +237,7 @@ var
   LProp: TRttiProperty;
   LRttiContext: TRttiContext;
   LRttiType: TRttiType;
+  LValue: TValue;
 begin
   LRttiContext := TRttiContext.Create;
   try
@@ -257,7 +250,11 @@ begin
         if LIniAttribute.Ident = '' then
           LIniAttribute.Ident := LProp.Name;
 
-        LProp.SetValue(Self, LIniAttribute.ReadData(FIniFile, LProp.PropertyType.Handle));
+        LValue := LIniAttribute.ReadIniData(FIniFile);
+        if LProp.PropertyType.TypeKind = tkEnumeration then
+          LValue := TValue.FromOrdinal(LProp.PropertyType.Handle, LValue.AsInt64);
+
+        LProp.SetValue(Self, LValue);
       end;
     end;
   finally
@@ -284,7 +281,7 @@ begin
         if LIniAttribute.Ident = '' then
           LIniAttribute.Ident := LProp.Name;
 
-        LIniAttribute.WriteData(FIniFIle, LProp.GetValue(Self), LProp.PropertyType.Handle);
+        LIniAttribute.WriteIniData(FIniFIle, LProp.GetValue(Self));
       end;
     end;
   finally
