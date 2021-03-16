@@ -3,7 +3,8 @@ unit Environment;
 interface
 
 uses
-  System.IniFiles, uIniConfig, Vcl.Forms;
+  System.IniFiles, uIniConfig, Vcl.Forms,
+  System.Rtti;
 
 type
   // 레코드를 이용, 단순 데이터 사용(휘발성)
@@ -23,20 +24,24 @@ type
     FUserId: string;
     FWindowState: TWindowState;
     FUserName: string;
+    FNum: Integer;
+    FDtm: TDatetime;
   public
-    [IniString('User', '')]
+    [IniString('User', 'TempId')]
     property UserId: string read FUserId write FUserId;
-    [IniString('User', '')]
-    property UserName: string read FUserName write FUserName;
-    [Ini('Windows', '')]
+    [IniInteger('User', 8000)]
+    property Num: Integer read FNum write FNum;
+    [IniDateTime('User', '2021-01-16 19:25:00')]
+    property Dtm: TDatetime read FDtm write FDtm;
+    [IniEnum('User', 0)]
     property WindowState: TWindowState read FWindowState write FWindowState;
+
+    property UserName: string read FUserName write FUserName;
   end;
 
 // 전역변수 사용 시 그룹
 var
   Env: TEnv;
-//  UserId: string;
-//  UserName: string;
 
 // Sigleton patterun
 function EnvObj: TEnvObj;

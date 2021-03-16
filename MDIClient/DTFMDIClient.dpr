@@ -22,7 +22,8 @@ uses
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
   DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
   SignInForm in 'User\SignInForm.pas' {frmSignIn},
-  Test1Form in 'Test\Test1Form.pas' {frmTest1};
+  Test1Form in 'Test\Test1Form.pas' {frmTest1},
+  uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas';
 
 {$R *.res}
 

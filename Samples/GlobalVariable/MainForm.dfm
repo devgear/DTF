@@ -40,4 +40,22 @@ object Form3: TForm3
       'Memo1')
     TabOrder = 2
   end
+  object Button3: TButton
+    Left = 287
+    Top = 40
+    Width = 75
+    Height = 25
+    Caption = 'Button3'
+    TabOrder = 3
+    OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 368
+    Top = 40
+    Width = 75
+    Height = 25
+    Caption = 'Button4'
+    TabOrder = 4
+    OnClick = Button4Click
+  end
 end
