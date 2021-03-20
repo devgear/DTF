@@ -77,6 +77,7 @@ type
     procedure WriteIniData(AIniFile: TIniFile; AValue: TValue); override;
   end;
 
+  //////
   TIniConfig = class(TObject)
   private
     FAutoSave: Boolean;
@@ -238,12 +239,18 @@ var
   LRttiContext: TRttiContext;
   LRttiType: TRttiType;
   LValue: TValue;
+  // For record
+  LRecord: TRttiRecordType;
+  LField: TRttiField;
 begin
   LRttiContext := TRttiContext.Create;
   try
     LRttiType := LRttiContext.GetType(Self.ClassType);
     for LProp in LRttiType.GetProperties do
     begin
+      if not LProp.IsReadable then
+        Continue;
+
       for LAttribute in LProp.GetAttributes do
       begin
         LIniAttribute := TCusumtIniAttribute(LAttribute);
@@ -252,7 +259,27 @@ begin
 
         LValue := LIniAttribute.ReadIniData(FIniFile);
         if LProp.PropertyType.TypeKind = tkEnumeration then
-          LValue := TValue.FromOrdinal(LProp.PropertyType.Handle, LValue.AsInt64);
+          LValue := TValue.FromOrdinal(LProp.PropertyType.Handle, LValue.AsInt64)
+        else if LProp.PropertyType.TypeKind = tkRecord then
+        begin
+//          LProp.GetValue(Self).TypeInfo.
+          LRecord := LRttiContext.GetType(LProp.GetValue(Self).TypeInfo).AsRecord;
+          for LField in LRecord.GetFields do
+          begin
+            if LField.Name = '' then
+            begin
+            end;
+
+            if LField.FieldType.TypeKind = tkInteger then
+            begin
+            end;
+          end;
+
+
+//          LValue := TValue.Make(LProp.GetValue(Self))
+        end;
+
+//        TValue.FromVarRec()
 
         LProp.SetValue(Self, LValue);
       end;
@@ -275,6 +302,9 @@ begin
     LRttiType := LRttiContext.GetType(Self.ClassType);
     for LProp in LRttiType.GetProperties do
     begin
+      if not LProp.IsWritable then
+        Continue;
+
       for LAttribute in LProp.GetAttributes do
       begin
         LIniAttribute := TCusumtIniAttribute(LAttribute);

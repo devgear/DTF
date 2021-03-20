@@ -3,7 +3,7 @@ unit Environment;
 interface
 
 uses
-  System.IniFiles, uIniConfig, Vcl.Forms,
+  System.IniFiles, System.Types, uIniConfig, Vcl.Forms,
   System.Rtti;
 
 type
@@ -26,6 +26,7 @@ type
     FUserName: string;
     FNum: Integer;
     FDtm: TDatetime;
+    FWindowBounds: TRect;
   public
 //    [IniString('User', 'TempId')]
     property UserId: string read FUserId write FUserId;
@@ -35,6 +36,9 @@ type
     property Dtm: TDatetime read FDtm write FDtm;
     [IniEnum('User', Ord(wsNormal))] // Ord()를 없앨수 없을까?
     property WindowState: TWindowState read FWindowState write FWindowState;
+
+    [IniInteger('User', 0)]
+    property WindowBounds: TRect read FWindowBounds write FWindowBounds;
 
     property UserName: string read FUserName write FUserName;
   end;
