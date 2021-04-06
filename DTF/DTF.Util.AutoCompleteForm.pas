@@ -18,7 +18,7 @@ type
     procedure FormDestroy(Sender: TObject);
   private
     FInActivate,
-    FInMouseActivate: Boolean;
+    FEditFocused: Boolean;
 
     FDroppedDown: Boolean;
 
@@ -122,7 +122,7 @@ begin
   FAdapter.ChangeText(FSearchEdit.Text);
   if FSearchEdit.Text <> '' then
     DropDown;
-  FInMouseActivate := False;
+  FEditFocused := False;
 end;
 
 procedure TfrmAutoComplete.SearchEditKeyUp(Sender: TObject; var Key: Word;
@@ -142,7 +142,8 @@ begin
   end
   else if Key = VK_RETURN then
   begin
-    DoComplete;
+    if Assigned(ListView.Selected) then
+      DoComplete;
     Exit;
   end;
 
@@ -159,6 +160,7 @@ procedure TfrmAutoComplete.ListViewKeyDown(Sender: TObject; var Key: Word;
 begin
   if (Key = VK_UP) and (ListView.ItemIndex = 0) then
   begin
+    FEditFocused := True;
     FSearchEdit.SetFocus;
     Exit;
   end
@@ -170,14 +172,16 @@ begin
   end
   else if Key = VK_RETURN then
   begin
-    DoComplete;
+    if Assigned(ListView.Selected) then
+      DoComplete;
     Exit;
   end;
 end;
 
 procedure TfrmAutoComplete.ListViewDblClick(Sender: TObject);
 begin
-  DoComplete;
+  if Assigned(ListView.Selected) then
+    DoComplete;
 end;
 
 procedure TfrmAutoComplete.DoComplete;
@@ -196,9 +200,9 @@ begin
     if Message.ActiveWindow = FParent.Handle then
       Application.ProcessMessages;
 
-    if not FInMouseActivate then
+    if not FEditFocused and (not FSearchEdit.Focused) then
       CloseUp;
-    FInMouseActivate := False;
+    FEditFocused := False;
   end;
 end;
 
@@ -209,7 +213,7 @@ begin
     if not FInActivate and not ListView.Focused then
       CloseUp;
   CM_MOUSEACTIVATE:
-    FInMouseActivate := True;
+    FEditFocused := True;
   end;
   FEditWndProc(Message);
 end;
