@@ -4,7 +4,7 @@ object dmDatabase: TdmDatabase
   Width = 656
   object FDConnection: TFDConnection
     Params.Strings = (
-      'Database=D:\Works\DTF\DB\DTFDB.IB'
+      'Database=D:\Projects\DTF\DB\DTFDB.IB'
       'User_Name=sysdba'
       'Password=masterkey'
       'CharacterSet=UTF8'

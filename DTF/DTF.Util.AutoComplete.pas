@@ -197,6 +197,8 @@ begin
     Item.ControlMemberName := 'SubItems[' + IntToStr(I-1) + ']';
     Item.SourceMemberName := FListFields[I];
   end;
+
+  FLinkListControlToField.Active := True;
 end;
 
 procedure TAutoCompleteDSFilterAdapter.ChangeText(AText: string);
