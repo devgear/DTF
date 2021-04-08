@@ -24,7 +24,9 @@ uses
   SignInForm in 'User\SignInForm.pas' {frmSignIn},
   Test1Form in 'Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
-  ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1};
+  ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
@@ -34,7 +36,6 @@ begin
 
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmUser, dmUser);
-  Application.CreateForm(TDTFMDIChildForm1, DTFMDIChildForm1);
   //  if (Env.UseSignup) and (not ExecSignIn) then
 //  begin
 //    Application.Terminate;

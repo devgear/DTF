@@ -9,7 +9,7 @@ uses
 
 type
   TDTFTitleFrame = class(TDTFBaseFrame)
-    Title: TLabel;
+    pnlCaption: TPanel;
   private
     { Private declarations }
   public
