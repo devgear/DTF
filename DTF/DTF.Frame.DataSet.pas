@@ -17,15 +17,15 @@ type
     actDSCancel: TDataSetCancel;
 
     tlbDataSet: TToolBar;
-    ToolButton11: TToolButton;
-    ToolButton1: TToolButton;
-    ToolButton2: TToolButton;
-    ToolButton3: TToolButton;
+    btnDSNew: TToolButton;
+    btnDSSave: TToolButton;
+    btnDSCancel: TToolButton;
+    btnDSDelete: TToolButton;
     DataSource: TDataSource;
     actDSRefresh: TDataSetRefresh;
-    tbnDSRefresh: TToolButton;
+    btnDSRefresh: TToolButton;
     actDSExportXls: TAction;
-    ToolButton5: TToolButton;
+    btnExportXls: TToolButton;
 
     procedure actDSNewAppendExecute(Sender: TObject);
     procedure actDSDeleteExecute(Sender: TObject);

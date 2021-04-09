@@ -58,25 +58,25 @@ inherited frmSYS1010: TfrmSYS1010
       TabOrder = 0
       inline fmeCate: TDTFDBGridFrame
         Left = 1
-        Top = 29
+        Top = 21
         Width = 460
-        Height = 147
+        Height = 155
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 21
+        ExplicitTop = 29
         ExplicitWidth = 460
-        ExplicitHeight = 155
+        ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 444
           ExplicitWidth = 444
         end
         inherited grdMaster: TDBGrid
           Width = 444
-          Height = 121
+          Height = 129
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuCates
@@ -133,7 +133,8 @@ inherited frmSYS1010: TfrmSYS1010
         Left = 1
         Top = 1
         Width = 460
-        Height = 28
+        Height = 20
+        Margins.Left = 8
         Align = alTop
         Color = clBtnFace
         ParentBackground = False
@@ -145,6 +146,7 @@ inherited frmSYS1010: TfrmSYS1010
         inherited pnlCaption: TPanel
           Width = 460
           Caption = #47700#45684' '#52852#53580#44256#47532
+          ExplicitWidth = 460
         end
       end
     end
@@ -223,7 +225,8 @@ inherited frmSYS1010: TfrmSYS1010
         Left = 1
         Top = 1
         Width = 461
-        Height = 28
+        Height = 20
+        Margins.Left = 8
         Align = alTop
         Color = clBtnFace
         ParentBackground = False
@@ -235,6 +238,7 @@ inherited frmSYS1010: TfrmSYS1010
         inherited pnlCaption: TPanel
           Width = 461
           Caption = #48120#47532#48372#44592
+          ExplicitWidth = 461
         end
       end
     end
@@ -248,25 +252,25 @@ inherited frmSYS1010: TfrmSYS1010
       TabOrder = 2
       inline fmeGroup: TDTFDBGridFrame
         Left = 1
-        Top = 29
+        Top = 21
         Width = 460
-        Height = 139
+        Height = 147
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 21
+        ExplicitTop = 29
         ExplicitWidth = 460
-        ExplicitHeight = 147
+        ExplicitHeight = 139
         inherited tlbDataSet: TToolBar
           Width = 444
           ExplicitWidth = 444
         end
         inherited grdMaster: TDBGrid
           Width = 444
-          Height = 113
+          Height = 121
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuGroups
@@ -322,7 +326,8 @@ inherited frmSYS1010: TfrmSYS1010
         Left = 1
         Top = 1
         Width = 460
-        Height = 28
+        Height = 20
+        Margins.Left = 8
         Align = alTop
         Color = clBtnFace
         ParentBackground = False
@@ -334,6 +339,7 @@ inherited frmSYS1010: TfrmSYS1010
         inherited pnlCaption: TPanel
           Width = 460
           Caption = #47700#45684' '#44536#47353
+          ExplicitWidth = 460
         end
       end
     end
@@ -348,35 +354,38 @@ inherited frmSYS1010: TfrmSYS1010
       TabOrder = 3
       inline fmeMenu: TDTFDBGridFrame
         Left = 1
-        Top = 29
+        Top = 21
         Width = 461
-        Height = 139
+        Height = 147
         Align = alClient
         Padding.Left = 8
         Padding.Top = 4
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 21
+        ExplicitTop = 29
         ExplicitWidth = 461
-        ExplicitHeight = 147
+        ExplicitHeight = 139
         inherited tlbDataSet: TToolBar
           Width = 445
           ExplicitWidth = 445
         end
         inherited grdMaster: TDBGrid
           Width = 445
-          Height = 113
+          Height = 121
         end
         inherited ActionList: TActionList
-          Left = 64
-          Top = 72
+          Left = 48
+          Top = 48
           inherited actDSExportXls: TAction
+            Hint = #55180#53944#55180#53944
             Visible = True
           end
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuItems
+          Left = 136
+          Top = 48
         end
       end
       object Panel7: TPanel
@@ -425,7 +434,8 @@ inherited frmSYS1010: TfrmSYS1010
         Left = 1
         Top = 1
         Width = 461
-        Height = 28
+        Height = 20
+        Margins.Left = 8
         Align = alTop
         Color = clBtnFace
         ParentBackground = False
@@ -437,12 +447,12 @@ inherited frmSYS1010: TfrmSYS1010
         inherited pnlCaption: TPanel
           Width = 461
           Caption = #47700#45684
+          ExplicitWidth = 461
         end
       end
     end
   end
   object qryMenuCates: TFDQuery
-    Active = True
     AfterPost = qryMenuCatesAfterPost
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
@@ -468,7 +478,6 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryMenuGroups: TFDQuery
-    Active = True
     AfterPost = qryMenuGroupsAfterPost
     IndexFieldNames = 'CATE_CODE'
     MasterSource = fmeCate.DataSource
@@ -520,7 +529,6 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryMenuItems: TFDQuery
-    Active = True
     IndexFieldNames = 'GROUP_CODE'
     MasterSource = fmeGroup.DataSource
     MasterFields = 'GROUP_CODE'
@@ -531,7 +539,7 @@ inherited frmSYS1010: TfrmSYS1010
     SQL.Strings = (
       'SELECT * FROM menu_items'
       'ORDER BY group_code, sort_index')
-    Left = 608
+    Left = 688
     Top = 352
     object qryMenuItemsMENU_CODE: TWideStringField
       DisplayLabel = #47700#45684' '#53076#46300
@@ -574,7 +582,6 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryCateLookup: TFDQuery
-    Active = True
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT cate_code, cate_name FROM menu_categories')
@@ -582,11 +589,10 @@ inherited frmSYS1010: TfrmSYS1010
     Top = 336
   end
   object qryGroupLookup: TFDQuery
-    Active = True
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT group_code, group_name FROM menu_groups')
-    Left = 704
+    Left = 776
     Top = 352
   end
   object qryMenuTree: TFDQuery

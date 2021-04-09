@@ -1,18 +1,24 @@
 inherited DTFTitleFrame: TDTFTitleFrame
-  Height = 28
+  Height = 20
+  Margins.Left = 8
   Align = alTop
   ParentBackground = False
   ParentColor = False
-  ExplicitHeight = 28
+  ExplicitHeight = 20
   object pnlCaption: TPanel
+    AlignWithMargins = True
     Left = 0
     Top = 0
     Width = 433
-    Height = 28
+    Height = 20
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
     Align = alClient
     Alignment = taLeftJustify
     BevelOuter = bvNone
-    BorderWidth = 6
+    BorderWidth = 2
     Caption = #51228#47785
     Color = clActiveCaption
     Font.Charset = DEFAULT_CHARSET
@@ -24,9 +30,6 @@ inherited DTFTitleFrame: TDTFTitleFrame
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitLeft = 128
-    ExplicitTop = -8
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitHeight = 28
   end
 end

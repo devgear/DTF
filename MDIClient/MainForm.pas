@@ -57,13 +57,13 @@ type
     procedure mnuMDICloseClick(Sender: TObject);
     procedure mnuMDICloseAllClick(Sender: TObject);
     procedure btnMenuExitClick(Sender: TObject);
-    procedure trvMenusClick(Sender: TObject);
     procedure MDITabSetChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure btnCateMenuClick(Sender: TObject);
     procedure trvMenusCreateNodeClass(Sender: TCustomTreeView;
       var NodeClass: TTreeNodeClass);
+    procedure trvMenusChange(Sender: TObject; Node: TTreeNode);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
@@ -74,7 +74,7 @@ type
 
     procedure CreateMDIForm(AMenuId: string);
 
-    procedure LoadMenus(ACateCode: string);
+    procedure LoadTreeMenu(ACateCode: string);
   public
     { Public declarations }
   end;
@@ -99,7 +99,7 @@ begin
 
   Application.OnMessage := AppMessage;
 
-  LoadMenus('home');
+  LoadTreeMenu('home');
 
   qryMenuShortcut.Open;
   TAutoComplete.Setup(
@@ -168,8 +168,8 @@ begin
   end;
 
   Form := FormClass.Create(Self);
-  Form.OnMDIActivate := ChildFormActivate;
-  Form.OnMDIDestroy := ChildFormDestroy;
+  Form.OnMDIActivate  := ChildFormActivate;
+  Form.OnMDIDestroy   := ChildFormDestroy;
 
   Form.WindowState := wsMaximized;
   Form.Show;
@@ -178,7 +178,7 @@ begin
   MDITabSet.TabIndex := MDITabSet.Tabs.Count - 1;
 end;
 
-procedure TfrmMain.LoadMenus(ACateCode: string);
+procedure TfrmMain.LoadTreeMenu(ACateCode: string);
 var
   GroupName: string;
   Group, Item: TMenuNode;
@@ -193,20 +193,21 @@ begin
   trvMenus.Items.Clear;
   Group := nil;
   GroupName := '';
+
   while not qryMenuTree.Eof do
   begin
     GroupName := qryMenuTree.FieldByName('group_name').AsString;
     if not Assigned(Group) or (GroupName <> Group.Text) then
     begin
       Group := trvMenus.Items.Add(nil, GroupName) as TMenuNode;
-      Group.Code := qryMenuTree.FieldByName('menu_code').AsString;
+      Group.Code := qryMenuTree.FieldByName('group_code').AsString;
       Group.ImageIndex := 0;
       Group.SelectedIndex := 0;
     end;
 
     Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
     Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
-    Item.ParentCode := qryMenuTree.FieldByName('group_code').AsString;
+    Item.ParentCode := Group.Code;
     Item.ImageIndex := 1;
     Item.SelectedIndex := 1;
 
@@ -214,7 +215,6 @@ begin
   end;
 
   trvMenus.FullExpand;
-  trvMenus.Items.EndUpdate;
 end;
 
 procedure TfrmMain.btnMenuExitClick(Sender: TObject);
@@ -227,18 +227,13 @@ end;
 
 procedure TfrmMain.btnCateMenuClick(Sender: TObject);
 begin
-  LoadMenus(TToolButton(Sender).Hint);
+  LoadTreeMenu(TToolButton(Sender).Hint);
 end;
 
-procedure TfrmMain.trvMenusClick(Sender: TObject);
-var
-  Menu: TMenuNode;
+procedure TfrmMain.trvMenusChange(Sender: TObject; Node: TTreeNode);
 begin
-  if Assigned(trvMenus.Selected) and (trvMenus.Selected.Level = 1) then
-  begin
-    Menu := TMenuNode(trvMenus.Selected);
-    CreateMDIForm(Menu.Code);
-  end;
+  if Node.Level = 1 then
+    CreateMDIForm((Node as TMenuNode).Code);
 end;
 
 procedure TfrmMain.trvMenusCreateNodeClass(Sender: TCustomTreeView;

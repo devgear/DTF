@@ -139,7 +139,7 @@ object frmMain: TfrmMain
       ShowHint = True
       ShowRoot = False
       TabOrder = 1
-      OnClick = trvMenusClick
+      OnChange = trvMenusChange
       OnCreateNodeClass = trvMenusCreateNodeClass
     end
     object Panel4: TPanel

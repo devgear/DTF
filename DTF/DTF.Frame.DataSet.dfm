@@ -12,38 +12,36 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
     List = True
     ShowCaptions = True
     TabOrder = 0
-    ExplicitWidth = 433
-    ExplicitHeight = 44
-    object tbnDSRefresh: TToolButton
+    object btnDSRefresh: TToolButton
       Left = 0
       Top = 0
       Action = actDSRefresh
     end
-    object ToolButton11: TToolButton
+    object btnDSNew: TToolButton
       Left = 85
       Top = 0
       Action = actDSNewAppend
       AutoSize = True
     end
-    object ToolButton1: TToolButton
+    object btnDSSave: TToolButton
       Left = 160
       Top = 0
       Action = actDSSavePost
       AutoSize = True
     end
-    object ToolButton2: TToolButton
+    object btnDSCancel: TToolButton
       Left = 213
       Top = 0
       Action = actDSCancel
       AutoSize = True
     end
-    object ToolButton3: TToolButton
+    object btnDSDelete: TToolButton
       Left = 288
       Top = 0
       Action = actDSDelete
       AutoSize = True
     end
-    object ToolButton5: TToolButton
+    object btnExportXls: TToolButton
       Left = 341
       Top = 0
       Action = actDSExportXls

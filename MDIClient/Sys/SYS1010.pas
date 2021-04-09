@@ -347,7 +347,6 @@ begin
   end;
 
   trvMenus.Items.Clear;
-//  trvMenus.Items.BeginUpdate;
   Group := nil;
   GroupName := '';
   qryMenuTree.First;
@@ -364,17 +363,12 @@ begin
 //      Group.Test := 'abcd';
     end;
 
-    MenuName := qryMenuTree.FieldByName('menu_name').AsString;
-    if (MenuName <> '') then
-    begin
-      Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
-      Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
-      Item.SortIndex := qryMenuTree.FieldByName('menu_sort').AsInteger;
-      Item.ParentCode := Group.Code;
-//      Item.ParentCode := qryMenuTree.FieldByName('group_code').AsString;
-      Item.ImageIndex := 1;
-      Item.SelectedIndex := 1;
-    end;
+    Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
+    Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
+    Item.SortIndex := qryMenuTree.FieldByName('menu_sort').AsInteger;
+    Item.ParentCode := Group.Code;
+    Item.ImageIndex := 1;
+    Item.SelectedIndex := 1;
 
     qryMenuTree.Next;
   end;
