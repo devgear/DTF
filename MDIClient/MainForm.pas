@@ -205,6 +205,8 @@ begin
       Group.SelectedIndex := 0;
     end;
 
+//    trvMenus.Items.addchildobj
+
     Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
     Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
     Item.ParentCode := Group.Code;

@@ -26,7 +26,10 @@ uses
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  DTF.Core.Guard in '..\DTF\DTF.Core.Guard.pas',
+  DTF.Core.Auth in '..\DTF\DTF.Core.Auth.pas',
+  DTF in '..\DTF\DTF.pas';
 
 {$R *.res}
 

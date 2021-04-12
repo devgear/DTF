@@ -104,6 +104,7 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
+        ExplicitTop = 55
       end
       object Panel1: TPanel
         Left = 0
@@ -141,6 +142,8 @@ object frmMain: TfrmMain
       TabOrder = 1
       OnChange = trvMenusChange
       OnCreateNodeClass = trvMenusCreateNodeClass
+      ExplicitLeft = -6
+      ExplicitTop = 258
     end
     object Panel4: TPanel
       Left = 0

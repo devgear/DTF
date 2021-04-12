@@ -10,7 +10,7 @@ uses
   Environment;
 
 type
-  TdmUser = class(TDataModule, IAuthService)
+  TdmUser = class(TDataModule)
     qrySignin: TFDQuery;
     qrySigninUSER_SEQ: TIntegerField;
     qrySigninUSER_NAME: TWideStringField;

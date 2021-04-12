@@ -9,18 +9,18 @@ type
 
   TDTFAuth = class(TInterfacedObject, IAuthentication)
   private
-    FAuthService: IAuthService;
+//    FAuthService: IAuthService;
   public
-    constructor Create(AAuthService: IAuthService);
+//    constructor Create(AAuthService: IAuthService);
   end;
 
 implementation
 
 { TDTFAutentication }
 
-constructor TDTFAuth.Create(AAuthService: IAuthService);
-begin
-  FAuthService := AAuthService;
-end;
+//constructor TDTFAuth.Create(AAuthService: IAuthService);
+//begin
+//  FAuthService := AAuthService;
+//end;
 
 end.
