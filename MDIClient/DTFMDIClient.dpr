@@ -29,7 +29,7 @@ uses
   Vcl.Styles,
   DTF.Core.Guard in '..\DTF\DTF.Core.Guard.pas',
   DTF.Core.Auth in '..\DTF\DTF.Core.Auth.pas',
-  DTF in '..\DTF\DTF.pas';
+  DTF.App in '..\DTF\DTF.App.pas';
 
 {$R *.res}
 
