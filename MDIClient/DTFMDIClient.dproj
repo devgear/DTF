@@ -148,7 +148,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Util.AutoComplete.pas"/>
-        <DCCReference Include="Common\Environment.pas"/>
+        <DCCReference Include="Config\DTF.Config.pas"/>
         <DCCReference Include="..\DTF\DTF.Core.Authentication.pas"/>
         <DCCReference Include="..\DTF\DTF.Core.AuthTypes.pas"/>
         <DCCReference Include="Modules\UserModule.pas">
@@ -177,7 +177,8 @@
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Core.Guard.pas"/>
         <DCCReference Include="..\DTF\DTF.Core.Auth.pas"/>
-        <DCCReference Include="..\DTF\DTF.App.pas"/>
+        <DCCReference Include="..\DTF\DTF.App.Base.pas"/>
+        <DCCReference Include="Config\DTF.App.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

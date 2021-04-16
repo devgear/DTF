@@ -3,11 +3,11 @@ unit UserModule;
 interface
 
 uses
+  DTF.App,
   System.SysUtils, System.Classes, DatabaseModule, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, DTF.Core.AuthTypes,
-  Environment;
+  Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, DTF.Core.AuthTypes;
 
 type
   TdmUser = class(TDataModule)
@@ -68,7 +68,7 @@ begin
   // 비밀번호 유효기간 확인
   LastUpdate := qrySignin.FieldByName('LAST_PWD_UPDATED_AT').AsDateTime;
   Period := Trunc(DaySpan(Now, LastUpdate));
-  if Period >= Env.PasswordExpiredDays then
+  if Period >= App.Config.PasswordExpiredDays then
     Exit(srExpiredPassword);
 
   // 정상

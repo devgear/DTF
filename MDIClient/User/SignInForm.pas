@@ -3,6 +3,7 @@ unit SignInForm;
 interface
 
 uses
+  DTF.App,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.Base, Vcl.StdCtrls,
   Vcl.ExtCtrls;
@@ -34,7 +35,7 @@ implementation
 
 {$R *.dfm}
 
-uses Environment, DTF.Core.AuthTypes, UserModule;
+uses DTF.Core.AuthTypes, UserModule;
 
 function ExecSignIn: Boolean;
 var
@@ -44,7 +45,7 @@ begin
   Form.ShowModal;
   Form.Free;
 
-  Result := User.Signed;
+//  Result := User.Signed;
 end;
 
 procedure TfrmSignIn.btnCancelClick(Sender: TObject);
@@ -98,23 +99,23 @@ begin
     Exit;
   end;
 
-  User.Signed := True;
-  User.Name := '';
-  User.Id := edtUserId.Text;
+//  User.Signed := True;
+//  User.Name := '';
+//  User.Id := edtUserId.Text;
 
   // [로그인 정보 저장] 환경파일에 저장
   if chkUserIdSave.Checked then
-    Env.SavedUserId := edtUserId.Text;
-  Env.UserIdSave := chkUserIdSave.Checked;
+    App.Config.SavedUserId := edtUserId.Text;
+  App.Config.UserIdSave := chkUserIdSave.Checked;
 
   Close;
 end;
 
 procedure TfrmSignIn.FormShow(Sender: TObject);
 begin
-  if Env.UserIdSave then
+  if App.Config.UserIdSave then
   begin
-    edtUserId.Text := Env.SavedUserId;
+    edtUserId.Text := App.Config.SavedUserId;
     chkUserIdSave.Checked := True;
     edtPassword.SetFocus;
   end

@@ -88,7 +88,7 @@ implementation
 
 uses
   DatabaseModule,
-  Environment,
+  DTF.App,
   DTF.Types,
   DTF.Module.Resource,
   DTF.Util.AutoComplete;
@@ -116,15 +116,15 @@ begin
         end)
   );
 
-  WindowState := Env.WindowState;
-  BoundsRect := Env.WindowBounds;
+  WindowState := App.Config.WindowState;
+  BoundsRect := App.Config.WindowBounds;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
-  Env.WindowState := WindowState;
+  App.Config.WindowState := WindowState;
   if WindowState <> wsMaximized then
-    Env.WindowBounds := BoundsRect;
+    App.Config.WindowBounds := BoundsRect;
 end;
 
 procedure TfrmMain.AppMessage(var Msg: TMsg; var Handled: Boolean);

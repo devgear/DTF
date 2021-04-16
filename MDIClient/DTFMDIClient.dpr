@@ -15,7 +15,7 @@ uses
   DTF.Frame.DBGrid in '..\DTF\DTF.Frame.DBGrid.pas' {DTFDBGridFrame: TFrame},
   DTF.Util.AutoCompleteForm in '..\DTF\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
   DTF.Util.AutoComplete in '..\DTF\DTF.Util.AutoComplete.pas',
-  Environment in 'Common\Environment.pas',
+  DTF.Config in 'Config\DTF.Config.pas',
   DTF.Core.Authentication in '..\DTF\DTF.Core.Authentication.pas',
   DTF.Core.AuthTypes in '..\DTF\DTF.Core.AuthTypes.pas',
   UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
@@ -29,7 +29,8 @@ uses
   Vcl.Styles,
   DTF.Core.Guard in '..\DTF\DTF.Core.Guard.pas',
   DTF.Core.Auth in '..\DTF\DTF.Core.Auth.pas',
-  DTF.App in '..\DTF\DTF.App.pas';
+  DTF.App.Base in '..\DTF\DTF.App.Base.pas',
+  DTF.App in 'Config\DTF.App.pas';
 
 {$R *.res}
 
