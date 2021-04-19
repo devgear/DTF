@@ -4,10 +4,11 @@ interface
 
 uses
   DTF.App.Base,
+  DTF.Service.Types,
   DTF.Config;
 
 type
-  TApp = class(TDTFApp)
+  TApp = class(TDTFApp<TApp>)
   private
     FConfigService: TConfigService;
   public
@@ -17,25 +18,18 @@ type
     property Config: TConfigService read FConfigService;
   end;
 
-function App: TApp;
+var
+  App: TApp;
 
 implementation
-
-var
-  _App: TApp = nil;
-
-function App: TApp;
-begin
-  if not Assigned(_App) then
-    _App := TApp.Create;
-  Result := _App;
-end;
 
 { TApp }
 
 constructor TApp.Create;
 begin
   FConfigService := TConfigService.Create;
+
+
 end;
 
 destructor TApp.Destroy;
@@ -46,8 +40,8 @@ begin
 end;
 
 initialization
+  App := TApp.Instance;
+  App.Initialize;
 finalization
-  if Assigned(_App) then
-    _App.Free;
 
 end.

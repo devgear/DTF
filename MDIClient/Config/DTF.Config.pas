@@ -3,10 +3,13 @@ unit DTF.Config;
 interface
 
 uses
-  System.IniFiles, Vcl.Forms, System.Types;
+  System.IniFiles, Vcl.Forms, System.Types,
+  DTF.Service.Types,
+  uIniConfig;
 
 type
-  TConfigService = class
+  [IniConfig('config.ini')]
+  TConfigService = class(TIniConfig, IDTFService)
   private
     FIni: TIniFile;
     function GetWindowState: TWindowState;
@@ -19,6 +22,13 @@ type
     procedure SetSavedUserId(const Value: string);
     function GetUserIdSave: Boolean;
     procedure SetUserIdSave(const Value: Boolean);
+
+    procedure Loaded;
+    procedure Unload;
+
+    function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
+    function _AddRef: Integer; stdcall;
+    function _Release: Integer; stdcall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -64,6 +74,16 @@ end;
 function TConfigService.GetWindowState: TWindowState;
 begin
   Result := TWindowState(FIni.ReadInteger('Window', 'State', 0));
+end;
+
+procedure TConfigService.Loaded;
+begin
+
+end;
+
+function TConfigService.QueryInterface(const IID: TGUID; out Obj): HResult;
+begin
+
 end;
 
 function TConfigService.GetPasswordExpiredDays: Integer;
@@ -116,6 +136,21 @@ begin
   FIni.WriteInteger('Window', 'Left', Value.Left);
   FIni.WriteInteger('Window', 'Width', Value.Width);
   FIni.WriteInteger('Window', 'Height', Value.Height);
+end;
+
+procedure TConfigService.Unload;
+begin
+
+end;
+
+function TConfigService._AddRef: Integer;
+begin
+
+end;
+
+function TConfigService._Release: Integer;
+begin
+
 end;
 
 end.

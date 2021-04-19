@@ -12,6 +12,14 @@ uses
   System.IniFiles;
 
 type
+  IniConfigAttribute = class(TCustomAttribute)
+  private
+    FFilename: string;
+  public
+    constructor Create(const AFilename: string);
+    property Filename: string read FFilename;
+  end;
+
   TCusumtIniAttribute = class(TCustomAttribute)
   private
     FSection: string;
@@ -94,6 +102,13 @@ type
 
 implementation
 
+
+{ IniConfigAttribute }
+
+constructor IniConfigAttribute.Create(const AFilename: string);
+begin
+  FFilename := AFilename;
+end;
 
 { IniAttribute<T> }
 

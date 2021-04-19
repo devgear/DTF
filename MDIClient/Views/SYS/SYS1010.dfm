@@ -67,12 +67,24 @@ inherited frmSYS1010: TfrmSYS1010
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 29
+        ExplicitTop = 21
         ExplicitWidth = 460
-        ExplicitHeight = 147
+        ExplicitHeight = 155
         inherited tlbDataSet: TToolBar
           Width = 444
           ExplicitWidth = 444
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSSave: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSCancel: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSDelete: TToolButton
+            ExplicitWidth = 53
+          end
         end
         inherited grdMaster: TDBGrid
           Width = 444
@@ -147,6 +159,7 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 460
           Caption = #47700#45684' '#52852#53580#44256#47532
           ExplicitWidth = 460
+          ExplicitHeight = 20
         end
       end
     end
@@ -239,6 +252,7 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 461
           Caption = #48120#47532#48372#44592
           ExplicitWidth = 461
+          ExplicitHeight = 20
         end
       end
     end
@@ -261,12 +275,24 @@ inherited frmSYS1010: TfrmSYS1010
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 29
+        ExplicitTop = 21
         ExplicitWidth = 460
-        ExplicitHeight = 139
+        ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 444
           ExplicitWidth = 444
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSSave: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSCancel: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSDelete: TToolButton
+            ExplicitWidth = 53
+          end
         end
         inherited grdMaster: TDBGrid
           Width = 444
@@ -340,6 +366,7 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 460
           Caption = #47700#45684' '#44536#47353
           ExplicitWidth = 460
+          ExplicitHeight = 20
         end
       end
     end
@@ -363,12 +390,24 @@ inherited frmSYS1010: TfrmSYS1010
         Padding.Right = 8
         TabOrder = 0
         ExplicitLeft = 1
-        ExplicitTop = 29
+        ExplicitTop = 21
         ExplicitWidth = 461
-        ExplicitHeight = 139
+        ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 445
           ExplicitWidth = 445
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSSave: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSCancel: TToolButton
+            ExplicitWidth = 75
+          end
+          inherited btnDSDelete: TToolButton
+            ExplicitWidth = 53
+          end
         end
         inherited grdMaster: TDBGrid
           Width = 445
@@ -448,6 +487,7 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 461
           Caption = #47700#45684
           ExplicitWidth = 461
+          ExplicitHeight = 20
         end
       end
     end

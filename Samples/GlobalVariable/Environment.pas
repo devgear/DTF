@@ -36,10 +36,10 @@ type
     property Num: Integer read FNum write FNum;
 //    [IniDateTime('User', '2021-01-16 19:25:00')]
     property Dtm: TDatetime read FDtm write FDtm;
-//    [IniEnum('User', Ord(wsNormal))] // Ord()를 없앨수 없을까?
+    [IniEnum('User', Ord(wsNormal))] // Ord()를 없앨수 없을까?
     property WindowState: TWindowState read FWindowState write FWindowState;
 
-    [IniInteger('User', 10)]
+//    [IniInteger('User', 10)]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
 
     property UserName: string read FUserName write FUserName;

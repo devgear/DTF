@@ -5,15 +5,27 @@ interface
 
 uses
   DTF.Types,
-  DTF.Core.Auth;
+  DTF.Service.Types,
+  DMX.DesignPattern;
 
 type
-  TDTFApp = class
+  TDTFApp<T: class> = class(TSingleton<T>, IDTFServiceLoader)
+  private
+    function GetSevice<TS: IDTFService>(const AName: string): TS;
   public
   end;
 
 implementation
 
 { TDTFApp }
+
+{ TDTFApp<T> }
+
+function TDTFApp<T>.GetSevice<TS>(const AName: string): TS;
+var
+  S: IDTFService;
+begin
+  Result := S;
+end;
 
 end.

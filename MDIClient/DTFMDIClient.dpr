@@ -8,7 +8,7 @@ uses
   MenuTypes in 'Common\MenuTypes.pas',
   DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
   DTF.Types in '..\DTF\DTF.Types.pas',
-  SYS1010 in 'Sys\SYS1010.pas' {frmSYS1010},
+  SYS1010 in 'Views\SYS\SYS1010.pas' {frmSYS1010},
   DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
   DTF.Frame.DataSet in '..\DTF\DTF.Frame.DataSet.pas' {DTFDataSetFrame: TFrame},
   DTF.Module.Resource in '..\DTF\DTF.Module.Resource.pas' {dmResource: TDataModule},
@@ -16,21 +16,21 @@ uses
   DTF.Util.AutoCompleteForm in '..\DTF\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
   DTF.Util.AutoComplete in '..\DTF\DTF.Util.AutoComplete.pas',
   DTF.Config in 'Config\DTF.Config.pas',
-  DTF.Core.Authentication in '..\DTF\DTF.Core.Authentication.pas',
-  DTF.Core.AuthTypes in '..\DTF\DTF.Core.AuthTypes.pas',
   UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
   DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
-  SignInForm in 'User\SignInForm.pas' {frmSignIn},
   Test1Form in 'Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1},
   Vcl.Themes,
   Vcl.Styles,
-  DTF.Core.Guard in '..\DTF\DTF.Core.Guard.pas',
-  DTF.Core.Auth in '..\DTF\DTF.Core.Auth.pas',
+  DTF.Auth in '..\DTF\DTF.Auth.pas',
   DTF.App.Base in '..\DTF\DTF.App.Base.pas',
-  DTF.App in 'Config\DTF.App.pas';
+  DTF.App in 'Config\DTF.App.pas',
+  AuthService in 'Services\AuthService.pas',
+  MenuService in 'Services\MenuService.pas',
+  DTF.Service in '..\DTF\DTF.Service.pas',
+  DTF.Service.Types in '..\DTF\DTF.Service.Types.pas';
 
 {$R *.res}
 
