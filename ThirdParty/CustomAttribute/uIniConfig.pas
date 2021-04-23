@@ -86,9 +86,16 @@ type
   end;
 
   //////
+  IniFilenameAttribute = class(TCusumtIniAttribute)
+  private
+    FFilename: string;
+  public
+    constructor Create(AFilename: string);
+    property Filename: string read FFilename;
+  end;
+
   TIniConfig = class(TObject)
   private
-    FAutoSave: Boolean;
     FIniFile: TIniFile;
   public
     constructor Create(const AName: string = ''); virtual;
@@ -96,8 +103,6 @@ type
 
     procedure LoadFromFile;
     procedure SaveToFile;
-
-    property AutoSave: Boolean read FAutoSave write FAutoSave;
   end;
 
 implementation
@@ -216,28 +221,53 @@ begin
   AIniFile.WriteInteger(FSection, AIdent, AValue.AsOrdinal);
 end;
 
+{ IniFilenameAttribute }
+
+constructor IniFilenameAttribute.Create(AFilename: string);
+begin
+  FFilename := AFilename;
+end;
+
 { TIniConfig }
 
 constructor TIniConfig.Create(const AName: string);
 var
-  LName: string;
+  LRttiContext: TRttiContext;
+  LRttiType: TRttiType;
+  LAttribute: TCustomAttribute;
+  LName, LFilename: string;
 begin
-  FAutoSave := True;
-
-  if (AName = '') then
-    LName := ChangeFileExt(ParamStr(0), '.ini')
+  if AName <> '' then
+    LName := AName
   else
-    LName := ExtractFilePath(ParamStr(0)) + AName;
+  begin
+    LRttiContext := TRttiContext.Create;
+    try
+      LRttiType := LRttiContext.GetType(Self.ClassType);
+      for LAttribute in LRttiType.GetAttributes do
+      begin
+        if LAttribute is IniFilenameAttribute then
+        begin
+          LName := IniFilenameAttribute(LAttribute).Filename;
+        end;
+      end;
+    finally
+      LRttiContext.Free;
+    end;
+  end;
 
-  FIniFile := TIniFile.Create(LName);
-  if FAutoSave then
-    LoadFromFile;
+  if LName = '' then
+    LFilename := ChangeFileExt(ParamStr(0), '.ini')
+  else
+    LFilename := ExtractFilePath(Paramstr(0)) + LName;
+
+  FIniFile := TIniFile.Create(LFilename);
+  LoadFromFile;
 end;
 
 destructor TIniConfig.Destroy;
 begin
-  if FAutoSave then
-    SaveToFile;
+  SaveToFile;
 
   FIniFile.Free;
 

@@ -10,8 +10,9 @@ uses
 
 type
   TDTFApp<T: class> = class(TSingleton<T>, IDTFServiceLoader)
-  private
+  protected
     function GetSevice<TS: IDTFService>(const AName: string): TS;
+    procedure AddService(const IDTFService);
   public
   end;
 
@@ -20,6 +21,11 @@ implementation
 { TDTFApp }
 
 { TDTFApp<T> }
+
+procedure TDTFApp<T>.AddService(const IDTFService);
+begin
+
+end;
 
 function TDTFApp<T>.GetSevice<TS>(const AName: string): TS;
 var

@@ -11,6 +11,9 @@ type
   TApp = class(TDTFApp<TApp>)
   private
     FConfigService: TConfigService;
+  protected
+    procedure Initialize; override;
+    procedure Finalize; override;
   public
     constructor Create;
     destructor Destroy; override;
@@ -27,21 +30,32 @@ implementation
 
 constructor TApp.Create;
 begin
-  FConfigService := TConfigService.Create;
 
 
 end;
 
 destructor TApp.Destroy;
 begin
-  FConfigService.Free;
 
   inherited;
 end;
 
+procedure TApp.Finalize;
+begin
+  inherited;
+
+  FConfigService.Free;
+end;
+
+procedure TApp.Initialize;
+begin
+  inherited;
+
+  FConfigService := TConfigService.Create;
+end;
+
 initialization
   App := TApp.Instance;
-  App.Initialize;
 finalization
 
 end.
