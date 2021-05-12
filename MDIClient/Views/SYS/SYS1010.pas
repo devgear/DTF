@@ -101,9 +101,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmSYS1010: TfrmSYS1010;
-
 implementation
 
 {$R *.dfm}

@@ -22,8 +22,6 @@ uses
   Test1Form in 'Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1},
-  Vcl.Themes,
-  Vcl.Styles,
   DTF.Auth in '..\DTF\DTF.Auth.pas',
   DTF.App.Base in '..\DTF\DTF.App.Base.pas',
   DTF.App in 'Config\DTF.App.pas',
@@ -38,9 +36,9 @@ begin
   Application.Initialize;
   Application.Title := '::: DTF MDI Client :::';
 
+  Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmUser, dmUser);
-  Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmResource, dmResource);
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;

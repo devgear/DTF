@@ -88,7 +88,10 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited grdMaster: TDBGrid
           Width = 444
-          Height = 129
+          Height = 106
+        end
+        inherited pnlSearchControlArea: TPanel
+          Width = 444
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuCates
@@ -296,7 +299,10 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited grdMaster: TDBGrid
           Width = 444
-          Height = 121
+          Height = 98
+        end
+        inherited pnlSearchControlArea: TPanel
+          Width = 444
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuGroups
@@ -411,7 +417,10 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited grdMaster: TDBGrid
           Width = 445
-          Height = 121
+          Height = 98
+        end
+        inherited pnlSearchControlArea: TPanel
+          Width = 445
         end
         inherited ActionList: TActionList
           Left = 48
