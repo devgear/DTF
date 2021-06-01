@@ -11,7 +11,6 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormCreate(Sender: TObject);
   private
     FOnMDIDestroy: TNotifyEvent;
     FOnMDIActivate: TNotifyEvent;
@@ -23,13 +22,6 @@ type
 implementation
 
 {$R *.dfm}
-
-procedure TDTFMDIChildForm.FormCreate(Sender: TObject);
-begin
-  inherited;
-
-  FormStyle := fsMDIChild;
-end;
 
 procedure TDTFMDIChildForm.FormActivate(Sender: TObject);
 begin

@@ -1,10 +1,10 @@
 inherited DTFDataSetFrame: TDTFDataSetFrame
-  Width = 504
-  ExplicitWidth = 504
+  Width = 594
+  ExplicitWidth = 594
   object tlbDataSet: TToolBar
     Left = 0
     Top = 0
-    Width = 504
+    Width = 594
     Height = 22
     AutoSize = True
     ButtonWidth = 85
@@ -15,49 +15,57 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
     object btnDSRefresh: TToolButton
       Left = 0
       Top = 0
-      Action = actDSRefresh
+      Action = actDSSearch
+      AutoSize = True
     end
     object btnDSNew: TToolButton
-      Left = 85
+      Left = 53
       Top = 0
       Action = actDSNewAppend
       AutoSize = True
     end
     object btnDSSave: TToolButton
-      Left = 160
+      Left = 128
       Top = 0
       Action = actDSSavePost
       AutoSize = True
     end
     object btnDSCancel: TToolButton
-      Left = 213
+      Left = 181
       Top = 0
       Action = actDSCancel
       AutoSize = True
     end
     object btnDSDelete: TToolButton
-      Left = 288
+      Left = 256
       Top = 0
       Action = actDSDelete
       AutoSize = True
     end
     object btnExportXls: TToolButton
-      Left = 341
+      Left = 309
       Top = 0
       Action = actDSExportXls
+      AutoSize = True
+    end
+    object ToolButton2: TToolButton
+      Left = 398
+      Top = 0
+      Action = actPrint
+      AutoSize = True
     end
   end
   object ActionList: TActionList
     Images = dmResource.vilToolButton
     Left = 24
     Top = 64
-    object actDSRefresh: TDataSetRefresh
+    object actDSSearch: TDataSetRefresh
       Category = 'Dataset'
-      Caption = #49352#47196#44256#52840
-      Hint = #49352#47196#44256#52840
+      Caption = #51312#54924
       ImageIndex = 6
-      ImageName = 'icons8-refresh'
+      ImageName = 'icons8-search'
       ShortCut = 116
+      DataSource = DataSource
     end
     object actDSNewAppend: TDataSetInsert
       Category = 'Dataset'
@@ -95,6 +103,13 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
       ImageIndex = 1
       ImageName = 'icons8-delete_sign'
       DataSource = DataSource
+    end
+    object actPrint: TAction
+      Category = 'Dataset'
+      Caption = #51064#49604
+      ImageIndex = 2
+      ImageName = 'icons8-print'
+      Visible = False
     end
     object actDSExportXls: TAction
       Category = 'Dataset'

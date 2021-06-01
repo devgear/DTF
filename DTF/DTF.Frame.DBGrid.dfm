@@ -7,16 +7,16 @@ inherited DTFDBGridFrame: TDTFDBGridFrame
   inherited tlbDataSet: TToolBar
     Left = 8
     Top = 4
-    Width = 488
+    Width = 578
     ExplicitLeft = 8
     ExplicitTop = 4
-    ExplicitWidth = 417
+    ExplicitWidth = 578
   end
   object grdMaster: TDBGrid [1]
     Left = 8
-    Top = 26
-    Width = 488
-    Height = 199
+    Top = 49
+    Width = 578
+    Height = 176
     TabStop = False
     Align = alClient
     DataSource = DataSource
@@ -28,9 +28,16 @@ inherited DTFDBGridFrame: TDTFDBGridFrame
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
   end
-  inherited ActionList: TActionList
-    inherited actDSRefresh: TDataSetRefresh
-      DataSource = DataSource
-    end
+  object pnlSearchControlArea: TPanel [2]
+    Left = 8
+    Top = 26
+    Width = 578
+    Height = 23
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Search controls. (default hidden)'
+    TabOrder = 2
+    Visible = False
+    ExplicitWidth = 506
   end
 end

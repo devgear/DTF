@@ -5,6 +5,7 @@ interface
 uses
   DatabaseModule,
   MenuTypes,
+  DTF.Types,
   DTF.Form.Base, DTF.Form.MDIChild,
   DTF.Frame.Base, DTF.Frame.DataSet, DTF.Frame.DBGrid,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
@@ -19,6 +20,7 @@ uses
   Vcl.Buttons, DTF.Frame.Title;
 
 type
+  [ViewId('SYS1010')]
   TfrmSYS1010 = class(TDTFMDIChildForm)
     qryMenuCates: TFDQuery;
     qryMenuCatesCATE_NAME: TWideStringField;
@@ -106,7 +108,6 @@ implementation
 {$R *.dfm}
 
 uses
-  DTF.Types,
   DTF.Module.Resource;
 
 procedure TfrmSYS1010.actMenuTreeDownExecute(Sender: TObject);
@@ -375,7 +376,8 @@ begin
 end;
 
 initialization
-  TMenuFactory.Instance.Regist('SYS1010', TfrmSYS1010);
+  TViewFactory.Instance.Regist(TfrmSYS1010);
+
 finalization
 
 end.

@@ -72,26 +72,47 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitHeight = 155
         inherited tlbDataSet: TToolBar
           Width = 444
+          Height = 44
           ExplicitWidth = 444
-          inherited btnDSNew: TToolButton
-            ExplicitWidth = 75
-          end
+          ExplicitHeight = 44
           inherited btnDSSave: TToolButton
-            ExplicitWidth = 53
+            Wrap = True
           end
           inherited btnDSCancel: TToolButton
-            ExplicitWidth = 75
+            Left = 0
+            Top = 22
+            ExplicitLeft = 0
+            ExplicitTop = 22
           end
           inherited btnDSDelete: TToolButton
-            ExplicitWidth = 53
+            Left = 75
+            Top = 22
+            ExplicitLeft = 75
+            ExplicitTop = 22
+          end
+          inherited btnExportXls: TToolButton
+            Left = 128
+            Top = 22
+            ExplicitLeft = 128
+            ExplicitTop = 22
+          end
+          inherited ToolButton2: TToolButton
+            Left = 217
+            Top = 22
+            ExplicitLeft = 217
+            ExplicitTop = 22
           end
         end
         inherited grdMaster: TDBGrid
+          Top = 71
           Width = 444
-          Height = 106
+          Height = 84
         end
         inherited pnlSearchControlArea: TPanel
+          Top = 48
           Width = 444
+          ExplicitTop = 48
+          ExplicitWidth = 444
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuCates
@@ -283,26 +304,47 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 444
+          Height = 44
           ExplicitWidth = 444
-          inherited btnDSNew: TToolButton
-            ExplicitWidth = 75
-          end
+          ExplicitHeight = 44
           inherited btnDSSave: TToolButton
-            ExplicitWidth = 53
+            Wrap = True
           end
           inherited btnDSCancel: TToolButton
-            ExplicitWidth = 75
+            Left = 0
+            Top = 22
+            ExplicitLeft = 0
+            ExplicitTop = 22
           end
           inherited btnDSDelete: TToolButton
-            ExplicitWidth = 53
+            Left = 75
+            Top = 22
+            ExplicitLeft = 75
+            ExplicitTop = 22
+          end
+          inherited btnExportXls: TToolButton
+            Left = 128
+            Top = 22
+            ExplicitLeft = 128
+            ExplicitTop = 22
+          end
+          inherited ToolButton2: TToolButton
+            Left = 217
+            Top = 22
+            ExplicitLeft = 217
+            ExplicitTop = 22
           end
         end
         inherited grdMaster: TDBGrid
+          Top = 71
           Width = 444
-          Height = 98
+          Height = 76
         end
         inherited pnlSearchControlArea: TPanel
+          Top = 48
           Width = 444
+          ExplicitTop = 48
+          ExplicitWidth = 444
         end
         inherited DataSource: TDataSource
           DataSet = qryMenuGroups
@@ -401,26 +443,47 @@ inherited frmSYS1010: TfrmSYS1010
         ExplicitHeight = 147
         inherited tlbDataSet: TToolBar
           Width = 445
+          Height = 44
           ExplicitWidth = 445
-          inherited btnDSNew: TToolButton
-            ExplicitWidth = 75
-          end
+          ExplicitHeight = 44
           inherited btnDSSave: TToolButton
-            ExplicitWidth = 53
+            Wrap = True
           end
           inherited btnDSCancel: TToolButton
-            ExplicitWidth = 75
+            Left = 0
+            Top = 22
+            ExplicitLeft = 0
+            ExplicitTop = 22
           end
           inherited btnDSDelete: TToolButton
-            ExplicitWidth = 53
+            Left = 75
+            Top = 22
+            ExplicitLeft = 75
+            ExplicitTop = 22
+          end
+          inherited btnExportXls: TToolButton
+            Left = 128
+            Top = 22
+            ExplicitLeft = 128
+            ExplicitTop = 22
+          end
+          inherited ToolButton2: TToolButton
+            Left = 217
+            Top = 22
+            ExplicitLeft = 217
+            ExplicitTop = 22
           end
         end
         inherited grdMaster: TDBGrid
+          Top = 71
           Width = 445
-          Height = 98
+          Height = 76
         end
         inherited pnlSearchControlArea: TPanel
+          Top = 48
           Width = 445
+          ExplicitTop = 48
+          ExplicitWidth = 445
         end
         inherited ActionList: TActionList
           Left = 48
@@ -631,6 +694,7 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryCateLookup: TFDQuery
+    Active = True
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT cate_code, cate_name FROM menu_categories')
@@ -638,6 +702,7 @@ inherited frmSYS1010: TfrmSYS1010
     Top = 336
   end
   object qryGroupLookup: TFDQuery
+    Active = True
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT group_code, group_name FROM menu_groups')
@@ -645,6 +710,7 @@ inherited frmSYS1010: TfrmSYS1010
     Top = 352
   end
   object qryMenuTree: TFDQuery
+    Active = True
     Connection = dmDatabase.FDConnection
     SQL.Strings = (
       'SELECT'

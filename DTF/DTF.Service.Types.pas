@@ -4,8 +4,8 @@ interface
 
 type
   IDTFService = interface
-    procedure Loaded;
-    procedure Unload;
+//    procedure Loaded;
+//    procedure Unload;
   end;
 
   IDTFLazyLoadService = interface(IDTFService)

@@ -151,7 +151,7 @@ var
   Form: TDTFForm;
   FormClass: TDTFFormClass;
 begin
-  FormClass := TMenuFactory.Instance.GetClass(AMenuId);
+  FormClass := TViewFactory.Instance.GetClass(AMenuId);
   if not Assigned(FormClass) then
   begin
     ShowMessage(Format('해당 메뉴의 폼을 찾을 수 없습니다.(Menu Id: %s)', [AMenuId]));
@@ -174,7 +174,7 @@ begin
   Form.WindowState := wsMaximized;
   Form.Show;
 
-  MDITabSet.Tabs.AddObject(Form.Caption, Form);
+  MDITabSet.Tabs.AddObject(Form.SimpleCaption, Form);
   MDITabSet.TabIndex := MDITabSet.Tabs.Count - 1;
 end;
 

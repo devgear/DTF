@@ -3,15 +3,18 @@ unit Test1Form;
 interface
 
 uses
+  DTF.TYpes,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, MenuTypes,
   Vcl.StdCtrls, Vcl.ExtCtrls, DTF.Frame.Title, DTF.Frame.Base,
   DTF.Frame.DataSet, DTF.Frame.DBGrid, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.WinXCtrls;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.WinXCtrls, Vcl.Mask,
+  Vcl.DBCtrls;
 
 type
+  [ViewId('TST1010')]
   TfrmTest1 = class(TDTFMDIChildForm)
     DTFDBGridFrame1: TDTFDBGridFrame;
     DTFTitleFrame1: TDTFTitleFrame;
@@ -22,8 +25,14 @@ type
     qryMenuItemsGROUP_CODE: TWideStringField;
     qryMenuItemsSORT_INDEX: TIntegerField;
     edtSchMenuName: TSearchBox;
-    procedure FormCreate(Sender: TObject);
+    Panel7: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtMenuCode: TDBEdit;
+    edtMenuName: TDBEdit;
     procedure DTFDBGridFrame1actDSSearchExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edtSchMenuNameInvokeSearch(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,11 +43,15 @@ implementation
 
 {$R *.dfm}
 
-uses
-  DTF.Types;
+procedure TfrmTest1.edtSchMenuNameInvokeSearch(Sender: TObject);
+begin
+  DTFDBGridFrame1.actDSSearch.Execute
+end;
 
 procedure TfrmTest1.FormCreate(Sender: TObject);
 begin
+  inherited;
+
   DTFDBGridFrame1.SetSearchPanel(pnlSearchPanel);
 end;
 
@@ -50,7 +63,7 @@ begin
 end;
 
 initialization
-  TMenuFactory.Instance.Regist('TST1010', TfrmTest1);
+  TViewFactory.Instance.Regist(TfrmTest1);
 finalization
 
 end.

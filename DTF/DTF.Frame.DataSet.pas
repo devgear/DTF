@@ -22,10 +22,12 @@ type
     btnDSCancel: TToolButton;
     btnDSDelete: TToolButton;
     DataSource: TDataSource;
-    actDSRefresh: TDataSetRefresh;
     btnDSRefresh: TToolButton;
     actDSExportXls: TAction;
     btnExportXls: TToolButton;
+    actDSSearch: TDataSetRefresh;
+    actPrint: TAction;
+    ToolButton2: TToolButton;
 
     procedure actDSNewAppendExecute(Sender: TObject);
     procedure actDSDeleteExecute(Sender: TObject);
@@ -36,9 +38,6 @@ type
   public
     property FocusControl: TWinControl read FFocusControl write FFocusControl;
   end;
-
-var
-  DTFDataSetFrame: TDTFDataSetFrame;
 
 implementation
 
@@ -51,9 +50,7 @@ uses
 procedure TDTFDataSetFrame.actDSDeleteExecute(Sender: TObject);
 begin
   if MessageDlg(SDSDeleteConfirm, mtConfirmation,[mbYes, mbNo], 0) = mrOK then
-  begin
     DataSource.DataSet.Delete;
-  end;
 end;
 
 procedure TDTFDataSetFrame.actDSExportXlsExecute(Sender: TObject);
@@ -66,6 +63,7 @@ begin
   begin
     Dialog := TSaveDialog.Create(nil);
     Dialog.Filter := 'XLSX file|*.xlsx';
+    Dialog.FileName := TAction(Sender).Hint;
     if Dialog.Execute then
       LDataSet.ExportToXls(Dialog.FileName);
     Dialog.Free;
@@ -77,7 +75,7 @@ var
   LDataSet: TDataSet;
 begin
   LDataSet := DataSource.DataSet;
-  Enabled := Assigned(LDataSet) and LDataSet.Active and LDataSet.CanModify;
+  TAction(Sender).Enabled := Assigned(LDataSet) and LDataSet.Active and LDataSet.CanModify;
 end;
 
 procedure TDTFDataSetFrame.actDSNewAppendExecute(Sender: TObject);
