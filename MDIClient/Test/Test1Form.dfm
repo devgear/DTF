@@ -21,6 +21,9 @@ inherited frmTest1: TfrmTest1
     inherited tlbDataSet: TToolBar
       Width = 670
       ExplicitWidth = 670
+      inherited btnDSRefresh: TToolButton
+        OnClick = nil
+      end
     end
     inherited grdMaster: TDBGrid
       Top = 89
@@ -36,9 +39,6 @@ inherited frmTest1: TfrmTest1
     inherited ActionList: TActionList
       Left = 96
       Top = 248
-      inherited actDSSearch: TDataSetRefresh
-        OnExecute = DTFDBGridFrame1actDSSearchExecute
-      end
       inherited actPrint: TAction
         Visible = True
       end
@@ -85,7 +85,6 @@ inherited frmTest1: TfrmTest1
       Height = 21
       TabOrder = 0
       TextHint = #47700#45684' '#51060#47492
-      OnInvokeSearch = edtSchMenuNameInvokeSearch
     end
   end
   object Panel7: TPanel

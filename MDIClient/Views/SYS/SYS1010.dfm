@@ -2,6 +2,7 @@ inherited frmSYS1010: TfrmSYS1010
   Caption = #49884#49828#53596':: '#47700#45684' '#44288#47532
   ClientHeight = 558
   ClientWidth = 927
+  OnCreate = FormCreate
   ExplicitWidth = 943
   ExplicitHeight = 597
   PixelsPerInch = 96

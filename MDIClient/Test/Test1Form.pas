@@ -30,9 +30,7 @@ type
     Label2: TLabel;
     edtMenuCode: TDBEdit;
     edtMenuName: TDBEdit;
-    procedure DTFDBGridFrame1actDSSearchExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure edtSchMenuNameInvokeSearch(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,23 +41,16 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmTest1.edtSchMenuNameInvokeSearch(Sender: TObject);
-begin
-  DTFDBGridFrame1.actDSSearch.Execute
-end;
-
 procedure TfrmTest1.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  DTFDBGridFrame1.SetSearchPanel(pnlSearchPanel);
-end;
-
-procedure TfrmTest1.DTFDBGridFrame1actDSSearchExecute(Sender: TObject);
-begin
-  qryMenuItems.Close;
-  qryMenuItems.ParamByName('menu_name').AsString := edtSchMenuName.Text + '%';
-  qryMenuItems.Open;
+  DTFDBGridFrame1.SetSearchPanel(
+    pnlSearchPanel,
+    procedure
+    begin
+      qryMenuItems.ParamByName('menu_name').AsString := edtSchMenuName.Text + '%';
+    end);
 end;
 
 initialization

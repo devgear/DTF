@@ -65,6 +65,7 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
       ImageIndex = 6
       ImageName = 'icons8-search'
       ShortCut = 116
+      OnExecute = actDSSearchExecute
       DataSource = DataSource
     end
     object actDSNewAppend: TDataSetInsert

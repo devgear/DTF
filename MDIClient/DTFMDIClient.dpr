@@ -28,7 +28,8 @@ uses
   AuthService in 'Services\AuthService.pas',
   MenuService in 'Services\MenuService.pas',
   DTF.Service in '..\DTF\DTF.Service.pas',
-  DTF.Service.Types in '..\DTF\DTF.Service.Types.pas';
+  DTF.Service.Types in '..\DTF\DTF.Service.Types.pas',
+  DTF.Intf in '..\DTF\DTF.Intf.pas';
 
 {$R *.res}
 

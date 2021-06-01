@@ -33,10 +33,13 @@ type
     procedure actDSDeleteExecute(Sender: TObject);
     procedure actDSExportXlsUpdate(Sender: TObject);
     procedure actDSExportXlsExecute(Sender: TObject);
+    procedure actDSSearchExecute(Sender: TObject);
   private
     FFocusControl: TWinControl;
+    FSearchParamProc: TProc;
   public
     property FocusControl: TWinControl read FFocusControl write FFocusControl;
+    procedure SetSearchParamProc(AProc: TProc);
   end;
 
 implementation
@@ -46,6 +49,11 @@ implementation
 uses
   DTF.Module.Resource,
   DTF.IO.Export;
+
+procedure TDTFDataSetFrame.SetSearchParamProc(AProc: TProc);
+begin
+  FSearchParamProc := AProc;
+end;
 
 procedure TDTFDataSetFrame.actDSDeleteExecute(Sender: TObject);
 begin
@@ -87,6 +95,18 @@ begin
     if Assigned(FFocusControl) then
       FFocusControl.SetFocus;
   end;
+end;
+
+procedure TDTFDataSetFrame.actDSSearchExecute(Sender: TObject);
+begin
+  if Assigned(FSearchParamProc) then
+  begin
+    DataSource.DataSet.Close;
+    FSearchParamProc;
+    DataSource.DataSet.Open;
+  end
+  else
+    inherited;
 end;
 
 end.
