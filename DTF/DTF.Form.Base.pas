@@ -80,11 +80,14 @@ var
 begin
   // Attribute
   LCtx := TRttiContext.Create;
-
-  LType := LCtx.GetType(Self);
-  for LAttr in LType.GetAttributes() do
-    if LAttr is ViewIdAttribute then
-      Exit(ViewIdAttribute(LAttr).ViewId);
+  try
+    LType := LCtx.GetType(Self);
+    for LAttr in LType.GetAttributes() do
+      if LAttr is ViewIdAttribute then
+        Exit(ViewIdAttribute(LAttr).ViewId);
+  finally
+    LCtx.Free;
+  end;
 
   // Classname
   ClsName := ClassName;

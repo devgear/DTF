@@ -160,12 +160,12 @@
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.IO.Export.pas"/>
-        <DCCReference Include="Test\Test1Form.pas">
+        <DCCReference Include="Views\Test\Test1Form.pas">
             <Form>frmTest1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\ThirdParty\CustomAttribute\uIniConfig.pas"/>
-        <DCCReference Include="User\ManageUserForm.pas">
+        <DCCReference Include="Views\USR\ManageUserForm.pas">
             <Form>DTFMDIChildForm1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
@@ -177,6 +177,16 @@
         <DCCReference Include="..\DTF\DTF.Service.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.Types.pas"/>
         <DCCReference Include="..\DTF\DTF.Intf.pas"/>
+        <DCCReference Include="..\DTF\DTF.Frame.StrGrid.pas">
+            <Form>DTFStrGridFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Views\Test\Test2Form.pas">
+            <Form>frmTest2</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\DTF\DTF.Utils.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

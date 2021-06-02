@@ -44,7 +44,7 @@ begin
     begin
       for I := 0 to APanel.ControlCount - 1 do
       begin
-        if APanel.Controls[I] is TEdit then
+        if APanel.Controls[I] is TCustomEdit then
           SC.SetSearchControl(APanel.Controls[I], procedure
             begin
               actDSSearch.Execute;

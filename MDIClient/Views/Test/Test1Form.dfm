@@ -21,9 +21,6 @@ inherited frmTest1: TfrmTest1
     inherited tlbDataSet: TToolBar
       Width = 670
       ExplicitWidth = 670
-      inherited btnDSRefresh: TToolButton
-        OnClick = nil
-      end
     end
     inherited grdMaster: TDBGrid
       Top = 89

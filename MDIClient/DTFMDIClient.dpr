@@ -19,9 +19,9 @@ uses
   UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
   DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
-  Test1Form in 'Test\Test1Form.pas' {frmTest1},
+  Test1Form in 'Views\Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
-  ManageUserForm in 'User\ManageUserForm.pas' {DTFMDIChildForm1},
+  ManageUserForm in 'Views\USR\ManageUserForm.pas' {DTFMDIChildForm1},
   DTF.Auth in '..\DTF\DTF.Auth.pas',
   DTF.App.Base in '..\DTF\DTF.App.Base.pas',
   DTF.App in 'Config\DTF.App.pas',
@@ -29,7 +29,10 @@ uses
   MenuService in 'Services\MenuService.pas',
   DTF.Service in '..\DTF\DTF.Service.pas',
   DTF.Service.Types in '..\DTF\DTF.Service.Types.pas',
-  DTF.Intf in '..\DTF\DTF.Intf.pas';
+  DTF.Intf in '..\DTF\DTF.Intf.pas',
+  DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
+  Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
+  DTF.Utils in '..\DTF\DTF.Utils.pas';
 
 {$R *.res}
 

@@ -1,0 +1,36 @@
+-- Test
+CREATE TABLE test_data
+(
+	test_seq	INTEGER NOT NULL, 
+	int_data	INTEGER,
+	int_data2	INTEGER,
+	str_data	VARCHAR(255), 
+	dbl_data	FLOAT, 
+	dtm_data	TIMESTAMP DEFAULT 'now',
+	
+	CONSTRAINT test_seq_pk PRIMARY KEY (test_seq)
+);
+CREATE GENERATOR test_seq_gen;
+CREATE TRIGGER set_test_seq FOR test_data
+ACTIVE BEFORE INSERT POSITION 0
+as
+begin
+	IF ((new.test_seq is null) or (new.test_seq = 0)) THEN
+		new.test_seq = gen_id(test_seq_gen, 1);
+end;
+
+
+INSERT INTO test_data(int_data, int_data2, str_data, dbl_data)
+VALUES(100, 10, '가나다', 1.123);
+
+INSERT INTO test_data(int_data, int_data2, str_data, dbl_data)
+VALUES(200, 20, 'abc', 2.123);
+
+
+INSERT INTO test_data(int_data, int_data2, str_data, dbl_data)
+VALUES(210, 30, 'def!@#', 3.001);
+
+
+INSERT INTO test_data(int_data, int_data2, str_data, dbl_data)
+VALUES(300, 40, 'aaaa', 4.321);
+

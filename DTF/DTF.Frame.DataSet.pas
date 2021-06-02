@@ -50,9 +50,27 @@ uses
   DTF.Module.Resource,
   DTF.IO.Export;
 
-procedure TDTFDataSetFrame.SetSearchParamProc(AProc: TProc);
+procedure TDTFDataSetFrame.actDSNewAppendExecute(Sender: TObject);
 begin
-  FSearchParamProc := AProc;
+  if Assigned(DataSource.DataSet) then
+  begin
+    DataSource.DataSet.Append;
+
+    if Assigned(FFocusControl) then
+      FFocusControl.SetFocus;
+  end;
+end;
+
+procedure TDTFDataSetFrame.actDSSearchExecute(Sender: TObject);
+begin
+  if Assigned(FSearchParamProc) then
+  begin
+    DataSource.DataSet.Close;
+    FSearchParamProc;
+    DataSource.DataSet.Open;
+  end
+  else
+    inherited;
 end;
 
 procedure TDTFDataSetFrame.actDSDeleteExecute(Sender: TObject);
@@ -86,27 +104,9 @@ begin
   TAction(Sender).Enabled := Assigned(LDataSet) and LDataSet.Active and LDataSet.CanModify;
 end;
 
-procedure TDTFDataSetFrame.actDSNewAppendExecute(Sender: TObject);
+procedure TDTFDataSetFrame.SetSearchParamProc(AProc: TProc);
 begin
-  if Assigned(DataSource.DataSet) then
-  begin
-    DataSource.DataSet.Append;
-
-    if Assigned(FFocusControl) then
-      FFocusControl.SetFocus;
-  end;
-end;
-
-procedure TDTFDataSetFrame.actDSSearchExecute(Sender: TObject);
-begin
-  if Assigned(FSearchParamProc) then
-  begin
-    DataSource.DataSet.Close;
-    FSearchParamProc;
-    DataSource.DataSet.Open;
-  end
-  else
-    inherited;
+  FSearchParamProc := AProc;
 end;
 
 end.
