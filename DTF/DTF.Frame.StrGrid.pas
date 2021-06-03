@@ -3,7 +3,7 @@ unit DTF.Frame.StrGrid;
 interface
 
 uses
-  DTF.Types,
+  DTF.Types, System.Rtti, System.TypInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.DBActns,
   System.Actions, Vcl.ActnList, Vcl.ComCtrls, Vcl.ToolWin, Vcl.Grids,
@@ -27,12 +27,19 @@ type
     procedure ClearGrid(AColCount: Integer = -1);
     procedure DisplayDatas<T>(const ADatas: TArray<T>); overload;
     procedure DisplayDatas<T>(const ADatas: TList<T>); overload;
+    procedure DisplayDatas<Rec, ItemType>(const ADataRec: Rec); overload;
+  end;
+
+  TGridColProp = record
+    Attr: TGridColAttribute;
+    Field: TRttiField;
+    Method: TRttiMethod;
   end;
 
 implementation
 
 uses
-  DTF.Intf, DTF.Utils, System.Rtti;
+  DTF.Intf, DTF.Utils;
 
 {$R *.dfm}
 
@@ -49,12 +56,6 @@ end;
 
 
 procedure TDTFStrGridFrame.DisplayDatas<T>(const ADatas: TArray<T>);
-type
-  TColInfo = record
-    Attr: TGridColAttribute;
-    Field: TRttiField;
-    Method: TRttiMethod;
-  end;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -63,15 +64,15 @@ var
   LAttr: TGridColAttribute;
 
   I: Integer;
-  ColInfo: TColInfo;
-  ColInfos: TArray<TColInfo>;
+  ColProp: TGridColProp;
+  ColProps: TArray<TGridColProp>;
 
   Data: T;
   Row: Integer;
   Value: TValue;
   StrVal: string;
 begin
-  SetLength(ColInfos, Grid.ColCount);
+  SetLength(ColProps, Grid.ColCount);
   LCtx := TRttiContext.Create;
   try
     LType := LCtx.GetType(TypeInfo(T));
@@ -82,8 +83,8 @@ begin
       if not Assigned(LAttr) then
         Continue;
 
-      ColInfos[LAttr.Col].Attr := LAttr;
-      ColInfos[LAttr.Col].Field := LField;
+      ColProps[LAttr.Col].Attr := LAttr;
+      ColProps[LAttr.Col].Field := LField;
     end;
 
     for LMethod in LType.GetMethods do
@@ -92,8 +93,8 @@ begin
       if not Assigned(LAttr) then
         Continue;
 
-      ColInfos[LAttr.Col].Attr := LAttr;
-      ColInfos[LAttr.Col].Method := LMethod;
+      ColProps[LAttr.Col].Attr := LAttr;
+      ColProps[LAttr.Col].Method := LMethod;
     end;
   finally
     LCtx.Free;
@@ -106,23 +107,23 @@ begin
     for Data in ADatas do
     begin
 
-      for I := 0 to Length(ColInfos) - 1 do
+      for I := 0 to Length(ColProps) - 1 do
       begin
-        ColInfo := ColInfos[I];
+        ColProp := ColProps[I];
 
-        if not Assigned(ColInfo.Attr) then
+        if not Assigned(ColProp.Attr) then
           Continue;
 
-        Value := nil;
-        if Assigned(ColInfo.Field) then
-          Value := ColInfo.Field.GetValue(@Data)
-        else if Assigned(ColInfo.Method) then
-          Value := ColInfo.Method.Invoke(TValue.From<Pointer>(@Data), []);
+        Value := TValue.Empty;
+        if Assigned(ColProp.Field) then
+          Value := ColProp.Field.GetValue(@Data)
+        else if Assigned(ColProp.Method) then
+          Value := ColProp.Method.Invoke(TValue.From<Pointer>(@Data), []);
 
-        if not Assigned(Value) then
+        if Value.IsEmpty then
           Continue;
 
-        StrVal := ColInfo.Attr.ValToStr(Value);
+        StrVal := ColProp.Attr.ValueToStr(Value);
 
         Grid.Cells[I, Row] := StrVal;
       end;
@@ -136,7 +137,44 @@ end;
 
 procedure TDTFStrGridFrame.DisplayDatas<T>(const ADatas: TList<T>);
 begin
+end;
 
+// DataRows Attr로 목록 확인
+procedure TDTFStrGridFrame.DisplayDatas<Rec, ItemType>(const ADataRec: Rec);
+var
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LField: TRttiField;
+  LMethod: TRttiMethod;
+  LAttr: DataRowsAttribute;
+
+  Info: PTypeInfo;
+  Data: PTypeData;
+begin
+//  SetLength(ColProps, Grid.ColCount);
+  LCtx := TRttiContext.Create;
+  try
+    LType := LCtx.GetType(TypeInfo(Rec));
+
+    for LField in LType.GetFields do
+    begin
+      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+      if LField.FieldType.TypeKind = tkDynArray then
+      begin
+        Info := TypeInfo(Rec);
+
+        OutputDebugString(PChar('Type name: ' + Info.Name));
+//        LField.
+//        ADataRec.elType^^.Name
+      end;
+
+    end;
+  finally
+    LCtx.Free;
+  end;
 end;
 
 procedure TDTFStrGridFrame.SetSearchPanel(APanel: TPanel);

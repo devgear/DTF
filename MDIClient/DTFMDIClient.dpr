@@ -32,7 +32,8 @@ uses
   DTF.Intf in '..\DTF\DTF.Intf.pas',
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
-  DTF.Utils in '..\DTF\DTF.Utils.pas';
+  DTF.Utils in '..\DTF\DTF.Utils.pas',
+  Test3Form in 'Views\Test\Test3Form.pas' {frmTest3};
 
 {$R *.res}
 
