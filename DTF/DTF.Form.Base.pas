@@ -78,7 +78,7 @@ var
   LAttr: TCustomAttribute;
   ClsName: string;
 begin
-  // Attribute
+  // Using ViewIdAttribute
   LCtx := TRttiContext.Create;
   try
     LType := LCtx.GetType(Self);

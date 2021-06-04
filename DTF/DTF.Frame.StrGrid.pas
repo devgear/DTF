@@ -3,7 +3,8 @@ unit DTF.Frame.StrGrid;
 interface
 
 uses
-  DTF.Types, System.Rtti, System.TypInfo,
+  DTF.Types, DTF.GridInfo,
+  System.Rtti, System.TypInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.DBActns,
   System.Actions, Vcl.ActnList, Vcl.ComCtrls, Vcl.ToolWin, Vcl.Grids,
@@ -28,12 +29,6 @@ type
     procedure DisplayDatas<T>(const ADatas: TArray<T>); overload;
     procedure DisplayDatas<T>(const ADatas: TList<T>); overload;
     procedure DisplayDatas<Rec, ItemType>(const ADataRec: Rec); overload;
-  end;
-
-  TGridColProp = record
-    Attr: TGridColAttribute;
-    Field: TRttiField;
-    Method: TRttiMethod;
   end;
 
 implementation

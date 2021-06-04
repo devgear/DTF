@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{305B859E-4639-4D61-AF4A-CA01D052F4FB}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="MDIClient\DTFMDIClient.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Tests\DTFTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="DTFMDIClient">
+        <MSBuild Projects="MDIClient\DTFMDIClient.dproj"/>
+    </Target>
+    <Target Name="DTFMDIClient:Clean">
+        <MSBuild Projects="MDIClient\DTFMDIClient.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DTFMDIClient:Make">
+        <MSBuild Projects="MDIClient\DTFMDIClient.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DTFTests">
+        <MSBuild Projects="Tests\DTFTests.dproj"/>
+    </Target>
+    <Target Name="DTFTests:Clean">
+        <MSBuild Projects="Tests\DTFTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DTFTests:Make">
+        <MSBuild Projects="Tests\DTFTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="DTFMDIClient;DTFTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="DTFMDIClient:Clean;DTFTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="DTFMDIClient:Make;DTFTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
