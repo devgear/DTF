@@ -3,7 +3,6 @@ unit TestDTFExtractColProp;
 interface
 
 uses
-  DTF.GridInfo,
   DUnitX.TestFramework;
 
 type
@@ -16,6 +15,9 @@ type
     procedure TearDown;
 
     [Test]
+    procedure TestGetAttrCount;
+
+    [Test]
     procedure TestGetColPropsRec;
 
     [Test]
@@ -24,6 +26,10 @@ type
 
 
 implementation
+
+uses
+  System.Rtti,
+  DTF.GridInfo, DTF.Utils;
 
 procedure TTestDTFExtractColProp.Setup;
 begin
@@ -59,20 +65,7 @@ function TRec1.Sum: Integer;
 begin
   Result := Int + Int2;
 end;
-{$ENDREGION}
 
-procedure TTestDTFExtractColProp.TestGetColPropsRec;
-var
-  ColProps: TGridColProps;
-begin
-  ColProps := TExtractColProp.GetColProps<TRec1>;
-
-  Assert.AreEqual(Length(ColProps), 6);
-
-  Assert.AreEqual(ColProps[0].Field.Name, 'Int');
-end;
-
-{$REGION 'Data type'}
 type
   TRecItem2 = record
     [IntCol(0)]
@@ -96,11 +89,41 @@ type
   end;
 {$ENDREGION}
 
+procedure TTestDTFExtractColProp.TestGetAttrCount;
+var
+  LCtx: TRttiContext;
+  C1, C2: Integer;
+begin
+  LCtx := TRttiContext.Create;
+  try
+    C1 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec1)));
+    Assert.AreEqual(C1, 6);
+
+    C2 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec2)));
+    Assert.AreEqual(C2, 5);
+  finally
+    LCtx.Free;
+  end;
+end;
+
+procedure TTestDTFExtractColProp.TestGetColPropsRec;
+var
+  ColProps: TGridColProps;
+begin
+  if not TExtractColProp.TryGetColProps<TRec1>(ColProps) then
+    Assert.Fail;
+
+  Assert.AreEqual(Length(ColProps), 6);
+
+  Assert.AreEqual(ColProps[0].Field.Name, 'Int');
+end;
+
 procedure TTestDTFExtractColProp.TestGetColPropsRecDepth;
 var
   ColProps: TGridColProps;
 begin
-  ColProps := TExtractColProp.GetColProps<TRec2>;
+  if not TExtractColProp.TryGetColProps<TRec2>(ColProps) then
+    Assert.Fail;
 
   Assert.AreEqual(Length(ColProps), 5);
 

@@ -38,6 +38,12 @@ begin
 
   for LField in AType.GetFields do
   begin
+    if LField.FieldType.IsRecord then
+    begin
+//      LField.FieldType.typeI
+      Result := Result;
+    end;
+
     for LAttr in LField.GetAttributes do
     begin
       if LAttr is T then

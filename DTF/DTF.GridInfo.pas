@@ -81,7 +81,7 @@ type
   TGridColProps = TArray<TGridColProp>;
 
   TExtractColProp = class
-    class function GetColProps<T>: TGridColProps;
+    class function TryGetColProps<T>(var Props: TGridColProps): Boolean;
   end;
 
 implementation
@@ -151,45 +151,59 @@ end;
 
 { TExtractColProp }
 
-class function TExtractColProp.GetColProps<T>: TGridColProps;
+class function TExtractColProp.TryGetColProps<T>(var Props: TGridColProps): Boolean;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
   LField: TRttiField;
   LMethod: TRttiMethod;
   LAttr: TGridColAttribute;
+
   LCount: Integer;
+  Idx: Integer;
 begin
-  LCtx := TRttiContext.Create;
+  Result := True;
   try
-    LType := LCtx.GetType(TypeInfo(T));
+    LCtx := TRttiContext.Create;
+    try
+      LType := LCtx.GetType(TypeInfo(T));
 
-    LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
-    SetLength(Result, LCount);
+      LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
+      SetLength(Props, LCount);
 
-    for LField in LType.GetFields do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
+      for LField in LType.GetFields do
+      begin
+        LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
+        if not Assigned(LAttr) then
+          Continue;
 
-      Result[LAttr.Col].Attr := LAttr;
-      Result[LAttr.Col].Field := LField;
+        idx := LAttr.Col;
+        if Idx >= Length(Props) then
+          SetLength(Props, Idx + 1);
+
+        Props[Idx].Attr := LAttr;
+        Props[Idx].Field := LField;
+      end;
+
+      for LMethod in LType.GetMethods do
+      begin
+        LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LMethod.GetAttributes);
+        if not Assigned(LAttr) then
+          Continue;
+
+        idx := LAttr.Col;
+        if Idx >= Length(Props) then
+          SetLength(Props, Idx + 1);
+
+        Props[Idx].Attr := LAttr;
+        Props[Idx].Method := LMethod;
+      end;
+    finally
+      LCtx.Free;
     end;
-
-    for LMethod in LType.GetMethods do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LMethod.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
-
-      Result[LAttr.Col].Attr := LAttr;
-      Result[LAttr.Col].Method := LMethod;
-    end;
-  finally
-    LCtx.Free;
+  except
+    Result := False;
   end;
-
 end;
 
 end.
