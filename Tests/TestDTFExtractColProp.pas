@@ -144,8 +144,16 @@ begin
 end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsArrayT;
+var
+  ColProps: TGridColProps;
+  Arr: TArray<TRec1>;
 begin
+  if not TExtractColProp.TryGetColProps<TRec3>(ColProps) then
+    Assert.Fail;
 
+  Assert.AreEqual(Length(ColProps), 6);
+
+  Assert.AreEqual(ColProps[0].Field.Name, 'Int');
 end;
 
 initialization

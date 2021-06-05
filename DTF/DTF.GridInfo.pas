@@ -161,6 +161,7 @@ var
   LField: TRttiField;
   LMethod: TRttiMethod;
   LAttr: TGridColAttribute;
+  LFieldType: TRttiType;
 
   LCount: Integer;
   Idx: Integer;
@@ -180,9 +181,21 @@ begin
 
       for LField in LType.GetFields do
       begin
+        // 레코드 필드인 경우 레코드 분석
         if LField.FieldType.IsRecord then
-          if not TryGetColProps(LField.FieldType.Handle, Props) then // T를 FieldType으로
+        begin
+          LFieldType := LField.FieldType;
+          if not TryGetColProps(LFieldType.Handle, Props) then
             Exit;
+        end;
+
+        // 배열인 경우 배열 타입 분석
+        if LField.FieldType.TypeKind = tkDynArray then
+        begin
+          LFieldType := (LField.FieldType as TRttiDynamicArrayType).ElementType;
+          if not TryGetColProps(LFieldType.Handle, Props) then
+            Exit;
+        end;
 
         LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
         if not Assigned(LAttr) then

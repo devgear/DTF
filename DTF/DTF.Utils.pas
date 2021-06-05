@@ -8,6 +8,7 @@ uses
 type
   TAttributeUtil = class
     class function FindAttribute<T: TCustomAttribute>(const Attrs: TArray<TCustomAttribute>): T;
+    //
     class function GetAttributeCount<T: TCustomAttribute>(const AType: TRttiType): Integer;
   end;
 
