@@ -82,8 +82,8 @@ type
   TGridColProps = TArray<TGridColProp>;
 
   TExtractColProp = class
-    class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
     class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps): Boolean; overload;
+    class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
   end;
 
 implementation

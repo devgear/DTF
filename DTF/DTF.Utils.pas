@@ -33,21 +33,29 @@ var
   LField: TRttiField;
   LMethod: TRttiMethod;
   LAttr: TCustomAttribute;
+  LFieldType: TRttiType;
 begin
   Result := 0;
 
   for LField in AType.GetFields do
   begin
     if LField.FieldType.IsRecord then
-      Result := Result + GetAttributeCount<T>(LField.FieldType);
+    begin
+      LFieldType := LField.FieldType;
+      Result := Result + GetAttributeCount<T>(LFieldType);
+      Continue;
+    end;
+
+    if LField.FieldType.TypeKind = tkDynArray then
+    begin
+      LFieldType := (LField.FieldType as TRttiDynamicArrayType).ElementType;
+      Result := Result + GetAttributeCount<T>(LFieldType);
+      Continue;
+    end;
 
     for LAttr in LField.GetAttributes do
-    begin
       if LAttr is T then
-      begin
         Inc(Result);
-      end;
-    end;
   end;
 
   for LMethod in AType.GetMethods do

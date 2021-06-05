@@ -22,6 +22,9 @@ type
 
     [Test]
     procedure TestGetColPropsRecDepth;
+
+    [Test]
+    procedure TestGetColPropsArrayT;
   end;
 
 
@@ -87,20 +90,30 @@ type
     [DtmCol(4, 100, 'YYYY-MM-DD')]
     Dtm: TDatetime;
   end;
+
+  TRec3 = record
+    Items: TArray<TRec1>;
+  end;
 {$ENDREGION}
 
 procedure TTestDTFExtractColProp.TestGetAttrCount;
 var
   LCtx: TRttiContext;
-  C1, C2: Integer;
+  C1, C2, C3: Integer;
 begin
   LCtx := TRttiContext.Create;
   try
-//    C1 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec1)));
-//    Assert.AreEqual(C1, 6);
+    // Rec
+    C1 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec1)));
+    Assert.AreEqual(C1, 6);
 
+    // Rec in Rec
     C2 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec2)));
     Assert.AreEqual(C2, 5);
+
+    // TArray<Rec>
+    C3 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec3)));
+    Assert.AreEqual(C3, 6);
   finally
     LCtx.Free;
   end;
@@ -112,10 +125,10 @@ var
 begin
   if not TExtractColProp.TryGetColProps<TRec1>(ColProps) then
     Assert.Fail;
-//
-//  Assert.AreEqual(Length(ColProps), 6);
-//
-//  Assert.AreEqual(ColProps[0].Field.Name, 'Int');
+
+  Assert.AreEqual(Length(ColProps), 6);
+
+  Assert.AreEqual(ColProps[0].Field.Name, 'Int');
 end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsRecDepth;
@@ -128,6 +141,11 @@ begin
   Assert.AreEqual(Length(ColProps), 5);
 
   Assert.AreEqual(ColProps[0].Field.Name, 'Int');
+end;
+
+procedure TTestDTFExtractColProp.TestGetColPropsArrayT;
+begin
+
 end;
 
 initialization

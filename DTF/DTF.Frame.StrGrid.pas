@@ -119,23 +119,15 @@ begin
   LCtx := TRttiContext.Create;
   try
     LType := LCtx.GetType(TypeInfo(T));
-//
-//    for LField in LType.GetFields do
-//    begin
-//      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
-//      if not Assigned(LAttr) then
-//        Continue;
-//
-//      if LField.FieldType.TypeKind = tkDynArray then
-//      begin
-//        Info := TypeInfo(Rec);
-//
-//        OutputDebugString(PChar('Type name: ' + Info.Name));
-////        LField.
-////        ADataRec.elType^^.Name
-//      end;
-//
-//    end;
+
+    for LField in LType.GetFields do
+    begin
+      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+
+    end;
   finally
     LCtx.Free;
   end;
