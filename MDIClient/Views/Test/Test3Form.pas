@@ -3,13 +3,14 @@ unit Test3Form;
 interface
 
 uses
-  DTF.Types,
+  DTF.Types, DTF.GridInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
   DTF.Frame.Base, DTF.Frame.Title, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
-  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, Vcl.Grids,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.WinXCtrls,
+  Vcl.ExtCtrls;
 
 type
   TDataItem = record
@@ -60,9 +61,13 @@ type
     qryTestDataSTR_DATA: TWideStringField;
     qryTestDataDBL_DATA: TSingleField;
     qryTestDataDTM_DATA: TSQLTimeStampField;
+    pnlSearchPanel: TPanel;
+    edtKeyword: TSearchBox;
     procedure DTFStrGridFrame1actSearchExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    FGrid: TStringGrid;
     FDatas: TGridData;
   public
     { Public declarations }
@@ -75,7 +80,7 @@ implementation
 
 {$R *.dfm}
 
-uses DatabaseModule;
+uses DatabaseModule, System.StrUtils;
 
 { TDataItem }
 
@@ -102,11 +107,43 @@ begin
   Sum.Calc;
 end;
 
-procedure TfrmTest3.DTFStrGridFrame1actSearchExecute(Sender: TObject);
+procedure TfrmTest3.FormCreate(Sender: TObject);
 begin
   inherited;
 
-  DTFStrGridFrame1.DisplayDatas<TGridData, TDataItem>(FDatas);
+  DTFStrGridFrame1.ClearGrid(6);
+
+  FGrid := DTFStrGridFrame1.Grid;
+  FGrid.Rows[0].AddStrings(['숫자', '숫자2', '문자', '실수', '날짜', '합계(Method)']);
+end;
+
+
+procedure TfrmTest3.DTFStrGridFrame1actSearchExecute(Sender: TObject);
+var
+  Data: TGridData;
+  Item: TDataItem;
+begin
+  qryTestData.Close;
+  qryTestData.ParamByName('str').AsString := IfThen(edtKeyword.Text = '', '%', edtKeyword.Text);
+  qryTestData.Open;
+
+  SetLength(Data.Items, qryTestData.RecordCount);
+  while not qryTestData.Eof do
+  begin
+    Item := Default(TDataItem);
+    Item.Int  := qryTestData.FieldByName('INT_DATA').AsInteger;
+    Item.Int2 := qryTestData.FieldByName('INT_DATA2').AsInteger;
+    Item.Str  := qryTestData.FieldByName('STR_DATA').AsString;
+    Item.Dbl  := qryTestData.FieldByName('DBL_DATA').AsSingle;
+    Item.Dtm  := qryTestData.FieldByName('DTM_DATA').AsDateTime;
+
+
+    Data.Items[qryTestData.RecNo-1] := Item;
+
+    qryTestData.Next;
+  end;
+
+  DTFStrGridFrame1.DisplayDataRec<TGridData>(Data);
 end;
 
 initialization

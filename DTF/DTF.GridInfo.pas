@@ -3,7 +3,8 @@ unit DTF.GridInfo;
 interface
 
 uses
-  System.SysUtils, System.Rtti, DTF.Utils;
+  System.SysUtils, DTF.Utils,
+  System.Rtti, System.TypInfo;
 
 type
   {  Attributes }
@@ -81,7 +82,8 @@ type
   TGridColProps = TArray<TGridColProp>;
 
   TExtractColProp = class
-    class function TryGetColProps<T>(var Props: TGridColProps): Boolean;
+    class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
+    class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps): Boolean; overload;
   end;
 
 implementation
@@ -151,7 +153,8 @@ end;
 
 { TExtractColProp }
 
-class function TExtractColProp.TryGetColProps<T>(var Props: TGridColProps): Boolean;
+class function TExtractColProp.TryGetColProps(ATypeInfo: PTypeInfo;
+  var Props: TGridColProps): Boolean;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -161,18 +164,26 @@ var
 
   LCount: Integer;
   Idx: Integer;
+  cls: TClass;
 begin
-  Result := True;
+  Result := False;
   try
     LCtx := TRttiContext.Create;
     try
-      LType := LCtx.GetType(TypeInfo(T));
+      LType := LCtx.GetType(ATypeInfo);
 
-      LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
-      SetLength(Props, LCount);
+      if Length(Props) = 0 then
+      begin
+        LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
+        SetLength(Props, LCount);
+      end;
 
       for LField in LType.GetFields do
       begin
+        if LField.FieldType.IsRecord then
+          if not TryGetColProps(LField.FieldType.Handle, Props) then // T∏¶ FieldType¿∏∑Œ
+            Exit;
+
         LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
         if not Assigned(LAttr) then
           Continue;
@@ -201,9 +212,14 @@ begin
     finally
       LCtx.Free;
     end;
+    Result := True;
   except
-    Result := False;
   end;
+end;
+
+class function TExtractColProp.TryGetColProps<T>(var Props: TGridColProps): Boolean;
+begin
+  Result := TryGetColProps(TypeInfo(T), Props);
 end;
 
 end.

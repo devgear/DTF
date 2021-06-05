@@ -39,10 +39,7 @@ begin
   for LField in AType.GetFields do
   begin
     if LField.FieldType.IsRecord then
-    begin
-//      LField.FieldType.typeI
-      Result := Result;
-    end;
+      Result := Result + GetAttributeCount<T>(LField.FieldType);
 
     for LAttr in LField.GetAttributes do
     begin

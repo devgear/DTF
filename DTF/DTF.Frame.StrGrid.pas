@@ -28,7 +28,7 @@ type
     procedure ClearGrid(AColCount: Integer = -1);
     procedure DisplayDatas<T>(const ADatas: TArray<T>); overload;
     procedure DisplayDatas<T>(const ADatas: TList<T>); overload;
-    procedure DisplayDatas<Rec, ItemType>(const ADataRec: Rec); overload;
+    procedure DisplayDataRec<T>(const ADataRec: T); overload;
   end;
 
 implementation
@@ -52,48 +52,17 @@ end;
 
 procedure TDTFStrGridFrame.DisplayDatas<T>(const ADatas: TArray<T>);
 var
-  LCtx: TRttiContext;
-  LType: TRttiType;
-  LField: TRttiField;
-  LMethod: TRttiMethod;
-  LAttr: TGridColAttribute;
-
   I: Integer;
   ColProp: TGridColProp;
-  ColProps: TArray<TGridColProp>;
+  ColProps: TGridColProps;
 
   Data: T;
   Row: Integer;
   Value: TValue;
   StrVal: string;
 begin
-  SetLength(ColProps, Grid.ColCount);
-  LCtx := TRttiContext.Create;
-  try
-    LType := LCtx.GetType(TypeInfo(T));
-
-    for LField in LType.GetFields do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
-
-      ColProps[LAttr.Col].Attr := LAttr;
-      ColProps[LAttr.Col].Field := LField;
-    end;
-
-    for LMethod in LType.GetMethods do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LMethod.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
-
-      ColProps[LAttr.Col].Attr := LAttr;
-      ColProps[LAttr.Col].Method := LMethod;
-    end;
-  finally
-    LCtx.Free;
-  end;
+  if not TExtractColProp.TryGetColProps<T>(ColProps) then
+    Exit;
 
   Grid.BeginUpdate;
   try
@@ -135,7 +104,7 @@ begin
 end;
 
 // DataRows Attr로 목록 확인
-procedure TDTFStrGridFrame.DisplayDatas<Rec, ItemType>(const ADataRec: Rec);
+procedure TDTFStrGridFrame.DisplayDataRec<T>(const ADataRec: T);
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -149,24 +118,24 @@ begin
 //  SetLength(ColProps, Grid.ColCount);
   LCtx := TRttiContext.Create;
   try
-    LType := LCtx.GetType(TypeInfo(Rec));
-
-    for LField in LType.GetFields do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
-
-      if LField.FieldType.TypeKind = tkDynArray then
-      begin
-        Info := TypeInfo(Rec);
-
-        OutputDebugString(PChar('Type name: ' + Info.Name));
-//        LField.
-//        ADataRec.elType^^.Name
-      end;
-
-    end;
+    LType := LCtx.GetType(TypeInfo(T));
+//
+//    for LField in LType.GetFields do
+//    begin
+//      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+//      if not Assigned(LAttr) then
+//        Continue;
+//
+//      if LField.FieldType.TypeKind = tkDynArray then
+//      begin
+//        Info := TypeInfo(Rec);
+//
+//        OutputDebugString(PChar('Type name: ' + Info.Name));
+////        LField.
+////        ADataRec.elType^^.Name
+//      end;
+//
+//    end;
   finally
     LCtx.Free;
   end;

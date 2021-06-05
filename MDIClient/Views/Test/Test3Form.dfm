@@ -2,6 +2,7 @@ inherited frmTest3: TfrmTest3
   Caption = 'StrGrid '#53580#49828#53944'2'
   ClientHeight = 505
   ClientWidth = 766
+  OnCreate = FormCreate
   ExplicitWidth = 782
   ExplicitHeight = 544
   PixelsPerInch = 96
@@ -17,8 +18,10 @@ inherited frmTest3: TfrmTest3
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
+    ExplicitWidth = 766
     inherited pnlCaption: TPanel
       Width = 766
+      ExplicitWidth = 766
       ExplicitHeight = 20
     end
   end
@@ -29,9 +32,12 @@ inherited frmTest3: TfrmTest3
     Height = 485
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = -38
+    ExplicitTop = 20
+    ExplicitWidth = 766
+    ExplicitHeight = 485
     inherited tlbDataSet: TToolBar
       Width = 766
+      ExplicitWidth = 766
       inherited btnDSRefresh: TToolButton
         ExplicitWidth = 53
       end
@@ -44,15 +50,37 @@ inherited frmTest3: TfrmTest3
     end
     inherited pnlSearchControlArea: TPanel
       Width = 766
+      Height = 47
+      ExplicitWidth = 766
+      ExplicitHeight = 47
     end
     inherited Grid: TStringGrid
+      Top = 69
       Width = 766
-      Height = 440
+      Height = 416
+      ExplicitWidth = 766
+      ExplicitHeight = 440
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction
         OnExecute = DTFStrGridFrame1actSearchExecute
       end
+    end
+  end
+  object pnlSearchPanel: TPanel
+    Left = 8
+    Top = 48
+    Width = 476
+    Height = 41
+    BevelOuter = bvNone
+    TabOrder = 2
+    object edtKeyword: TSearchBox
+      Left = 7
+      Top = 8
+      Width = 146
+      Height = 21
+      TabOrder = 0
+      TextHint = #47928#51088#50676
     end
   end
   object qryTestData: TFDQuery
