@@ -143,7 +143,7 @@ begin
     qryTestData.Next;
   end;
 
-  DTFStrGridFrame1.DisplayDataRec<TGridData>(Data);
+  DTFStrGridFrame1.FillDataRowsRec<TGridData>(Data);
 end;
 
 initialization

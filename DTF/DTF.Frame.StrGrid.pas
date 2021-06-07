@@ -26,9 +26,10 @@ type
     procedure SetSearchPanel(APanel: TPanel);
 
     procedure ClearGrid(AColCount: Integer = -1);
-    procedure DisplayDatas<T>(const ADatas: TArray<T>); overload;
-    procedure DisplayDatas<T>(const ADatas: TList<T>); overload;
-    procedure DisplayDataRec<T>(const ADataRec: T); overload;
+
+    procedure FillDataRows<T>(const ADatas: TArray<T>); overload;
+    procedure FillDataRows<T>(const ADatas: TList<T>); overload;
+    procedure FillDataRowsRec<T>(const ADataRec: T); overload;
   end;
 
 implementation
@@ -40,6 +41,35 @@ uses
 
 { TDTFStrGridFrame }
 
+procedure TDTFStrGridFrame.SetSearchPanel(APanel: TPanel);
+var
+  I: Integer;
+  SC: IDTFSetSearchControl;
+begin
+  pnlSearchControlArea.Visible := Assigned(APanel) and APanel.Visible;
+  pnlSearchControlArea.Caption := '';
+  if Assigned(APanel) then
+  begin
+    APanel.Parent := pnlSearchControlArea;
+    APanel.Align := alClient;
+    pnlSearchControlArea.Height := APanel.Height;
+
+    // SearchEdit 등록(엔터키 처리)
+    if Supports(GetParentForm(Self), IDTFSetSearchControl, SC) then
+    begin
+      for I := 0 to APanel.ControlCount - 1 do
+      begin
+        if APanel.Controls[I] is TCustomEdit then
+          SC.SetSearchControl(APanel.Controls[I],
+            procedure
+            begin
+              actSearch.Execute;
+            end);
+      end;
+    end;
+  end;
+end;
+
 procedure TDTFStrGridFrame.ClearGrid(AColCount: Integer = -1);
 begin
   if AColCount > 0 then
@@ -50,7 +80,7 @@ begin
 end;
 
 
-procedure TDTFStrGridFrame.DisplayDatas<T>(const ADatas: TArray<T>);
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
 var
   I: Integer;
   ColProp: TGridColProp;
@@ -99,12 +129,12 @@ begin
   end;
 end;
 
-procedure TDTFStrGridFrame.DisplayDatas<T>(const ADatas: TList<T>);
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
 begin
 end;
 
 // DataRows Attr로 목록 확인
-procedure TDTFStrGridFrame.DisplayDataRec<T>(const ADataRec: T);
+procedure TDTFStrGridFrame.FillDataRowsRec<T>(const ADataRec: T);
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -130,34 +160,6 @@ begin
     end;
   finally
     LCtx.Free;
-  end;
-end;
-
-procedure TDTFStrGridFrame.SetSearchPanel(APanel: TPanel);
-var
-  I: Integer;
-  SC: IDTFSetSearchControl;
-begin
-  pnlSearchControlArea.Visible := Assigned(APanel) and APanel.Visible;
-  pnlSearchControlArea.Caption := '';
-  if Assigned(APanel) then
-  begin
-    APanel.Parent := pnlSearchControlArea;
-    APanel.Align := alClient;
-    pnlSearchControlArea.Height := APanel.Height;
-
-    // SearchEdit 등록(엔터키 처리)
-    if Supports(GetParentForm(Self), IDTFSetSearchControl, SC) then
-    begin
-      for I := 0 to APanel.ControlCount - 1 do
-      begin
-        if APanel.Controls[I] is TCustomEdit then
-          SC.SetSearchControl(APanel.Controls[I], procedure
-            begin
-              actSearch.Execute;
-            end);
-      end;
-    end;
   end;
 end;
 

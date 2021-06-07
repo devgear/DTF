@@ -38,15 +38,6 @@ inherited frmTest3: TfrmTest3
     inherited tlbDataSet: TToolBar
       Width = 766
       ExplicitWidth = 766
-      inherited btnDSRefresh: TToolButton
-        ExplicitWidth = 53
-      end
-      inherited btnExportXls: TToolButton
-        ExplicitWidth = 89
-      end
-      inherited ToolButton2: TToolButton
-        ExplicitWidth = 53
-      end
     end
     inherited pnlSearchControlArea: TPanel
       Width = 766
@@ -58,6 +49,7 @@ inherited frmTest3: TfrmTest3
       Top = 69
       Width = 766
       Height = 416
+      ExplicitTop = 69
       ExplicitWidth = 766
       ExplicitHeight = 440
     end
