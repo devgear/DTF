@@ -14,6 +14,7 @@ type
     FFormat: string;
     FColWidth: Integer;
   public
+    constructor Create; overload;
     constructor Create(ACol: Integer; AFormat: string = ''); overload;
     constructor Create(ACol: Integer; AColWidth: Integer; AFormat: string = ''); overload;
 
@@ -86,9 +87,16 @@ type
     class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
   end;
 
+//  function DataRowcount: Integer;
+
 implementation
 
 { TGridColAttribute }
+
+constructor TGridColAttribute.Create;
+begin
+
+end;
 
 constructor TGridColAttribute.Create(ACol: Integer; AFormat: string);
 begin
@@ -152,6 +160,10 @@ begin
 end;
 
 { TExtractColProp }
+
+// 중복오류
+// ColIdx 지정하지 않고 순서대로 설정
+// Out of index
 
 class function TExtractColProp.TryGetColProps(ATypeInfo: PTypeInfo;
   var Props: TGridColProps): Boolean;

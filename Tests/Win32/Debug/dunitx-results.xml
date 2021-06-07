@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="4" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-06-05" time="14.115">
+<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="4" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-06-07" time="0.018">
   <culture-info current-culture="en" current-uiculture="en" />
-  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="14.115" asserts="0">
+  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="0.018" asserts="0">
     <results>
-        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="14.115" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="0.018" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="14.115" >
+              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="0.018" >
                 <results>
                   <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsRecDepth" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="TestGetColPropsArrayT" executed="True" result="Success" success="True" time="14.098" asserts="0" />
+                  <test-case name="TestGetColPropsArrayT" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                 </results>
               </test-suite>
           </results>

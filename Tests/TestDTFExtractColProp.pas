@@ -15,6 +15,7 @@ type
     procedure TearDown;
 
     [Test]
+    // 구조체의 그리드 컬럼정보가 설정된 컬럼 갯수 확인
     procedure TestGetAttrCount;
 
     [Test]
@@ -94,6 +95,35 @@ type
   TRec3 = record
     Items: TArray<TRec1>;
   end;
+
+  TRec4 = record
+    [DataRows]
+    Items: TArray<TRec1>;
+    [DataRows]
+    Sum: TRec1;
+  end;
+
+  TRecItem5 = record
+    [IntCol]
+    Int: Integer;
+    [StrCol]
+    Str: string;
+  end;
+  TRec5 = record
+    A,
+    B,
+    C: TRecItem5; // 6 cols
+  end;
+
+  TRec6 = record
+    [IntCol]
+    Int: Integer;
+    A,
+    B: TRecItem5;
+    [StrCol]
+    Str: string;
+    C: TRecItem5; // 8 cols
+  end;
 {$ENDREGION}
 
 procedure TTestDTFExtractColProp.TestGetAttrCount;
@@ -146,7 +176,6 @@ end;
 procedure TTestDTFExtractColProp.TestGetColPropsArrayT;
 var
   ColProps: TGridColProps;
-  Arr: TArray<TRec1>;
 begin
   if not TExtractColProp.TryGetColProps<TRec3>(ColProps) then
     Assert.Fail;

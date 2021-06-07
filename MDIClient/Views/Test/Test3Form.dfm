@@ -51,7 +51,7 @@ inherited frmTest3: TfrmTest3
       Height = 416
       ExplicitTop = 69
       ExplicitWidth = 766
-      ExplicitHeight = 440
+      ExplicitHeight = 416
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction

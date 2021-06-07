@@ -111,6 +111,8 @@ procedure TfrmTest3.FormCreate(Sender: TObject);
 begin
   inherited;
 
+  DTFStrGridFrame1.SetSearchPanel(pnlSearchPanel);
+
   DTFStrGridFrame1.ClearGrid(6);
 
   FGrid := DTFStrGridFrame1.Grid;

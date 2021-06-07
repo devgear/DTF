@@ -22,6 +22,8 @@ type
     actSearch: TAction;
     pnlSearchControlArea: TPanel;
     Grid: TStringGrid;
+  private
+    procedure FillDataRow<T>(ARow: Integer; AColProps: TGridColProps; AData: T);
   public
     procedure SetSearchPanel(APanel: TPanel);
 
@@ -79,17 +81,45 @@ begin
   Grid.Rows[Grid.FixedRows].Clear;
 end;
 
-
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
+procedure TDTFStrGridFrame.FillDataRow<T>(ARow: Integer; AColProps: TGridColProps; AData: T);
 var
   I: Integer;
   ColProp: TGridColProp;
+  Value: TValue;
+  StrVal: string;
+begin
+  for I := 0 to Length(AColProps) - 1 do
+  begin
+    ColProp := AColProps[I];
+
+    if not Assigned(ColProp.Attr) then
+      Continue;
+
+    Value := TValue.Empty;
+    if Assigned(ColProp.Field) then
+      Value := ColProp.Field.GetValue(@AData)
+    else if Assigned(ColProp.Method) then
+      Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
+
+    if Value.IsEmpty then
+      Continue;
+
+    StrVal := ColProp.Attr.ValueToStr(Value);
+
+    Grid.Cells[I, ARow] := StrVal;
+  end;
+end;
+
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
+begin
+end;
+
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
+var
   ColProps: TGridColProps;
 
   Data: T;
   Row: Integer;
-  Value: TValue;
-  StrVal: string;
 begin
   if not TExtractColProp.TryGetColProps<T>(ColProps) then
     Exit;
@@ -100,37 +130,13 @@ begin
     Row := Grid.FixedRows;
     for Data in ADatas do
     begin
-
-      for I := 0 to Length(ColProps) - 1 do
-      begin
-        ColProp := ColProps[I];
-
-        if not Assigned(ColProp.Attr) then
-          Continue;
-
-        Value := TValue.Empty;
-        if Assigned(ColProp.Field) then
-          Value := ColProp.Field.GetValue(@Data)
-        else if Assigned(ColProp.Method) then
-          Value := ColProp.Method.Invoke(TValue.From<Pointer>(@Data), []);
-
-        if Value.IsEmpty then
-          Continue;
-
-        StrVal := ColProp.Attr.ValueToStr(Value);
-
-        Grid.Cells[I, Row] := StrVal;
-      end;
+      FillDataRow<T>(Row, ColProps, Data);
 
       Inc(Row);
     end;
   finally
     Grid.EndUpdate;
   end;
-end;
-
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
-begin
 end;
 
 // DataRows Attr로 목록 확인
