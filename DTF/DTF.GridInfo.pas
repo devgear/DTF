@@ -122,11 +122,12 @@ end;
 
 function DatetimeColAttribute.ValueToStr(Value: TValue): string;
 begin
-  if FFormat = '' then
+  if Value.AsExtended = 0 then
+    Result := ''
+  else if FFormat = '' then
     Result := DatetimeToStr(Value.AsType<TDatetime>)
   else
     Result := FormatDatetime(FFormat, Value.AsType<TDatetime>);
-
 end;
 
 { SumAttribute }
