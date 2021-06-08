@@ -14,26 +14,26 @@ uses
 
 type
   TDataItem = record
-    [IntCol(0)][FieldName('INT_DATA')]
+    [IntCol][FieldName('INT_DATA')]
     Int: Integer;
 
-    [IntCol(1, '#,###')][FieldName('INT_DATA2')]
+    [IntCol('#,###')][FieldName('INT_DATA2')]
     Int2: Integer;
 
-    [StrCol(2)][FieldName('STR_DATA')]
+    [StrCol][FieldName('STR_DATA')]
     Str: string;
 
-    [DblCol(3, '#,##0.###')][FieldName('DBL_DATA')]
+    [DblCol('#,##0.###')][FieldName('DBL_DATA')]
     Dbl: Single;
 
-    [DtmCol(4, 100, 'YYYY-MM-DD')][FieldName('DTM_DATA')]
+    [DtmCol('YYYY-MM-DD')][FieldName('DTM_DATA')]
     Dtm: TDatetime;
 
 
-    [IntCol(5)]
+    [IntCol]
     Sum: Integer;
 
-    [IntCol(6)][Avg('Int, Int2')]
+    [DblCol('#,##0.###')][Avg('Int, Int2')]
     Avg: Single;
 
     [AutoCalc]
@@ -43,6 +43,7 @@ type
   TGridData = record
     [DataRows]
     Items: TArray<TDataItem>;
+
     [DataRows][SumRows('Int, Int2, Dbl, Sum, Avg')]
     Sum: TDataItem;
 
@@ -96,6 +97,7 @@ procedure TGridData.Calc;
 var
   Item: TDataItem;
 begin
+  ZeroMemory(@Sum, SizeOf(Sum));
   for Item in Items do
   begin
     Sum.Int := Sum.Int + Item.Int;
@@ -139,13 +141,16 @@ begin
     Item.Dbl  := qryTestData.FieldByName('DBL_DATA').AsSingle;
     Item.Dtm  := qryTestData.FieldByName('DTM_DATA').AsDateTime;
 
+    Item.Calc;
 
     Data.Items[qryTestData.RecNo-1] := Item;
 
     qryTestData.Next;
   end;
 
-  DTFStrGridFrame1.FillDataRowsRec<TGridData>(Data);
+  Data.Calc;
+
+  DTFStrGridFrame1.FillDataRowsRec<TGridData, TDataItem>(Data);
 end;
 
 initialization

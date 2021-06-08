@@ -16,22 +16,22 @@ type
   { TODO : Design 관련 Attr 추가하면 좋을 듯
      - Align, Color, Caption 등 }
   TGridData = record
-    [IntCol(0)]
+    [IntCol]
     Int: Integer;
 
-    [IntCol(1)][ColColor]
+    [IntCol][ColColor]
     Int2: Integer;
 
-    [StrCol(2)]
+    [StrCol]
     Str: string;
 
-    [DblCol(3, '#,##0.###')]
+    [DblCol('#,##0.###')]
     Dbl: Single;
 
-    [DtmCol(4, 100, 'YYYY-MM-DD')]
+    [DtmCol('YYYY-MM-DD')]
     Dtm: TDatetime;
 
-    [IntCol(5)]
+    [IntCol]
     function Sum: Integer;
   end;
 

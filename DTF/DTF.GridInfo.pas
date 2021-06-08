@@ -14,12 +14,8 @@ type
     FFormat: string;
     FColWidth: Integer;
   public
-    constructor Create; overload;
-    constructor Create(ACol: Integer; AFormat: string = ''); overload;
-    constructor Create(ACol: Integer; AColWidth: Integer; AFormat: string = ''); overload;
+    constructor Create(AFormat: string = ''); overload;
 
-    property Col: Integer read FCol;
-    property ColWidth: Integer read FColWidth;
     property Format: string read FFormat;
 
     function ValueToStr(Value: TValue): string; virtual; abstract;
@@ -93,20 +89,8 @@ implementation
 
 { TGridColAttribute }
 
-constructor TGridColAttribute.Create;
+constructor TGridColAttribute.Create(AFormat: string);
 begin
-
-end;
-
-constructor TGridColAttribute.Create(ACol: Integer; AFormat: string);
-begin
-  Create(ACol, -1, AFormat);
-end;
-
-constructor TGridColAttribute.Create(ACol, AColWidth: Integer; AFormat: string);
-begin
-  FCol := ACol;
-  FColWidth := AColWidth;
   FFormat := AFormat;
 end;
 
@@ -184,12 +168,12 @@ begin
     LCtx := TRttiContext.Create;
     try
       LType := LCtx.GetType(ATypeInfo);
-
-      if Length(Props) = 0 then
-      begin
-        LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
-        SetLength(Props, LCount);
-      end;
+//
+//      if Length(Props) = 0 then
+//      begin
+//        LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
+//        SetLength(Props, LCount);
+//      end;
 
       for LField in LType.GetFields do
       begin
@@ -213,9 +197,8 @@ begin
         if not Assigned(LAttr) then
           Continue;
 
-        idx := LAttr.Col;
-        if Idx >= Length(Props) then
-          SetLength(Props, Idx + 1);
+        Idx := Length(Props);
+        SetLength(Props, Idx + 1);
 
         Props[Idx].Attr := LAttr;
         Props[Idx].Field := LField;
@@ -227,9 +210,8 @@ begin
         if not Assigned(LAttr) then
           Continue;
 
-        idx := LAttr.Col;
-        if Idx >= Length(Props) then
-          SetLength(Props, Idx + 1);
+        Idx := Length(Props);
+        SetLength(Props, Idx + 1);
 
         Props[Idx].Attr := LAttr;
         Props[Idx].Method := LMethod;

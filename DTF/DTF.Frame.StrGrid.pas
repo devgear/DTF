@@ -23,7 +23,8 @@ type
     pnlSearchControlArea: TPanel;
     Grid: TStringGrid;
   private
-    procedure FillDataRow<T>(ARow: Integer; AColProps: TGridColProps; AData: T);
+    procedure SetDataRow<T>(const ARow: Integer; AColProps: TGridColProps; AData: T);
+    procedure SetDataRows<T>(const AStartRow: Integer; AColProps: TGridColProps; ADatas: TArray<T>);
   public
     procedure SetSearchPanel(APanel: TPanel);
 
@@ -31,7 +32,7 @@ type
 
     procedure FillDataRows<T>(const ADatas: TArray<T>); overload;
     procedure FillDataRows<T>(const ADatas: TList<T>); overload;
-    procedure FillDataRowsRec<T>(const ADataRec: T); overload;
+    procedure FillDataRowsRec<DataType, ItemType>(const ADataRec: DataType); overload;
   end;
 
 implementation
@@ -81,7 +82,7 @@ begin
   Grid.Rows[Grid.FixedRows].Clear;
 end;
 
-procedure TDTFStrGridFrame.FillDataRow<T>(ARow: Integer; AColProps: TGridColProps; AData: T);
+procedure TDTFStrGridFrame.SetDataRow<T>(const ARow: Integer; AColProps: TGridColProps; AData: T);
 var
   I: Integer;
   ColProp: TGridColProp;
@@ -110,27 +111,17 @@ begin
   end;
 end;
 
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
-begin
-end;
-
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
+procedure TDTFStrGridFrame.SetDataRows<T>(const AStartRow: Integer; AColProps: TGridColProps; ADatas: TArray<T>);
 var
-  ColProps: TGridColProps;
-
   Data: T;
   Row: Integer;
 begin
-  if not TExtractColProp.TryGetColProps<T>(ColProps) then
-    Exit;
-
   Grid.BeginUpdate;
   try
-    Grid.RowCount := Grid.FixedRows + Length(ADatas);
-    Row := Grid.FixedRows;
+    Row := AStartRow;
     for Data in ADatas do
     begin
-      FillDataRow<T>(Row, ColProps, Data);
+      SetDataRow<T>(Row, AColProps, Data);
 
       Inc(Row);
     end;
@@ -139,8 +130,28 @@ begin
   end;
 end;
 
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
+begin
+  FillDataRows<T>(ADatas.ToArray);
+end;
+
+procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
+var
+  ColProps: TGridColProps;
+begin
+  if not TExtractColProp.TryGetColProps<T>(ColProps) then
+    Exit;
+
+  if Length(ADatas) = 0 then
+    Exit;
+
+  Grid.RowCount := Grid.FixedRows + Length(ADatas);
+
+  SetDataRows<T>(Grid.FixedRows, ColProps, ADatas);
+end;
+
 // DataRows Attr로 목록 확인
-procedure TDTFStrGridFrame.FillDataRowsRec<T>(const ADataRec: T);
+procedure TDTFStrGridFrame.FillDataRowsRec<DataType, ItemType>(const ADataRec: DataType);
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -148,22 +159,45 @@ var
   LMethod: TRttiMethod;
   LAttr: DataRowsAttribute;
 
+  ColProps: TGridColProps;
+
   Info: PTypeInfo;
   Data: PTypeData;
+  LCount: Integer;
+  Value: TValue;
 begin
-//  SetLength(ColProps, Grid.ColCount);
+  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+    Exit;
+
   LCtx := TRttiContext.Create;
   try
-    LType := LCtx.GetType(TypeInfo(T));
+    LType := LCtx.GetType(TypeInfo(DataType));
 
+    LCount := 0;
     for LField in LType.GetFields do
     begin
       LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
       if not Assigned(LAttr) then
         Continue;
 
-
+      if LField.FieldType.TypeKind = tkDynArray then
+      begin
+        Value := LField.GetValue(@ADataRec);
+//        (LField.FieldType as TRttiDynamicArrayType).ElementType;
+        // ElementType 이 ItemType인지 확인
+        SetDataRows<ItemType>(Grid.FixedRows + LCount, ColProps, Value.AsType<TArray<ItemType>>);
+        LCount := LCount + Value.GetArrayLength;
+      end
+      else if LField.FieldType.IsRecord then
+      begin
+        Value := LField.GetValue(@ADataRec);
+        SetDataRow<ItemType>(Grid.FixedRows + LCount, ColProps, Value.AsType<ItemType>);
+        Inc(LCount);
+      end;
     end;
+
+    if LCount > 0 then
+      Grid.RowCount := Grid.FixedRows + LCount;
   finally
     LCtx.Free;
   end;

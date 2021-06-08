@@ -117,7 +117,7 @@ begin
   );
 
   WindowState := App.Config.WindowState;
-  BoundsRect := App.Config.WindowBounds;
+//  BoundsRect := App.Config.WindowBounds;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
