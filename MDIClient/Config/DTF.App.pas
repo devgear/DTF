@@ -30,8 +30,6 @@ implementation
 
 constructor TApp.Create;
 begin
-
-
 end;
 
 destructor TApp.Destroy;

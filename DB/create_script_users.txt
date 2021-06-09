@@ -5,10 +5,7 @@ CREATE TABLE users
 	user_id			VARCHAR(64) NOT NULL,
 	user_enc_pwd		VARCHAR(64) NOT NULL, 
 
-	phone_no 		VARCHAR(32), 
 	email			VARCHAR(256), 
-	postcode		VARCHAR(12), 
-	address			VARCHAR(256), 
 
 	last_pwd_updated_at 	TIMESTAMP default CURRENT_TIMESTAMP, 
 	created_at		TIMESTAMP default CURRENT_TIMESTAMP,
@@ -28,4 +25,4 @@ begin
 end;
 
 INSERT INTO users(user_name, user_id, user_enc_pwd, created_user)
-VALUES('관리자', 'admin', '0336b1504c54b042bd75e65e96ca555d51d7a949251752577a35aea47c1705ee', 1);
+VALUES('aministrator', 'admin', '0336b1504c54b042bd75e65e96ca555d51d7a949251752577a35aea47c1705ee', 1);

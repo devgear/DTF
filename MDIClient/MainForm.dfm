@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'DTF'
-  ClientHeight = 501
-  ClientWidth = 749
+  ClientHeight = 540
+  ClientWidth = 857
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = cl3DDkShadow
@@ -15,14 +15,14 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignSize = (
-    749
-    501)
+    857
+    540)
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 185
     Top = 52
-    Height = 428
+    Height = 467
     MinSize = 185
     ResizeStyle = rsLine
     ExplicitLeft = 384
@@ -30,8 +30,8 @@ object frmMain: TfrmMain
     ExplicitHeight = 100
   end
   object Label1: TLabel
-    Left = 175
-    Top = 416
+    Left = 283
+    Top = 455
     Width = 546
     Height = 48
     Anchors = [akRight, akBottom]
@@ -43,11 +43,13 @@ object frmMain: TfrmMain
     Font.Name = 'Tahoma'
     Font.Style = [fsBold, fsItalic]
     ParentFont = False
+    ExplicitLeft = 175
+    ExplicitTop = 416
   end
   object MDITabSet: TTabSet
     Left = 0
-    Top = 480
-    Width = 749
+    Top = 519
+    Width = 857
     Height = 21
     Align = alBottom
     Font.Charset = DEFAULT_CHARSET
@@ -57,16 +59,19 @@ object frmMain: TfrmMain
     Font.Style = []
     OnChange = MDITabSetChange
     OnMouseUp = MDITabSetMouseUp
+    ExplicitTop = 480
+    ExplicitWidth = 749
   end
   object pnlMenu: TPanel
     Left = 0
     Top = 52
     Width = 185
-    Height = 428
+    Height = 467
     Align = alLeft
     BevelOuter = bvNone
     Constraints.MinWidth = 185
     TabOrder = 1
+    ExplicitHeight = 428
     object pnlMenuTop: TPanel
       Left = 0
       Top = 0
@@ -130,17 +135,20 @@ object frmMain: TfrmMain
       Left = 0
       Top = 252
       Width = 185
-      Height = 176
+      Height = 215
       Align = alClient
       Images = dmResource.vilMenus
       Indent = 19
+      MultiSelectStyle = []
       ParentShowHint = False
       RowSelect = True
       ShowHint = True
       ShowRoot = False
       TabOrder = 1
       OnChange = trvMenusChange
+      OnClick = trvMenusClick
       OnCreateNodeClass = trvMenusCreateNodeClass
+      ExplicitHeight = 176
     end
     object Panel4: TPanel
       Left = 0
@@ -166,15 +174,18 @@ object frmMain: TfrmMain
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 749
+    Width = 857
     Height = 52
     AutoSize = True
     ButtonHeight = 52
     ButtonWidth = 47
     Caption = 'ToolBar1'
+    Color = clBtnFace
     Images = VirtualImageList1
+    ParentColor = False
     ShowCaptions = True
     TabOrder = 2
+    ExplicitWidth = 749
     object ToolButton2: TToolButton
       Left = 0
       Top = 0

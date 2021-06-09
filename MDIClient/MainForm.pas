@@ -64,6 +64,7 @@ type
     procedure trvMenusCreateNodeClass(Sender: TCustomTreeView;
       var NodeClass: TTreeNodeClass);
     procedure trvMenusChange(Sender: TObject; Node: TTreeNode);
+    procedure trvMenusClick(Sender: TObject);
   private
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
@@ -212,6 +213,7 @@ begin
     Item.ParentCode := Group.Code;
     Item.ImageIndex := 1;
     Item.SelectedIndex := 1;
+//    Item.Enabled := False;
 
     qryMenuTree.Next;
   end;
@@ -234,8 +236,20 @@ end;
 
 procedure TfrmMain.trvMenusChange(Sender: TObject; Node: TTreeNode);
 begin
-  if Node.Level = 1 then
-    CreateMDIForm((Node as TMenuNode).Code);
+//  if Node.Enabled and (Node.Level = 1) then
+//    CreateMDIForm((Node as TMenuNode).Code);
+end;
+
+procedure TfrmMain.trvMenusClick(Sender: TObject);
+var
+  P: TPoint;
+  Node: TTreeNode;
+begin
+  P := trvMenus.ScreenToClient(Mouse.CursorPos);
+  Node := trvMenus.GetNodeAt(P.X, P.Y);
+
+  if Assigned(Node) and Node.Enabled and (Node.Level = 1) then
+    CreateMDIForm((trvMenus.Selected as TMenuNode).Code);
 end;
 
 procedure TfrmMain.trvMenusCreateNodeClass(Sender: TCustomTreeView;

@@ -9,13 +9,8 @@ uses
 type
   TDTFMDIChildForm1 = class(TDTFMDIChildForm)
   private
-    { Private declarations }
   public
-    { Public declarations }
   end;
-
-var
-  DTFMDIChildForm1: TDTFMDIChildForm1;
 
 implementation
 

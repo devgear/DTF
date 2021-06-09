@@ -53,3 +53,20 @@ BEGIN
 	SELECT COALESCE(MAX(sort_index),-1)+1 FROM menu_items WHERE group_code = NEW.group_code INTO :max_idx;
 	NEW.sort_index = max_idx;
 END;
+
+CREATE TABLE menu_item_perms
+(
+	menu_code	VARCHAR(16) NOT NULL, -- PK, FK
+	def_read_yn	CHAR(1) default 'Y', 
+	def_create_yn	CHAR(1) default 'N', 
+	def_update_yn	CHAR(1) default 'N', 
+	def_delete_yn	CHAR(1) default 'N', 
+	def_print_yn	CHAR(1) default 'Y', 
+	def_export_yn	CHAR(1) default 'Y', 
+	def_import_yn	CHAR(1) default 'N', 
+	def_etc_yn	CHAR(1) default 'N', 
+
+	CONSTRAINT menu_item_perms_pk PRIMARY KEY (menu_item_perms)
+);
+ALTER TABLE menu_item_perms ADD CONSTRAINT perm_menuitem_fk FOREIGN KEY (menu_code) 
+	REFERENCES menu_items (menu_code) ON UPDATE CASCADE ON DELETE CASCADE;
