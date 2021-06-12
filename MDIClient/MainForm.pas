@@ -92,7 +92,7 @@ uses
   DTF.App,
   DTF.Types,
   DTF.Module.Resource,
-  DTF.Util.AutoComplete;
+  DTF.Utils.AutoComplete;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin

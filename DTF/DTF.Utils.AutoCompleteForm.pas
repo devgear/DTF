@@ -1,9 +1,9 @@
-unit DTF.Util.AutoCompleteForm;
+unit DTF.Utils.AutoCompleteForm;
 
 interface
 
 uses
-  DTF.Util.AutoComplete,
+  DTF.Utils.AutoComplete,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
 

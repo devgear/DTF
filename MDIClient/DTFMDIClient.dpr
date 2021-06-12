@@ -13,12 +13,12 @@ uses
   DTF.Frame.DataSet in '..\DTF\DTF.Frame.DataSet.pas' {DTFDataSetFrame: TFrame},
   DTF.Module.Resource in '..\DTF\DTF.Module.Resource.pas' {dmResource: TDataModule},
   DTF.Frame.DBGrid in '..\DTF\DTF.Frame.DBGrid.pas' {DTFDBGridFrame: TFrame},
-  DTF.Util.AutoCompleteForm in '..\DTF\DTF.Util.AutoCompleteForm.pas' {frmAutoComplete},
-  DTF.Util.AutoComplete in '..\DTF\DTF.Util.AutoComplete.pas',
+  DTF.Utils.AutoCompleteForm in '..\DTF\DTF.Utils.AutoCompleteForm.pas' {frmAutoComplete},
+  DTF.Utils.AutoComplete in '..\DTF\DTF.Utils.AutoComplete.pas',
   DTF.Config in 'Config\DTF.Config.pas',
   UserModule in 'Modules\UserModule.pas' {dmUser: TDataModule},
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
-  DTF.IO.Export in '..\DTF\DTF.IO.Export.pas',
+  DTF.Utils.Export in '..\DTF\DTF.Utils.Export.pas',
   Test1Form in 'Views\Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'Views\USR\ManageUserForm.pas' {DTFMDIChildForm1},
@@ -34,7 +34,8 @@ uses
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   Test3Form in 'Views\Test\Test3Form.pas' {frmTest3},
-  DTF.GridInfo in '..\DTF\DTF.GridInfo.pas';
+  DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
+  DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas';
 
 {$R *.res}
 

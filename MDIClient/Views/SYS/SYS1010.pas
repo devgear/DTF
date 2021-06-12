@@ -79,6 +79,7 @@ type
     actMenuTreeUp: TAction;
     actMenuTreeDown: TAction;
     qryMenuUpdate: TFDQuery;
+    FDUpdateSQL1: TFDUpdateSQL;
     procedure FormCreate(Sender: TObject);
     procedure qryMenuCatesAfterPost(DataSet: TDataSet);
     procedure qryMenuGroupsAfterPost(DataSet: TDataSet);

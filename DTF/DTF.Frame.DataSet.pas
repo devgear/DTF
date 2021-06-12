@@ -48,7 +48,7 @@ implementation
 
 uses
   DTF.Module.Resource,
-  DTF.IO.Export;
+  DTF.Utils.Export;
 
 procedure TDTFDataSetFrame.actDSNewAppendExecute(Sender: TObject);
 begin
@@ -91,7 +91,8 @@ begin
     Dialog.Filter := 'XLSX file|*.xlsx';
     Dialog.FileName := TAction(Sender).Hint;
     if Dialog.Execute then
-      LDataSet.ExportToXls(Dialog.FileName);
+      TExportUtil.SaveDataSetToXls(LDataSet, Dialog.FileName);
+//      LDataSet.ExportToXls(Dialog.FileName);
     Dialog.Free;
   end;
 end;

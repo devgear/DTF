@@ -1,4 +1,4 @@
-unit DTF.IO.Export;
+unit DTF.Utils.Export;
 
 interface
 
@@ -10,10 +10,9 @@ uses
 type
   EDTFIOException = class(Exception);
 
-  TExportDataSetHelper = class helper for TDataSet
-  public
-    procedure ExportToXls(AFilename: string; ASheetName: string = '';
-      AIncludeLabel: Boolean = True; AShowAfterSave: Boolean = True);
+  TExportUtil = class
+    class procedure SaveDataSetToXls(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
+      const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
   end;
 
 implementation
@@ -22,10 +21,11 @@ uses
   System.IOUtils, System.Variants,
   System.Win.ComObj;
 
-{ TExportDataSetHelper }
+{ TExportUtil }
 
-procedure TExportDataSetHelper.ExportToXls(AFilename: string; ASheetName: string = '';
-      AIncludeLabel: Boolean = True; AShowAfterSave: Boolean = True);
+class procedure TExportUtil.SaveDataSetToXls(const ADataSet: TDataSet;
+  const AFilename: string; const ASheetName: string = '';
+  const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
 var
   I: Integer;
   LExcel: Variant;
@@ -95,17 +95,17 @@ begin
 
     ///////////////////////
     // Export data
-    Rows := RecordCount;
+    Rows := ADataSet.RecordCount;
     if AIncludeLabel then
       Rows := Rows + 1;
 
     Cols := 0;
-    SetLength(ColIdxs, FieldCount);
-    for I := 0 to FieldCount -1 do
+    SetLength(ColIdxs, ADataSet.FieldCount);
+    for I := 0 to ADataSet.FieldCount -1 do
       ColIdxs[I] := -1;
-    for I := 0 to FieldCount - 1 do
+    for I := 0 to ADataSet.FieldCount - 1 do
     begin
-      Field := Fields[I];
+      Field := ADataSet.Fields[I];
       if (not Field.Visible) or not (Field.FieldKind in [fkData, fkLookup, fkCalculated]) then
         Continue;
 
@@ -118,25 +118,25 @@ begin
     if AIncludeLabel then
     begin
       for I := 0 to Cols - 1 do
-        LDatas[0, I] := Fields[ColIdxs[I]].DisplayLabel;
+        LDatas[0, I] := ADataSet.Fields[ColIdxs[I]].DisplayLabel;
       Row := 1;
     end;
-    LBookmark := GetBookmark;
-    DisableControls;
+    LBookmark := ADataSet.GetBookmark;
+    ADataSet.DisableControls;
     try
-      First;
+      ADataSet.First;
       while not Eof do
       begin
         for I := 0 to Cols - 1 do
-          LDatas[Row, I] := Fields[ColIdxs[I]].DisplayText;
+          LDatas[Row, I] := ADataSet.Fields[ColIdxs[I]].DisplayText;
 
         Inc(Row);
-        Next
+        ADataSet.Next
       end;
     finally
-      GotoBookmark(LBookMark);
-      EnableControls;
-      FreeBookmark(LBookmark);
+      ADataSet.GotoBookmark(LBookMark);
+      ADataSet.EnableControls;
+      ADataSet.FreeBookmark(LBookmark);
     end;
 
     LRange := 'A1:';

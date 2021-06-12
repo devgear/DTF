@@ -76,32 +76,43 @@ inherited frmSYS1010: TfrmSYS1010
           Height = 44
           ExplicitWidth = 444
           ExplicitHeight = 44
+          inherited btnDSRefresh: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
           inherited btnDSSave: TToolButton
             Wrap = True
+            ExplicitWidth = 53
           end
           inherited btnDSCancel: TToolButton
             Left = 0
             Top = 22
             ExplicitLeft = 0
             ExplicitTop = 22
+            ExplicitWidth = 75
           end
           inherited btnDSDelete: TToolButton
             Left = 75
             Top = 22
             ExplicitLeft = 75
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
           inherited btnExportXls: TToolButton
             Left = 128
             Top = 22
             ExplicitLeft = 128
             ExplicitTop = 22
+            ExplicitWidth = 89
           end
           inherited ToolButton2: TToolButton
             Left = 217
             Top = 22
             ExplicitLeft = 217
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -308,32 +319,43 @@ inherited frmSYS1010: TfrmSYS1010
           Height = 44
           ExplicitWidth = 444
           ExplicitHeight = 44
+          inherited btnDSRefresh: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
           inherited btnDSSave: TToolButton
             Wrap = True
+            ExplicitWidth = 53
           end
           inherited btnDSCancel: TToolButton
             Left = 0
             Top = 22
             ExplicitLeft = 0
             ExplicitTop = 22
+            ExplicitWidth = 75
           end
           inherited btnDSDelete: TToolButton
             Left = 75
             Top = 22
             ExplicitLeft = 75
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
           inherited btnExportXls: TToolButton
             Left = 128
             Top = 22
             ExplicitLeft = 128
             ExplicitTop = 22
+            ExplicitWidth = 89
           end
           inherited ToolButton2: TToolButton
             Left = 217
             Top = 22
             ExplicitLeft = 217
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -447,32 +469,43 @@ inherited frmSYS1010: TfrmSYS1010
           Height = 44
           ExplicitWidth = 445
           ExplicitHeight = 44
+          inherited btnDSRefresh: TToolButton
+            ExplicitWidth = 53
+          end
+          inherited btnDSNew: TToolButton
+            ExplicitWidth = 75
+          end
           inherited btnDSSave: TToolButton
             Wrap = True
+            ExplicitWidth = 53
           end
           inherited btnDSCancel: TToolButton
             Left = 0
             Top = 22
             ExplicitLeft = 0
             ExplicitTop = 22
+            ExplicitWidth = 75
           end
           inherited btnDSDelete: TToolButton
             Left = 75
             Top = 22
             ExplicitLeft = 75
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
           inherited btnExportXls: TToolButton
             Left = 128
             Top = 22
             ExplicitLeft = 128
             ExplicitTop = 22
+            ExplicitWidth = 89
           end
           inherited ToolButton2: TToolButton
             Left = 217
             Top = 22
             ExplicitLeft = 217
             ExplicitTop = 22
+            ExplicitWidth = 53
           end
         end
         inherited grdMaster: TDBGrid
@@ -591,6 +624,7 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryMenuGroups: TFDQuery
+    Active = True
     AfterPost = qryMenuGroupsAfterPost
     IndexFieldNames = 'CATE_CODE'
     MasterSource = fmeCate.DataSource
@@ -642,6 +676,7 @@ inherited frmSYS1010: TfrmSYS1010
     end
   end
   object qryMenuItems: TFDQuery
+    Active = True
     IndexFieldNames = 'GROUP_CODE'
     MasterSource = fmeGroup.DataSource
     MasterFields = 'GROUP_CODE'
@@ -649,6 +684,7 @@ inherited frmSYS1010: TfrmSYS1010
     Connection = dmDatabase.FDConnection
     UpdateOptions.AssignedValues = [uvGeneratorName]
     UpdateOptions.GeneratorName = 'MENU_SEQ_GEN'
+    UpdateObject = FDUpdateSQL1
     SQL.Strings = (
       'SELECT * FROM menu_items'
       'ORDER BY group_code, sort_index')
@@ -767,5 +803,9 @@ inherited frmSYS1010: TfrmSYS1010
     Connection = dmDatabase.FDConnection
     Left = 520
     Top = 152
+  end
+  object FDUpdateSQL1: TFDUpdateSQL
+    Left = 776
+    Top = 448
   end
 end

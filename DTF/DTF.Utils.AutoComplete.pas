@@ -1,4 +1,4 @@
-unit DTF.Util.AutoComplete;
+unit DTF.Utils.AutoComplete;
 
 interface
 
@@ -65,7 +65,7 @@ type
 implementation
 
 uses
-  DTF.Util.AutoCompleteForm;
+  DTF.Utils.AutoCompleteForm;
 
 const
   DefaultAutoCompleteFormClass: TFormClass = TfrmAutoComplete;

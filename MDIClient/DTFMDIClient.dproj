@@ -143,11 +143,11 @@
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Util.AutoCompleteForm.pas">
+        <DCCReference Include="..\DTF\DTF.Utils.AutoCompleteForm.pas">
             <Form>frmAutoComplete</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Util.AutoComplete.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.AutoComplete.pas"/>
         <DCCReference Include="Config\DTF.Config.pas"/>
         <DCCReference Include="Modules\UserModule.pas">
             <Form>dmUser</Form>
@@ -159,7 +159,7 @@
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.IO.Export.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.Export.pas"/>
         <DCCReference Include="Views\Test\Test1Form.pas">
             <Form>frmTest1</Form>
             <FormType>dfm</FormType>
@@ -192,6 +192,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.GridInfo.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
