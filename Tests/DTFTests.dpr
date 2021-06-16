@@ -21,7 +21,9 @@ uses
   DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {DTFBaseForm},
   DTF.Intf in '..\DTF\DTF.Intf.pas',
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
-  DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame};
+  DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
+  DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
+  TestDTFUtils in 'TestDTFUtils.pas';
 
 {$IFNDEF TESTINSIGHT}
 var

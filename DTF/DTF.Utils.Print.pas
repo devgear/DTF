@@ -10,6 +10,7 @@ type
   TPrintUtil = class
   public
     class procedure PrintDataSet(const ADataSet: TDataSet; const ATitle: string = '');
+    class procedure PrintDataRows<T>(const ADatas: TArray<T>; const ATitle: string = '');
   end;
 
 
@@ -44,11 +45,15 @@ type
 
 implementation
 
-{ TPrintDataSetHelper }
-
 { TPrintUtil }
 
-class procedure TPrintUtil.PrintDataSet(const ADataSet: TDataSet; const ATitle: string = '');
+class procedure TPrintUtil.PrintDataSet(const ADataSet: TDataSet; const ATitle: string);
+begin
+
+end;
+
+class procedure TPrintUtil.PrintDataRows<T>(const ADatas: TArray<T>;
+  const ATitle: string);
 begin
 
 end;
@@ -57,7 +62,6 @@ end;
 
 constructor TDTFPrinter.Create;
 begin
-
 end;
 
 destructor TDTFPrinter.Destroy;
@@ -68,12 +72,19 @@ end;
 
 procedure TDTFPrinter.BeginDoc;
 begin
+  Printer.BeginDoc;
 
+  // default margin
+  FMargin.Top     := Printer.PageHeight div 10;
+  FMargin.Bottom  := Printer.PageHeight div 50;
+
+  FMargin.Left    := Printer.pagewidth div 50;
+  FMargin.Right   := Printer.pagewidth div 50;
 end;
 
 procedure TDTFPrinter.EndDoc;
 begin
-
+  Printer.EndDoc;
 end;
 
 procedure TDTFPrinter.SetFieldCount(const Value: Integer);
