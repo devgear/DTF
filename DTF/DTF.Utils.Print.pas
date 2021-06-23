@@ -1,9 +1,16 @@
 unit DTF.Utils.Print;
 
+{
+  Customized Printing in Delphi
+    http://delphiprogrammingdiary.blogspot.com/2019/03/customized-printing-in-delphi.html
+  Directry to XPS printer
+    https://stackoverflow.com/questions/57680432/how-to-send-data-directly-to-xps-printer-in-delphi-using-the-flag-xps-pass
+}
+
 interface
 
 uses
-  Vcl.Printers, Vcl.Graphics, System.SysUtils, System.Types,
+  Vcl.Printers, Vcl.Graphics, System.SysUtils, System.Types, System.Classes,
   Data.DB, System.Generics.Collections;
 
 type
@@ -14,36 +21,62 @@ type
   end;
 
 
-  TFieldInfo = record
-    Name: string;
+  TFieldDef = record
+    Caption: string;
     Width: Integer;
-    PageWidth: Integer;
+  public
+    constructor Create(ACaption: string; AWidth: Integer);
   end;
 
-  TDTFPrinter = class
+  TTitle = class
   private
-    FTitle: string;
-    FFields: TList<TFieldInfo>;
-
-    FMargin: TRect;
-    FTotalFieldWidth: Integer;
-    FPerColWidth: Integer;
-    FFieldCount: Integer;
-
-    procedure SetFieldCount(const Value: Integer);
+    FFont: TFont;
+    FCaption: string;
+    FAlignment: TAlignment;
+    procedure SetFont(const Value: TFont);
   public
     constructor Create;
     destructor Destroy; override;
 
-    procedure BeginDoc;
-    procedure EndDoc;
+    property Caption: string read FCaption write FCaption;
+    property Font: TFont read FFont write SetFont;
+    property Alignment: TAlignment read FAlignment write FAlignment;
+  end;
 
-//    property Title: string
-    property FieldCount: Integer read FFieldCount Write SetFieldCount;
+  TFieldDefs = class(TList<TFieldDef>)
+  public
+    function Add(ACaption: string; AWidth: Integer): Integer; overload;
+  end;
+
+  TDTFPrinter = class
+  private
+    FFont: TFont;
+
+    FTitle: TTitle;
+    FFieldDefs: TFieldDefs;
+
+    FMargin: TRect;
+    FTotalFieldWidth: Integer;
+    FPerColWidth: Integer;
+    FShowPrintDialog: Boolean;
+
+    function PrintDialogExecute: Boolean;
+  public
+    constructor Create;
+    destructor Destroy; override;
+
+    property Title: TTitle read FTitle write FTitle;
+    property FieldDefs: TFieldDefs read FFieldDefs;
+    property ShowPrintDialog: Boolean read FShowPrintDialog write FShowPrintDialog;
+
+    procedure Print;
   end;
 
 
 implementation
+
+uses
+  Vcl.Dialogs;
 
 { TPrintUtil }
 
@@ -58,38 +91,110 @@ begin
 
 end;
 
-{ TDTFPrinter }
+{ TFieldDef }
 
-constructor TDTFPrinter.Create;
+constructor TFieldDef.Create(ACaption: string; AWidth: Integer);
 begin
+  Caption := ACaption;
+  Width := AWidth;
 end;
 
-destructor TDTFPrinter.Destroy;
+{ TTitle }
+
+constructor TTitle.Create;
 begin
+  FFont := TFont.Create;
+  FAlignment := taLeftJustify;
+end;
+
+destructor TTitle.Destroy;
+begin
+  FreeAndNil(FFont);
 
   inherited;
 end;
 
-procedure TDTFPrinter.BeginDoc;
+procedure TTitle.SetFont(const Value: TFont);
 begin
-  Printer.BeginDoc;
+  FFont.Assign(Value);
+end;
 
-  // default margin
-  FMargin.Top     := Printer.PageHeight div 10;
+{ TFields }
+
+function TFieldDefs.Add(ACaption: string; AWidth: Integer): Integer;
+begin
+  Result := inherited Add(TFieldDef.Create(ACaption, AWidth));
+end;
+
+{ TDTFPrinter }
+
+constructor TDTFPrinter.Create;
+begin
+  FFont := TFont.Create;
+
+  FFieldDefs := TFieldDefs.Create;
+
+  FShowPrintDialog := True;
+
+  FTitle := TTitle.Create;
+  FTitle.Alignment := taCenter;
+  FTitle.Font.Size := 12;
+  FTitle.Font.Style := [fsBold];
+
+  FMargin.Top     := Printer.PageHeight div 50;
   FMargin.Bottom  := Printer.PageHeight div 50;
 
-  FMargin.Left    := Printer.pagewidth div 50;
-  FMargin.Right   := Printer.pagewidth div 50;
+  FMargin.Left    := Printer.PageWidth div 50;
+  FMargin.Right   := Printer.PageWidth div 50;
+
 end;
 
-procedure TDTFPrinter.EndDoc;
+destructor TDTFPrinter.Destroy;
 begin
-  Printer.EndDoc;
+  FreeAndNil(FFont);
+  FreeAndNil(FFieldDefs);
+
+  inherited;
 end;
 
-procedure TDTFPrinter.SetFieldCount(const Value: Integer);
+//procedure TDTFPrinter.BeginDoc;
+//begin
+//  Printer.BeginDoc;
+//
+//  // default margin
+//  FMargin.Top     := Printer.PageHeight div 50;
+//  FMargin.Bottom  := Printer.PageHeight div 50;
+//
+//  FMargin.Left    := Printer.PageWidth div 50;
+//  FMargin.Right   := Printer.PageWidth div 50;
+//end;
+//
+//procedure TDTFPrinter.EndDoc;
+//begin
+//  Printer.EndDoc;
+//end;
+
+procedure TDTFPrinter.Print;
 begin
-  FFieldCount := Value;
+//  Printer.Canvas.Font.Assign(FFont);
+  if PrintDialogExecute then
+    WriteLn(Printer.PageNumber);
+  ;
+
+//  Printer.Title
+end;
+
+function TDTFPrinter.PrintDialogExecute: Boolean;
+var
+  Dialog: TPrintDialog;
+begin
+  Result := True;
+  if FShowPrintDialog then
+  begin
+    Dialog := TPrintDialog.Create(nil);
+    Result := Dialog.Execute;
+    Dialog.Free;
+  end;
 end;
 
 end.
