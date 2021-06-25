@@ -13,7 +13,11 @@ type
   TExportUtil = class
     class procedure SaveDataSetToXls(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
       const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
+    class procedure PrintDataSet(const ADataSet: TDataSet; const ATitle: string = '');
+//    class procedure PrintDataRows<T>(const ADatas: TArray<T>;
+//      const ATitle: string);
   end;
+
 
 implementation
 
@@ -22,6 +26,12 @@ uses
   System.Win.ComObj;
 
 { TExportUtil }
+
+class procedure TExportUtil.PrintDataSet(const ADataSet: TDataSet;
+  const ATitle: string);
+begin
+
+end;
 
 class procedure TExportUtil.SaveDataSetToXls(const ADataSet: TDataSet;
   const AFilename: string; const ASheetName: string = '';

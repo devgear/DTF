@@ -21,6 +21,7 @@ type
 implementation
 
 uses
+  System.SysUtils,
   DTF.Utils.Print;
 
 procedure TMyTestObject.Setup;
@@ -33,48 +34,37 @@ end;
 
 procedure TMyTestObject.TestPrinterBasic;
 var
+  I: Integer;
   Printer: TDTFPrinter;
 begin
   Printer := TDTFPrinter.Create;
 
+  Printer.Options := Printer.Options + [poSequenceColumn];
+
   Printer.Title.Caption := 'Print test';
-  Printer.FieldDefs.Clear;
-  Printer.FieldDefs.Add('숫자', 100);
-  Printer.FieldDefs.Add('문자', 300);
-  Printer.FieldDefs.Add('날짜', 200);
+  Printer.Subtitle.Caption := '여기는 부제목';
 
-  // Print
+  Printer.Columns.Clear;
+  Printer.Columns.Add('숫자', 100);
+  Printer.Columns.Add('문자', 300);
+  Printer.Columns.Add('날짜', 200);
 
-  Printer.Print;
+  Printer.Print(procedure
+    var
+      I: Integer;
+    begin
+      for I := 0 to 99 do
+        Printer.WriteRows([I.ToString, 'ABCDEFG 가나다라마바사', FormatDateTime('DD HH:NN:SS', Now)]);
+    end,
+    procedure(AErr: string)
+    begin
+      WriteLn(AErr);
+    end
+  );
 
-  // TitleToPerPage
-
-//  Prtr.Title := '';
-//  Prtr.AddField(Title, Width);
-//  Prtr.Cells[
-{
-  p.Title
-  p.Subtitle
-  p.ShowDate := True
-  p.ShowPage := True;
-  p.LineType := [HorzLine, VertLine] ???
-
-  p.RowCount
-  p.ColCount
-  p.Fields
-  p.AddField(Header, Width, Alignment)
-
-  while
-    p.AddRow;
-
-    P.Rows := ['', '', '', ''];
-    P.Col[0] := '';
-
-    p.Data(AData);
-
-    q.next
-}
-
+//  Printer.BeginDoc;
+//
+//  Printer.EndDoc;
   Printer.Free;
 end;
 
