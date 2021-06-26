@@ -55,6 +55,13 @@ begin
     begin
       for I := 0 to 99 do
         Printer.WriteRows([I.ToString, 'ABCDEFG 가나다라마바사', FormatDateTime('DD HH:NN:SS', Now)]);
+      for I := 0 to 99 do
+      begin
+        Printer.NewRow
+          .WriteCell(0, I.ToString)
+          .WriteCell(1, 'ABCDEFG 가나다라마바사')
+          .WriteCell(2, FormatDateTime('DD HH:NN:SS', Now));
+      end;
     end,
     procedure(AErr: string)
     begin

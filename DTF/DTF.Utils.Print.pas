@@ -19,11 +19,13 @@ type
     FPageWidth: Integer;
     FWidth: Integer;
     FCaption: string;
+    FPageLeft: Integer;
   public
     constructor Create(ACaption: string; AWidth: Integer; APageWidth: Integer = 0);
 
     property Caption: string read FCaption write FCaption;
     property Width: Integer read FWidth write FWidth;
+    property PageLeft: Integer read FPageLeft write FPageLeft;
     property PageWidth: Integer read FPageWidth write FPageWidth;
   end;
 
@@ -75,7 +77,7 @@ type
     FRowIndex: Integer;
     FNewPage: Boolean;
     FPageNum: Integer;
-    FTop, FLeft: Integer;
+    FTop: Integer;
     FPageWidth, FPageHeight: Integer;
     FCharWidth, FCharHeight: Integer;
     FRowHeight, FRowPadding, FColPadding: Integer;
@@ -91,7 +93,6 @@ type
   protected
     procedure DoSetup;
     procedure DoNewPage;
-    procedure DoNewRow;
 
     procedure DoPrintPageHeader;
     procedure DoPrintTitle;
@@ -121,12 +122,17 @@ type
     procedure EndDoc;
 
     procedure WriteRows(ADatas: TArray<string>);
-    procedure WriteCell(ACol: Integer; AData: string);
-    procedure NewRow;
+    function NewRow: TDTFPrinter;
+    function WriteCell(ACol: Integer; AData: string): TDTFPrinter; overload;
+    function WriteCell(AColumn: TColumn; AData: string): TDTFPrinter; overload;
 
     procedure Print(AWriteDataProc: TProc; AErrorProc: TProc<string> = nil);
   end;
 
+const
+  DEF_FONT_SIZE = 11;
+  DEF_FONT_SIZE_SUB = 13;
+  DEF_FONT_SIZE_TITLE = 15;
 
 implementation
 
@@ -141,6 +147,7 @@ begin
 
   FCaption := ACaption;
   FWidth := AWidth;
+  FPageLeft := 0;
   FPageWidth := APageWidth;
 end;
 
@@ -198,21 +205,18 @@ begin
 
   FTitle := TTitle.Create;
   FTitle.Alignment := taCenter;
-  FTitle.Font.Size := 12;
+  FTitle.Font.Size := DEF_FONT_SIZE_TITLE;
   FTitle.Font.Style := [fsBold];
 
   FSubtitle := TTitle.Create;
-  FSubtitle.Font.Size := 10;
+  FSubtitle.Font.Size := DEF_FONT_SIZE_SUB;
   FSubtitle.Font.Style := [fsBold];
 
   FFont := TFont.Create;
+  FFont.Size := DEF_FONT_SIZE;
   FHeaderFont := TFont.Create;
-
-  FMargin.Top     := Printer.PageHeight div 30;
-  FMargin.Bottom  := Printer.PageHeight div 30;
-
-  FMargin.Left    := Printer.PageWidth div 30;
-  FMargin.Right   := Printer.PageWidth div 30;
+  FHeaderFont.Size := DEF_FONT_SIZE;
+  FHeaderFont.Style := [fsBold];
 end;
 
 destructor TDTFPrinter.Destroy;
@@ -243,9 +247,15 @@ var
   Column: TColumn;
   SumWidth: Integer;
   RestWidth: Integer;
+  I, Left: Integer;
 begin
   FRowIndex := 0;
   FPageNum := 0;
+
+  FMargin.Top     := Printer.PageHeight div 30;
+  FMargin.Bottom  := Printer.PageHeight div 30;
+  FMargin.Left    := Printer.PageWidth div 30;
+  FMargin.Right   := Printer.PageWidth div 30;
 
   FPageWidth := Printer.PageWidth - FMargin.Left - FMargin.Right;
   FPageHeight := Printer.PageHeight - FMargin.Top - FMargin.Bottom;
@@ -261,6 +271,8 @@ begin
   if poSequenceColumn in FOptions then
     FColumns.Insert(0, TSequenceColumn.Create('No', 0, FCharWidth*8));
 
+  //////////////
+  // Column.Width 비율로 PageWidth 계산 및 설정
   SumWidth := 0;
   RestWidth := FPageWidth;
   for Column in FColumns do
@@ -269,11 +281,14 @@ begin
     RestWidth := RestWidth - Column.PageWidth;
   end;
 
+  Left := FMargin.Left;
   for Column in FColumns do
   begin
-    if Column.PageWidth > 0 then
-      Continue;
-    Column.PageWidth := Trunc((Column.Width / SumWidth) * RestWidth)
+    if Column.PageWidth = 0 then
+      Column.PageWidth := Trunc((Column.Width / SumWidth) * RestWidth);
+
+    Column.PageLeft := Left;
+    Inc(Left, Column.PageWidth);
   end;
 end;
 
@@ -282,16 +297,9 @@ begin
   Inc(FPageNum);
 
   FTop  := FMargin.Top;
-  FLeft := FMargin.Left;
 
   DoPrintPageHeader;
   DoPrintHeader;
-end;
-
-procedure TDTFPrinter.DoNewRow;
-begin
-  FLeft := FMargin.Left;
-  Inc(FRowIndex);
 end;
 
 procedure TDTFPrinter.DoPrintPageHeader;
@@ -326,7 +334,10 @@ end;
 
 procedure TDTFPrinter.DoPrintSubTitle;
 begin
+  if poSubtitle in FOptions then
+  begin
 
+  end;
 end;
 
 procedure TDTFPrinter.DoPrintDate;
@@ -344,10 +355,7 @@ begin
     DoPrintHorzLine(FTop);
 
   for Column in FColumns do
-  begin
-    Printer.Canvas.TextOut(FLeft + FColPadding, FTop, Column.Caption);
-    Inc(FLeft, Column.PageWidth);
-  end;
+    Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FTop, Column.Caption);
 
   Inc(FTop, FRowHeight + FRowPadding);
 
@@ -373,27 +381,78 @@ begin
 
 end;
 
-procedure TDTFPrinter.NewRow;
+function TDTFPrinter.NewRow: TDTFPrinter;
+var
+  Column: TColumn;
+  SeqCol: TSequenceColumn;
 begin
-  DoNewRow;
+  if FRowIndex > 0 then
+    FTop := FTop + FRowHeight + FRowPadding;
+  Inc(FRowIndex);
+
+  Printer.Canvas.Font.Assign(FFont);
+  for Column in FColumns do
+  begin
+    if Column is TSequenceColumn then
+    begin
+      SeqCol := TSequenceColumn(Column);
+      Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FTop, SeqCol.Value.ToString);
+      SeqCol.Increment;
+    end;
+  end;
+
+  Result := Self;
 end;
 
-//procedure TDTFPrinter.BeginDoc;
-//begin
-//  Printer.BeginDoc;
-//
-//  // default margin
-//  FMargin.Top     := Printer.PageHeight div 50;
-//  FMargin.Bottom  := Printer.PageHeight div 50;
-//
-//  FMargin.Left    := Printer.PageWidth div 50;
-//  FMargin.Right   := Printer.PageWidth div 50;
-//end;
-//
-//procedure TDTFPrinter.EndDoc;
-//begin
-//  Printer.EndDoc;
-//end;
+function TDTFPrinter.WriteCell(ACol: Integer; AData: string): TDTFPrinter;
+var
+  Idx: Integer;
+  Column: TColumn;
+begin
+  Result := Self;
+
+  NewRow;
+
+  Idx := 0;
+  for Column in FColumns do
+  begin
+    if Column is TSequenceColumn then
+      Continue;
+
+    if Idx = ACol then
+    begin
+      WriteCell(Column, AData);
+      Exit;
+    end;
+    Inc(Idx);
+  end;
+
+end;
+
+function TDTFPrinter.WriteCell(AColumn: TColumn; AData: string): TDTFPrinter;
+begin
+  Printer.Canvas.TextOut(AColumn.PageLeft + FColPadding, FTop, AData);
+
+  Result := Self;
+end;
+
+procedure TDTFPrinter.WriteRows(ADatas: TArray<string>);
+var
+  Idx: Integer;
+  Column: TColumn;
+begin
+  NewRow;
+
+  Idx := 0;
+  for Column in FColumns do
+  begin
+    if Column is TSequenceColumn then
+      Continue;
+
+    WriteCell(Column, ADatas[Idx]);
+    Inc(Idx);
+  end;
+end;
 
 procedure TDTFPrinter.Print(AWriteDataProc: TProc; AErrorProc: TProc<string> = nil);
 begin
@@ -422,16 +481,6 @@ begin
     Result := Dialog.Execute;
     Dialog.Free;
   end;
-end;
-
-procedure TDTFPrinter.WriteCell(ACol: Integer; AData: string);
-begin
-
-end;
-
-procedure TDTFPrinter.WriteRows(ADatas: TArray<string>);
-begin
-  NewRow;
 end;
 
 end.
