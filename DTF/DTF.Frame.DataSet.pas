@@ -34,6 +34,7 @@ type
     procedure actDSExportXlsUpdate(Sender: TObject);
     procedure actDSExportXlsExecute(Sender: TObject);
     procedure actDSSearchExecute(Sender: TObject);
+    procedure actPrintExecute(Sender: TObject);
   private
     FFocusControl: TWinControl;
     FSearchParamProc: TProc;
@@ -91,10 +92,19 @@ begin
     Dialog.Filter := 'XLSX file|*.xlsx';
     Dialog.FileName := TAction(Sender).Hint;
     if Dialog.Execute then
-      TExportUtil.SaveDataSetToXls(LDataSet, Dialog.FileName);
+      TExportUtil.SaveToXlsFromDataset(LDataSet, Dialog.FileName);
 //      LDataSet.ExportToXls(Dialog.FileName);
     Dialog.Free;
   end;
+end;
+
+procedure TDTFDataSetFrame.actPrintExecute(Sender: TObject);
+var
+  LDataSet: TDataSet;
+begin
+  LDataSet := DataSource.DataSet;
+  if Assigned(LDataSet) then
+    TExportUtil.PrintFromDataSet(LDataSet, TAction(Sender).Hint);
 end;
 
 procedure TDTFDataSetFrame.actDSExportXlsUpdate(Sender: TObject);

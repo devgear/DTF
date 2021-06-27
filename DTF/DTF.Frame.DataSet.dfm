@@ -111,6 +111,7 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
       ImageIndex = 2
       ImageName = 'icons8-print'
       Visible = False
+      OnExecute = actPrintExecute
     end
     object actDSExportXls: TAction
       Category = 'Dataset'
