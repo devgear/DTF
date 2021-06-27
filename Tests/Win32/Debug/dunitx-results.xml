@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="7" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-06-26" time="5.861">
+<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="7" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-06-27" time="4.335">
   <culture-info current-culture="en" current-uiculture="en" />
-  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="5.861" asserts="0">
+  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="4.335" asserts="0">
     <results>
-        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="5.861" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="4.335" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="5.861" >
+              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="4.335" >
                 <results>
-                  <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.001" asserts="0" />
                   <test-case name="TestGetColPropsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsChildRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsArrayT" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="TestGetDataRowsArrayType" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="TestFillDataRowsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestGetDataRowsArrayType" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="TestFillDataRowsRec" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                 </results>
               </test-suite>
           </results>
         </test-suite>
-        <test-suite type="Namespace" name="TestDTFUtils" executed="true" result="Success" success="True" time="5.828" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFUtils" executed="true" result="Success" success="True" time="4.296" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TMyTestObject" executed="True" result="Success" success="True" time="5.828" >
+              <test-suite type="Fixture" name="TMyTestObject" executed="True" result="Success" success="True" time="4.296" >
                 <results>
-                  <test-case name="TestPrinterBasic" executed="True" result="Success" success="True" time="5.824" asserts="0" />
+                  <test-case name="TestPrinterBasic" executed="True" result="Success" success="True" time="4.286" asserts="0" />
                 </results>
               </test-suite>
           </results>

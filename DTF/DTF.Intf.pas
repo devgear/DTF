@@ -25,6 +25,11 @@ type
     property Datas[const ARow: Integer]: TArray<string> read GetDatas;
   end;
 
+  IDTFFrameTitle = interface
+    ['{37FC566C-4BB7-4F18-A327-0A6E03A26AD6}']
+    function GetFrameTitle: string;
+  end;
+
 implementation
 
 end.

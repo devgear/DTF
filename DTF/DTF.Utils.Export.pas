@@ -11,9 +11,9 @@ type
   EDTFIOException = class(Exception);
 
   TExportUtil = class
-    class procedure SaveDataSetToXls(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
+    class procedure SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
       const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
-    class procedure PrintDataSet(const ADataSet: TDataSet; const ATitle: string = '');
+    class procedure PrintFromDataSet(const ADataSet: TDataSet; const ATitle: string = '');
 //    class procedure PrintDataRows<T>(const ADatas: TArray<T>;
 //      const ATitle: string);
   end;
@@ -22,18 +22,75 @@ type
 implementation
 
 uses
-  System.IOUtils, System.Variants,
+  System.IOUtils, System.Variants, DTF.Utils.Print,
   System.Win.ComObj;
 
 { TExportUtil }
 
-class procedure TExportUtil.PrintDataSet(const ADataSet: TDataSet;
+class procedure TExportUtil.PrintFromDataSet(const ADataSet: TDataSet;
   const ATitle: string);
-begin
+var
+  I: Integer;
+  Printer: TDTFPrinter;
+  Cols: Integer;
+  ColIdxs: TArray<Integer>;
 
+  Field: TField;
+  LBookmark: TBookmark;
+  OldCursor: TCursor;
+begin
+  Printer := TDTFPrinter.Create;
+
+//  Printer.Options := Printer.Options + [poSequenceColumn];
+
+  Printer.Title.Caption := ATitle;
+
+  Cols := 0;
+  SetLength(ColIdxs, ADataSet.FieldCount);
+  for I := 0 to ADataSet.FieldCount -1 do
+    ColIdxs[I] := -1;
+  for I := 0 to ADataSet.FieldCount - 1 do
+  begin
+    Field := ADataSet.Fields[I];
+    if (not Field.Visible) or not (Field.FieldKind in [fkData, fkLookup, fkCalculated]) then
+      Continue;
+
+    ColIdxs[Cols] := I;
+    Inc(Cols);
+  end;
+
+  // Set columns
+  Printer.Columns.Clear;
+  for I := 0 to Cols - 1 do
+    Printer.Columns.Add(ADataSet.Fields[ColIdxs[I]].DisplayLabel, ADataSet.Fields[ColIdxs[I]].DisplayWidth);
+
+  Printer.Print(procedure
+    var
+      I: Integer;
+    begin
+      LBookmark := ADataSet.GetBookmark;
+      ADataSet.DisableControls;
+      try
+        ADataSet.First;
+        while not ADataSet.Eof do
+        begin
+          Printer.NewRow;
+          for I := 0 to Cols - 1 do
+            Printer.WriteCell(I, ADataSet.Fields[ColIdxs[I]].DisplayText);
+          ADataSet.Next
+        end;
+      finally
+        ADataSet.GotoBookmark(LBookMark);
+        ADataSet.EnableControls;
+        ADataSet.FreeBookmark(LBookmark);
+      end;
+    end
+  );
+
+  Printer.Free;
 end;
 
-class procedure TExportUtil.SaveDataSetToXls(const ADataSet: TDataSet;
+class procedure TExportUtil.SaveToXlsFromDataset(const ADataSet: TDataSet;
   const AFilename: string; const ASheetName: string = '';
   const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
 var

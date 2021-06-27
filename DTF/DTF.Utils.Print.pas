@@ -76,7 +76,6 @@ type
 
     FRowIndex: Integer;
     FNewPage: Boolean;
-    FPageNum: Integer;
     FTop: Integer;
     FPageWidth, FPageHeight: Integer;
     FCharWidth, FCharHeight: Integer;
@@ -92,7 +91,13 @@ type
 
   protected
     procedure DoSetup;
+
+    procedure DoBeginDoc;
+    procedure DoEndDoc;
+
     procedure DoNewPage;
+    procedure DoBeginPage;
+    procedure DoEndPage;
 
     procedure DoPrintPageHeader;
     procedure DoPrintTitle;
@@ -109,17 +114,15 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    property Title: TTitle read FTitle write FTitle;
-    property Subtitle: TTitle read FSubtitle write FSubtitle;
-    property Columns: TColumns read FColumns;
-
     property Font: TFont read FFont;
     property HeaderFont: TFont read FHeaderFont;
+
     property Options: TDTFPrintOptions read FOptions write FOptions;
     property Margin: TRect read FMargin write FMargin;
 
-    procedure BeginDoc;
-    procedure EndDoc;
+    property Title: TTitle read FTitle write FTitle;
+    property Subtitle: TTitle read FSubtitle write FSubtitle;
+    property Columns: TColumns read FColumns;
 
     procedure WriteRows(ADatas: TArray<string>);
     function NewRow: TDTFPrinter;
@@ -214,6 +217,7 @@ begin
 
   FFont := TFont.Create;
   FFont.Size := DEF_FONT_SIZE;
+
   FHeaderFont := TFont.Create;
   FHeaderFont.Size := DEF_FONT_SIZE;
   FHeaderFont.Style := [fsBold];
@@ -228,17 +232,18 @@ begin
   inherited;
 end;
 
-procedure TDTFPrinter.BeginDoc;
+procedure TDTFPrinter.DoBeginDoc;
 begin
-  DoSetup;
-
   Printer.BeginDoc;
 
-  DoNewPage;
+  DoSetup;
+
+  DoBeginPage;
 end;
 
-procedure TDTFPrinter.EndDoc;
+procedure TDTFPrinter.DoEndDoc;
 begin
+  DoEndPage;
   Printer.EndDoc;
 end;
 
@@ -250,7 +255,6 @@ var
   I, Left: Integer;
 begin
   FRowIndex := 0;
-  FPageNum := 0;
 
   FMargin.Top     := Printer.PageHeight div 30;
   FMargin.Bottom  := Printer.PageHeight div 30;
@@ -264,8 +268,8 @@ begin
   FCharWidth := Printer.Canvas.TextWidth('0');
   FCharHeight := Printer.Canvas.TextHeight('0');
 
-  FRowHeight := Trunc(FCharHeight * 1.2);
-  FRowPadding := Trunc(FCharHeight * 0.1);
+  FRowHeight := Trunc(FCharHeight * 1.4);
+  FRowPadding := Trunc(FCharHeight * 0.2);
   FColPadding := Trunc(FCharWidth * 0.8);
 
   if poSequenceColumn in FOptions then
@@ -294,12 +298,25 @@ end;
 
 procedure TDTFPrinter.DoNewPage;
 begin
-  Inc(FPageNum);
+  DoEndPage;
 
+  Printer.NewPage;
+
+  DoBeginPage;
+end;
+
+procedure TDTFPrinter.DoBeginPage;
+begin
   FTop  := FMargin.Top;
+  FRowIndex := 0;
 
   DoPrintPageHeader;
   DoPrintHeader;
+end;
+
+procedure TDTFPrinter.DoEndPage;
+begin
+  DoPrintPageFooter;
 end;
 
 procedure TDTFPrinter.DoPrintPageHeader;
@@ -357,7 +374,7 @@ begin
   for Column in FColumns do
     Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FTop, Column.Caption);
 
-  Inc(FTop, FRowHeight + FRowPadding);
+  Inc(FTop, FRowHeight);
 
   if poHeaderHorzLine in FOptions then
     DoPrintHorzLine(FTop);
@@ -373,12 +390,25 @@ end;
 
 procedure TDTFPrinter.DoPrintPageFooter;
 begin
-
+  if poFooterHorzLine in FOptions then
+  begin
+    FTop := FMargin.Top + FPageHeight;
+    DoPrintHorzLine(FTop);
+  end;
+  DoPrintPageNum;
 end;
 
 procedure TDTFPrinter.DoPrintPageNum;
+var
+  L, W: Integer;
+  NumStr: string;
 begin
+  NumStr := Printer.PageNumber.ToString;
+  W := FCharWidth * Length(NumStr) + FColPadding;
+  L := FMargin.Left + FPageWidth - W;
 
+  Printer.Canvas.Font.Assign(FFont);
+  Printer.Canvas.TextOut(L, FTop, NumStr);
 end;
 
 function TDTFPrinter.NewRow: TDTFPrinter;
@@ -387,8 +417,11 @@ var
   SeqCol: TSequenceColumn;
 begin
   if FRowIndex > 0 then
-    FTop := FTop + FRowHeight + FRowPadding;
+    FTop := FTop + FRowHeight;
   Inc(FRowIndex);
+
+  if FTop >= (FPageHeight + FMargin.Top) then
+    DoNewPage;
 
   Printer.Canvas.Font.Assign(FFont);
   for Column in FColumns do
@@ -411,8 +444,6 @@ var
 begin
   Result := Self;
 
-  NewRow;
-
   Idx := 0;
   for Column in FColumns do
   begin
@@ -426,7 +457,6 @@ begin
     end;
     Inc(Idx);
   end;
-
 end;
 
 function TDTFPrinter.WriteCell(AColumn: TColumn; AData: string): TDTFPrinter;
@@ -460,11 +490,11 @@ begin
     Exit;
 
   try
-    BeginDoc;
+    DoBeginDoc;
 
     AWriteDataProc;
 
-    EndDoc;
+    DoEndDoc;
   except on E: Exception do
     AErrorProc(E.Message);
   end;

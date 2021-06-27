@@ -369,6 +369,15 @@ inherited frmSYS1010: TfrmSYS1010
           ExplicitTop = 48
           ExplicitWidth = 444
         end
+        inherited ActionList: TActionList
+          inherited actPrint: TAction
+            Hint = #47700#45684' '#44536#47353
+            Visible = True
+          end
+          inherited actDSExportXls: TAction
+            Visible = True
+          end
+        end
         inherited DataSource: TDataSource
           DataSet = qryMenuGroups
         end
