@@ -11,6 +11,9 @@ type
   IDTFLazyLoadService = interface(IDTFService)
   end;
 
+  IDTFConfigService = interface(IDTFService)
+  end;
+
   IDTFServiceLoader = interface
   end;
 

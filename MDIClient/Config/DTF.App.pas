@@ -11,6 +11,7 @@ type
   TApp = class(TDTFApp<TApp>)
   private
     FConfigService: TConfigService;
+    function GetConfigService: TConfigService;
   protected
     procedure Initialize; override;
     procedure Finalize; override;
@@ -18,7 +19,7 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    property Config: TConfigService read FConfigService;
+    property Config: TConfigService read GetConfigService;
   end;
 
 var
@@ -43,6 +44,11 @@ begin
   inherited;
 
   FConfigService.Free;
+end;
+
+function TApp.GetConfigService: TConfigService;
+begin
+
 end;
 
 procedure TApp.Initialize;
