@@ -17,9 +17,6 @@ type
     { Public declarations }
   end;
 
-var
-  DTFTitleFrame: TDTFTitleFrame;
-
 implementation
 
 {$R *.dfm}

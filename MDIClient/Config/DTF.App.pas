@@ -1,25 +1,42 @@
 unit DTF.App;
 
+{
+  How to use
+    App.Config.UserId
+    App.Logger.Log(ALog); // TLogger.Log
+
+    App.Auth
+    app.Perm
+
+    App.Utils.Printer ??
+    App.Utils.Export ??
+}
+
 interface
 
 uses
   DTF.App.Base,
   DTF.Service.Types,
-  DTF.Config;
+  DTF.Config, MenuService;
 
 type
   TApp = class(TDTFApp<TApp>)
   private
     FConfigService: TConfigService;
+    FMenuService: TMenuService;
     function GetConfigService: TConfigService;
   protected
     procedure Initialize; override;
     procedure Finalize; override;
+
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
   public
     constructor Create;
     destructor Destroy; override;
 
-    property Config: TConfigService read GetConfigService;
+    property Config: TConfigService read FConfigService;
+    property Menu: TMenuService read FMenuService;
   end;
 
 var
@@ -28,6 +45,20 @@ var
 implementation
 
 { TApp }
+
+procedure TApp.AfterConstruction;
+begin
+  inherited;
+
+  FConfigService := TConfigService.Create;
+end;
+
+procedure TApp.BeforeDestruction;
+begin
+  inherited;
+
+  FConfigService.Free;
+end;
 
 constructor TApp.Create;
 begin
@@ -43,7 +74,6 @@ procedure TApp.Finalize;
 begin
   inherited;
 
-  FConfigService.Free;
 end;
 
 function TApp.GetConfigService: TConfigService;
@@ -55,7 +85,6 @@ procedure TApp.Initialize;
 begin
   inherited;
 
-  FConfigService := TConfigService.Create;
 end;
 
 initialization

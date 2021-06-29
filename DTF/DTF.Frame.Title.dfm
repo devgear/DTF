@@ -30,6 +30,5 @@ inherited DTFTitleFrame: TDTFTitleFrame
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitHeight = 28
   end
 end
