@@ -3,7 +3,7 @@ unit Test3Form;
 interface
 
 uses
-  DTF.Types, DTF.GridInfo,
+  DTF.Types.View, DTF.GridInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
   DTF.Frame.Base, DTF.Frame.Title, FireDAC.Stan.Intf, FireDAC.Stan.Option,

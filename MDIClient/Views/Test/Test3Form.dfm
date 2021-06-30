@@ -22,7 +22,6 @@ inherited frmTest3: TfrmTest3
     inherited pnlCaption: TPanel
       Width = 766
       ExplicitWidth = 766
-      ExplicitHeight = 20
     end
   end
   inline DTFStrGridFrame1: TDTFStrGridFrame

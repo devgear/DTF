@@ -4,10 +4,12 @@ interface
 
 uses
   DatabaseModule,
-  MenuTypes,
-  DTF.Types,
-  DTF.Form.Base, DTF.Form.MDIChild,
-  DTF.Frame.Base, DTF.Frame.DataSet, DTF.Frame.DBGrid,
+  DTF.Types.View,
+  DTF.Form.MDIChild,
+  DTF.Frame.Base,
+  DTF.Frame.DataSet,
+  DTF.Frame.DBGrid,
+
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.BaseImageCollection, Vcl.ImageCollection, System.ImageList, Vcl.ImgList,
@@ -109,6 +111,7 @@ implementation
 {$R *.dfm}
 
 uses
+  MenuTypes,
   DTF.Module.Resource;
 
 procedure TfrmSYS1010.actMenuTreeDownExecute(Sender: TObject);

@@ -22,8 +22,6 @@ implementation
 
 { TAuthService }
 
-{ TAuthService }
-
 function TAuthService.GetAllowList: TList<string>;
 begin
 

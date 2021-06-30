@@ -195,7 +195,6 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 460
           Caption = #47700#45684' '#52852#53580#44256#47532
           ExplicitWidth = 460
-          ExplicitHeight = 20
         end
       end
     end
@@ -288,7 +287,6 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 461
           Caption = #48120#47532#48372#44592
           ExplicitWidth = 461
-          ExplicitHeight = 20
         end
       end
     end
@@ -446,7 +444,6 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 460
           Caption = #47700#45684' '#44536#47353
           ExplicitWidth = 460
-          ExplicitHeight = 20
         end
       end
     end
@@ -602,7 +599,6 @@ inherited frmSYS1010: TfrmSYS1010
           Width = 461
           Caption = #47700#45684
           ExplicitWidth = 461
-          ExplicitHeight = 20
         end
       end
     end

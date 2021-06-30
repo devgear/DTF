@@ -28,7 +28,7 @@ type
 implementation
 
 uses
-  System.Rtti, DTF.Types;
+  System.Rtti, DTF.Types.View;
 
 {$R *.dfm}
 

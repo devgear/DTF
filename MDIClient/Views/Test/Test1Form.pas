@@ -3,7 +3,7 @@ unit Test1Form;
 interface
 
 uses
-  DTF.TYpes,
+  DTF.Types.View,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, MenuTypes,
   Vcl.StdCtrls, Vcl.ExtCtrls, DTF.Frame.Title, DTF.Frame.Base,

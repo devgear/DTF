@@ -6,14 +6,20 @@ interface
 uses
   DTF.Types,
   DTF.Service.Types,
+  System.Generics.Collections,
   DMX.DesignPattern;
 
 type
   TDTFApp<T: class> = class(TSingleton<T>, IDTFServiceLoader)
+  private
+    FServices: TList<IDTFService>;
   protected
-    function GetSevice<TS: IDTFService>(const AName: string): TS;
-    procedure AddService(const IDTFService);
+    function GetSevice<TS: class>(const IID: TGUID): TS;
+    procedure AddService(const AService: IDTFService);
+    procedure RegService(const ACls: TClass);
   public
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
   end;
 
 implementation
@@ -22,16 +28,35 @@ implementation
 
 { TDTFApp<T> }
 
-procedure TDTFApp<T>.AddService(const IDTFService);
+procedure TDTFApp<T>.AfterConstruction;
 begin
+  inherited;
 
+  FServices := TList<IDTFService>.Create;
 end;
 
-function TDTFApp<T>.GetSevice<TS>(const AName: string): TS;
-var
-  S: IDTFService;
+procedure TDTFApp<T>.BeforeDestruction;
 begin
-  Result := S;
+  inherited;
+
+  FServices.Free;
+end;
+
+procedure TDTFApp<T>.AddService(const AService: IDTFService);
+begin
+  FServices.Add(AService);
+end;
+
+function TDTFApp<T>.GetSevice<TS>(const IID: TGUID): TS;
+//var
+//  S: IDTFService;
+begin
+  Result := nil;
+end;
+
+procedure TDTFApp<T>.RegService(const ACls: TClass);
+begin
+
 end;
 
 end.

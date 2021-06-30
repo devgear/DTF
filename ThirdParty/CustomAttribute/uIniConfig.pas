@@ -94,7 +94,7 @@ type
     property Filename: string read FFilename;
   end;
 
-  TIniConfig = class(TObject)
+  TIniConfig = class(TInterfacedObject)
   private
     FIniFile: TIniFile;
   public

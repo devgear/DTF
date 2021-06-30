@@ -35,7 +35,8 @@ uses
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   Test3Form in 'Views\Test\Test3Form.pas' {frmTest3},
   DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
-  DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas';
+  DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
+  DTF.Types.View in '..\DTF\DTF.Types.View.pas';
 
 {$R *.res}
 

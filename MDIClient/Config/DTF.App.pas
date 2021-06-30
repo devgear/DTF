@@ -25,18 +25,16 @@ type
     FConfigService: TConfigService;
     FMenuService: TMenuService;
     function GetConfigService: TConfigService;
+    function GetConfigSvc<T: class>: T;
   protected
-    procedure Initialize; override;
-    procedure Finalize; override;
-
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
   public
-    constructor Create;
-    destructor Destroy; override;
-
     property Config: TConfigService read FConfigService;
     property Menu: TMenuService read FMenuService;
+//    property ConfigEx: TConfigService read GetConfigSvc<TConfigService>;
+//    property Auth;
+//    property View;
   end;
 
 var
@@ -51,6 +49,10 @@ begin
   inherited;
 
   FConfigService := TConfigService.Create;
+
+  RegService(IDTFConfigService, TConfigService);
+
+//  AddService()
 end;
 
 procedure TApp.BeforeDestruction;
@@ -60,30 +62,13 @@ begin
   FConfigService.Free;
 end;
 
-constructor TApp.Create;
-begin
-end;
-
-destructor TApp.Destroy;
-begin
-
-  inherited;
-end;
-
-procedure TApp.Finalize;
-begin
-  inherited;
-
-end;
-
 function TApp.GetConfigService: TConfigService;
 begin
-
+  Result := GetSevice<TConfigService>(IDTFConfigService);
 end;
 
-procedure TApp.Initialize;
+function TApp.GetConfigSvc<T>: T;
 begin
-  inherited;
 
 end;
 

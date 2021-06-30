@@ -4,11 +4,12 @@ interface
 
 uses
   Vcl.Forms, System.Types,
-  uIniConfig;
+  uIniConfig,
+  DTF.Service.Types;
 
 type
   [IniFilename('config.ini')]
-  TConfigService = class(TIniConfig)
+  TConfigService = class(TIniConfig, IDTFConfigService)
   private
     FWindowState: TWindowState;
     FWindowBounds: TRect;

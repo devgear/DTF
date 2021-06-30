@@ -90,7 +90,7 @@ implementation
 uses
   DatabaseModule,
   DTF.App,
-  DTF.Types,
+  DTF.Types.View,
   DTF.Module.Resource,
   DTF.Utils.AutoComplete;
 

@@ -65,7 +65,6 @@ inherited frmTest1: TfrmTest1
       Width = 686
       Caption = #47700#45684' '#51312#54924
       ExplicitWidth = 686
-      ExplicitHeight = 20
     end
   end
   object pnlSearchPanel: TPanel

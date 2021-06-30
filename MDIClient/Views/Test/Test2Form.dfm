@@ -19,7 +19,6 @@ inherited frmTest2: TfrmTest2
       Width = 686
       Caption = 'StrGridFrame '#53580#49828#53944
       ExplicitWidth = 686
-      ExplicitHeight = 20
     end
   end
   inline DTFStrGridFrame1: TDTFStrGridFrame
