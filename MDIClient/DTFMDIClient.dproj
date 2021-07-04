@@ -170,7 +170,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Auth.pas"/>
-        <DCCReference Include="..\DTF\DTF.App.Base.pas"/>
+        <DCCReference Include="..\DTF\DTF.App.Core.pas"/>
         <DCCReference Include="Config\DTF.App.pas"/>
         <DCCReference Include="Services\AuthService.pas"/>
         <DCCReference Include="Services\MenuService.pas"/>
@@ -194,6 +194,7 @@
         <DCCReference Include="..\DTF\DTF.GridInfo.pas"/>
         <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.View.pas"/>
+        <DCCReference Include="..\DTF\DTF.Log.Service.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

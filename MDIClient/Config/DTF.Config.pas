@@ -13,6 +13,10 @@ type
   private
     FWindowState: TWindowState;
     FWindowBounds: TRect;
+    function GetConfig: TConfigService;
+
+//    class function ID: TGUID;
+//    function GetInstance: IDTFService;
   public
     [IniEnum('Window', Ord(wsNormal))]
     property WindowState: TWindowState read FWindowState write FWindowState;
@@ -30,10 +34,34 @@ var
 
 implementation
 
+uses
+  System.SysUtils;
+
 const
   PASSWORD_EXPIRED_DAYS = 180;
 
 { TConfigService }
+
+{ TConfigService }
+
+function TConfigService.GetConfig: TConfigService;
+begin
+  Result := Self;
+end;
+
+//function TConfigService.GetInstance: IDTFService;
+//var
+//  Intf: IDTFService;
+//begin
+//  if Supports( then
+
+//  Result := TConfigService.Create;
+//end;
+//
+//function TConfigService.ID: TGUID;
+//begin
+//
+//end;
 
 initialization
 

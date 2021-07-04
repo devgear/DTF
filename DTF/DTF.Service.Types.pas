@@ -6,15 +6,19 @@ type
   IDTFService = interface
 //    procedure Loaded;
 //    procedure Unload;
+//    function ID: TGUID;
+//    function GetInstance: IDTFService;
   end;
 
-  IDTFLazyLoadService = interface(IDTFService)
+  IDTFDeferService = interface(IDTFService)
   end;
 
-  IDTFConfigService<T> = interface(IDTFService)
+  IDTFConfigService = interface(IDTFDeferService)
   ['{12BA2742-734A-45D0-A1AF-537C6AC5E7DB}']
-    function GetConfig: T;
-    property Config: T read GetConfig;
+  end;
+
+  IDTFLogService = interface(IDTFDeferService)
+  ['{61199B3F-0515-439F-8078-3A13D8EB19E4}']
   end;
 
   IDTFServiceLoader = interface

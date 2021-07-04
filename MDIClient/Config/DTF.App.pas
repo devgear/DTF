@@ -15,26 +15,27 @@ unit DTF.App;
 interface
 
 uses
-  DTF.App.Base,
+  DTF.App.Core,
   DTF.Service.Types,
   DTF.Config, MenuService;
 
 type
-  TApp = class(TDTFApp<TApp>)
+  TApp = class(TAppCore<TApp>)
   private
     FConfigService: TConfigService;
     FMenuService: TMenuService;
     function GetConfigService: TConfigService;
     function GetConfigSvc<T: class>: T;
-  protected
+  public
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
-  public
+
     property Config: TConfigService read FConfigService;
     property Menu: TMenuService read FMenuService;
 //    property ConfigEx: TConfigService read GetConfigSvc<TConfigService>;
 //    property Auth;
 //    property View;
+//    property Log; // LogService // TLogger
   end;
 
 var
@@ -64,7 +65,7 @@ end;
 
 function TApp.GetConfigService: TConfigService;
 begin
-  Result := GetSevice<TConfigService>(IDTFConfigService);
+  Result := GetSevice(IDTFConfigService) as TConfigService;
 end;
 
 function TApp.GetConfigSvc<T>: T;

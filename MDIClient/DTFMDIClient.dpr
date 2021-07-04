@@ -23,7 +23,7 @@ uses
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'Views\USR\ManageUserForm.pas' {DTFMDIChildForm1},
   DTF.Auth in '..\DTF\DTF.Auth.pas',
-  DTF.App.Base in '..\DTF\DTF.App.Base.pas',
+  DTF.App.Core in '..\DTF\DTF.App.Core.pas',
   DTF.App in 'Config\DTF.App.pas',
   AuthService in 'Services\AuthService.pas',
   MenuService in 'Services\MenuService.pas',
@@ -36,7 +36,8 @@ uses
   Test3Form in 'Views\Test\Test3Form.pas' {frmTest3},
   DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
-  DTF.Types.View in '..\DTF\DTF.Types.View.pas';
+  DTF.Types.View in '..\DTF\DTF.Types.View.pas',
+  DTF.Log.Service in '..\DTF\DTF.Log.Service.pas';
 
 {$R *.res}
 
