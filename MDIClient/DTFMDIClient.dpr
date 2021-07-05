@@ -37,7 +37,10 @@ uses
   DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   DTF.Types.View in '..\DTF\DTF.Types.View.pas',
-  DTF.Log.Service in '..\DTF\DTF.Log.Service.pas';
+  DTF.Logger in '..\DTF\DTF.Logger.pas',
+  DTF.Service.Loader in '..\DTF\DTF.Service.Loader.pas',
+  DTF.Logger.FileLog in '..\DTF\DTF.Logger.FileLog.pas',
+  DTF.Logger.ODS in '..\DTF\DTF.Logger.ODS.pas';
 
 {$R *.res}
 

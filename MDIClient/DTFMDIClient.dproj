@@ -194,7 +194,10 @@
         <DCCReference Include="..\DTF\DTF.GridInfo.pas"/>
         <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.View.pas"/>
-        <DCCReference Include="..\DTF\DTF.Log.Service.pas"/>
+        <DCCReference Include="..\DTF\DTF.Logger.pas"/>
+        <DCCReference Include="..\DTF\DTF.Service.Loader.pas"/>
+        <DCCReference Include="..\DTF\DTF.Logger.FileLog.pas"/>
+        <DCCReference Include="..\DTF\DTF.Logger.ODS.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

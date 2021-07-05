@@ -17,7 +17,7 @@ interface
 uses
   DTF.App.Core,
   DTF.Service.Types,
-  DTF.Config, MenuService;
+  DTF.Config, MenuService, DTF.Logger;
 
 type
   TApp = class(TAppCore<TApp>)
@@ -25,13 +25,19 @@ type
     FConfigService: TConfigService;
     FMenuService: TMenuService;
     function GetConfigService: TConfigService;
-    function GetConfigSvc<T: class>: T;
+//    function GetConfigSvc<T: class>: T;
+    function GetMenuService: TMenuService;
+    function GetLogService: TLogService;
+  protected
+    procedure InitLoader; override;
   public
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
 
-    property Config: TConfigService read FConfigService;
-    property Menu: TMenuService read FMenuService;
+    property Config: TConfigService read GetConfigService;
+    property Menu: TMenuService read GetMenuService;
+
+    property Log: TLogService read GetLogService;
 //    property ConfigEx: TConfigService read GetConfigSvc<TConfigService>;
 //    property Auth;
 //    property View;
@@ -42,6 +48,9 @@ var
   App: TApp;
 
 implementation
+
+uses
+  DTF.Logger.FileLog;
 
 { TApp }
 
@@ -65,12 +74,40 @@ end;
 
 function TApp.GetConfigService: TConfigService;
 begin
-  Result := GetSevice(IDTFConfigService) as TConfigService;
+//  Result := GetSevice(IDTFConfigService) as TConfigService;
+  Result := FConfigService;
 end;
 
-function TApp.GetConfigSvc<T>: T;
+function TApp.GetLogService: TLogService;
 begin
+//  Result := TFileLogger.Create;
+end;
 
+//function TApp.GetConfigSvc<T>: T;
+//begin
+//  Result :=
+//end;
+
+function TApp.GetMenuService: TMenuService;
+begin
+  Result := FMenuService;
+end;
+
+procedure TApp.InitLoader;
+var
+  Logger: TFileLogger;
+begin
+  //
+//  App.Service['Logger'] := TFileLogger;
+//  IDTFLogService, function: IDTFLogService
+//  begin
+//    Result := TFileLogger.Create;
+//    Result.Dir := '';
+//  end;
+  Logger := TFileLogger.Create;
+  Logger.FileFormat := 'YYYY-MM-DD.log';
+  FServiceLoader.ServiceProvider[IDTFLogService] := Logger;
+//  FServiceLoader.RegistServiceProvider(IDTFLogService, Logger);
 end;
 
 initialization
