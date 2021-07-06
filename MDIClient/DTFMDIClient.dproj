@@ -116,7 +116,6 @@
         <DCCReference Include="Common\MenuTypes.pas"/>
         <DCCReference Include="..\DTF\DTF.Form.MDIChild.pas">
             <Form>DTFMDIChildForm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Types.pas"/>
         <DCCReference Include="Views\SYS\SYS1010.pas">
@@ -130,7 +129,6 @@
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Frame.DataSet.pas">
             <Form>DTFDataSetFrame</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Module.Resource.pas">
@@ -191,13 +189,16 @@
             <Form>frmTest3</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.GridInfo.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.Grid.pas"/>
         <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.View.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.Loader.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.FileLog.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.ODS.pas"/>
+        <DCCReference Include="..\DTF\DTF.Service.Config.pas"/>
+        <DCCReference Include="..\DTF\DTF.Config.IniLoader.pas"/>
+        <DCCReference Include="..\DTF\DTF.Service.View.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

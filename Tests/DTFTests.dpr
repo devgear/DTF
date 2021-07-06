@@ -14,7 +14,7 @@ uses
   {$ENDIF }
   DUnitX.TestFramework,
   TestDTFExtractColProp in 'TestDTFExtractColProp.pas',
-  DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
+  DTF.Utils.Grid in '..\DTF\DTF.Utils.Grid.pas',
   DTF.Types in '..\DTF\DTF.Types.pas',
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},

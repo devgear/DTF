@@ -99,6 +99,7 @@ begin
   FormStyle := fsMDIForm;
 
   Application.OnMessage := AppMessage;
+//  Application.OnException := AppException;
 
   LoadTreeMenu('home');
 
@@ -251,6 +252,11 @@ begin
 
   if Assigned(Node) and Node.Enabled and (Node.Level = 1) then
     CreateMDIForm((trvMenus.Selected as TMenuNode).Code);
+
+  App.Log.Info('test');
+
+  App.View.ShowView('')
+//  App.View.ShowMenu('');
 end;
 
 procedure TfrmMain.trvMenusCreateNodeClass(Sender: TCustomTreeView;

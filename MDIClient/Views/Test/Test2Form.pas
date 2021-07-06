@@ -3,7 +3,7 @@ unit Test2Form;
 interface
 
 uses
-  DTF.Types.View, DTF.GridInfo,
+  DTF.Types.View, DTF.Utils.Grid,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
   DTF.Frame.Base, DTF.Frame.Title, Vcl.StdCtrls, Vcl.WinXCtrls, Vcl.Grids, Vcl.ExtCtrls,
@@ -22,13 +22,13 @@ type
     [IntCol][ColColor]
     Int2: Integer;
 
-    [StrCol]
+    [StrCol(120)]
     Str: string;
 
-    [DblCol('#,##0.###')]
+    [DblCol(100, '#,##0.###')]
     Dbl: Single;
 
-    [DtmCol('YYYY-MM-DD')]
+    [DtmCol(100, 'YYYY-MM-DD')]
     Dtm: TDatetime;
 
     [IntCol]
@@ -104,7 +104,7 @@ begin
     qryTestData.Next;
   end;
 
-  DTFStrGridFrame1.FillDataRows<TGridData>(Datas);
+  DTFStrGridFrame1.WriteDatas<TGridData>(Datas);
 end;
 
 initialization

@@ -14,9 +14,9 @@ type
     procedure SetFileFormat(const Value: string);
     procedure SetDir(const Value: string);
   protected
-    procedure DoWriteLog(const ALevel: TLogLevel; ALog: string);
+    procedure DoWriteLog(const ALog: string);
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
     property FileFormat: string read FFileFormat write SetFileFormat;
     property Dir: string read FDir write SetDir;
@@ -41,7 +41,7 @@ begin
   inherited;
 end;
 
-procedure TFileLogger.DoWriteLog(const ALevel: TLogLevel; ALog: string);
+procedure TFileLogger.DoWriteLog(const ALog: string);
 begin
 
 end;

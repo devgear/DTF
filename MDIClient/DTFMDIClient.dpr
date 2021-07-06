@@ -34,19 +34,26 @@ uses
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   Test3Form in 'Views\Test\Test3Form.pas' {frmTest3},
-  DTF.GridInfo in '..\DTF\DTF.GridInfo.pas',
+  DTF.Utils.Grid in '..\DTF\DTF.Utils.Grid.pas',
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   DTF.Types.View in '..\DTF\DTF.Types.View.pas',
   DTF.Logger in '..\DTF\DTF.Logger.pas',
   DTF.Service.Loader in '..\DTF\DTF.Service.Loader.pas',
   DTF.Logger.FileLog in '..\DTF\DTF.Logger.FileLog.pas',
-  DTF.Logger.ODS in '..\DTF\DTF.Logger.ODS.pas';
+  DTF.Logger.ODS in '..\DTF\DTF.Logger.ODS.pas',
+  DTF.Service.Config in '..\DTF\DTF.Service.Config.pas',
+  DTF.Config.IniLoader in '..\DTF\DTF.Config.IniLoader.pas',
+  DTF.Service.View in '..\DTF\DTF.Service.View.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.Title := '::: DTF MDI Client :::';
+
+  ReportMemoryLeaksOnShutdown := True;
+
+  App.StartUp;
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);

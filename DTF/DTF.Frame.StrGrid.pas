@@ -3,7 +3,7 @@ unit DTF.Frame.StrGrid;
 interface
 
 uses
-  DTF.Types, DTF.GridInfo,
+  DTF.Types, DTF.Utils.Grid,
   System.Rtti, System.TypInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.DBActns,
@@ -30,9 +30,9 @@ type
 
     procedure ClearGrid(AColCount: Integer = -1);
 
-    procedure FillDataRows<T>(const ADatas: TArray<T>); overload;
-    procedure FillDataRows<T>(const ADatas: TList<T>); overload;
-    procedure FillDataRowsRec<DataType, ItemType>(const ADataRec: DataType); overload;
+    procedure WriteDatas<ItemType>(const ADatas: TArray<ItemType>); overload;
+    procedure WriteDatas<ItemType>(const ADatas: TList<ItemType>); overload;
+    procedure WriteDatas<DataType, ItemType>(const ADataRec: DataType); overload;
   end;
 
 implementation
@@ -130,16 +130,16 @@ begin
   end;
 end;
 
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TList<T>);
+procedure TDTFStrGridFrame.WriteDatas<ItemType>(const ADatas: TList<ItemType>);
 begin
-  FillDataRows<T>(ADatas.ToArray);
+  WriteDatas<ItemType>(ADatas.ToArray);
 end;
 
-procedure TDTFStrGridFrame.FillDataRows<T>(const ADatas: TArray<T>);
+procedure TDTFStrGridFrame.WriteDatas<ItemType>(const ADatas: TArray<ItemType>);
 var
   ColProps: TGridColProps;
 begin
-  if not TExtractColProp.TryGetColProps<T>(ColProps) then
+  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
   if Length(ADatas) = 0 then
@@ -147,11 +147,11 @@ begin
 
   Grid.RowCount := Grid.FixedRows + Length(ADatas);
 
-  SetDataRows<T>(Grid.FixedRows, ColProps, ADatas);
+  SetDataRows<ItemType>(Grid.FixedRows, ColProps, ADatas);
 end;
 
 // DataRows Attr로 목록 확인
-procedure TDTFStrGridFrame.FillDataRowsRec<DataType, ItemType>(const ADataRec: DataType);
+procedure TDTFStrGridFrame.WriteDatas<DataType, ItemType>(const ADataRec: DataType);
 var
   LCtx: TRttiContext;
   LType: TRttiType;

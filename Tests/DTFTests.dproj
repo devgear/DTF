@@ -106,7 +106,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="TestDTFExtractColProp.pas"/>
-        <DCCReference Include="..\DTF\DTF.GridInfo.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.Grid.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.pas"/>
         <DCCReference Include="..\DTF\DTF.Utils.pas"/>
         <DCCReference Include="..\DTF\DTF.Form.MDIChild.pas">

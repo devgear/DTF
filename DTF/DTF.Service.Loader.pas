@@ -9,13 +9,15 @@ uses
 type
   TServiceLoader = class
     type
-      TProviderData = record
+      TProviderData = class
         Cls: TDTFServiceProviderClass;
         Instance: TDTFServiceProvider;
-        LoaderPro: TFunc<TDTFServiceProvider>;
+        LoaderProc: TFunc<TDTFServiceProvider>;
+      public
+        destructor Destroy; override;
       end;
   private
-    FDict: TDictionary<TGUID, TProviderData>;
+    FDict: TObjectDictionary<TGUID, TProviderData>;
 
     procedure DoRegistServiceProvider(const AID: TGUID; AClass: TDTFServiceProviderClass;
       AInstance: TDTFServiceProvider; ALoaderProc: TFunc<TDTFServiceProvider>);
@@ -33,7 +35,6 @@ type
       AInstance: TDTFServiceProvider); overload;
 
     property ServiceProvider[AID: TGUID]: TDTFServiceProvider read GetServiceProvider write SetServiceProvider;
-
   end;
 
 implementation
@@ -42,7 +43,7 @@ implementation
 
 constructor TServiceLoader.Create;
 begin
-  FDict := TDictionary<TGUID, TProviderData>.Create;
+  FDict := TObjectDictionary<TGUID, TProviderData>.Create([doOwnsValues]);
 end;
 
 destructor TServiceLoader.Destroy;
@@ -56,26 +57,31 @@ procedure TServiceLoader.DoRegistServiceProvider(const AID: TGUID;
   AClass: TDTFServiceProviderClass; AInstance: TDTFServiceProvider;
   ALoaderProc: TFunc<TDTFServiceProvider>);
 begin
+  if not FDict.ContainsKey(AId) then
+    FDict.Add(AId, TProviderData.Create);
 
+  FDict.Items[AId].Cls := AClass;
+  if Assigned(FDict.Items[AId].Instance) then
+    FDict.Items[AId].Instance.Free;
+  FDict.Items[AId].Instance := AInstance;
+  FDict.Items[AId].LoaderProc := ALoaderProc;
 end;
 
 function TServiceLoader.GetServiceProvider(AID: TGUID): TDTFServiceProvider;
+var
+  Data: TProviderData;
 begin
+  if not FDict.TryGetValue(AId, Data) then
+    raise Exception.Create('Not registration service. ' + AID.ToString);
 
+  if Assigned(Data.Instance) then
+    Exit(Data.Instance);
 end;
 
 procedure TServiceLoader.SetServiceProvider(AID: TGUID;
   const Value: TDTFServiceProvider);
-var
-  Data: TProviderData;
 begin
-  if FDict.TryGetValue(AID, Data) then
-  begin
-    Data.Instance := Value;
-    FDict.Items[AID] := Data;
-  end
-  else
-    RegistServiceProvider(AID, Value);
+  RegistServiceProvider(AID, Value);
 end;
 
 procedure TServiceLoader.RegistServiceProvider(const AID: TGUID;
@@ -96,6 +102,16 @@ var
   Data: TProviderData;
 begin
   DoRegistServiceProvider(AID, AClass, nil, nil);
+end;
+
+{ TServiceLoader.TProviderData }
+
+destructor TServiceLoader.TProviderData.Destroy;
+begin
+  if Assigned(Instance) then
+    Instance.Free;
+
+  inherited;
 end;
 
 end.

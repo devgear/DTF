@@ -1,4 +1,4 @@
-unit DTF.GridInfo;
+unit DTF.Utils.Grid;
 
 interface
 
@@ -7,16 +7,19 @@ uses
   System.Rtti, System.TypInfo;
 
 type
+{$REGION 'GridAttribute'}
   {  Attributes }
   TGridColAttribute = class(TCustomAttribute)
+  const
+    DEFAULT_COLWIDTH = 64;
   private
-    FCol: Integer;
     FFormat: string;
     FColWidth: Integer;
   public
-    constructor Create(AFormat: string = ''); overload;
+    constructor Create(ADisplayWidth: Integer = DEFAULT_COLWIDTH; AFormat: string = ''); overload;
 
     property Format: string read FFormat;
+    property ColWidth: Integer read FColWidth;
 
     function ValueToStr(Value: TValue): string; virtual; abstract;
   end;
@@ -43,8 +46,8 @@ type
   end;
   DtmColAttribute = DatetimeColAttribute;
 
-
-
+  ///////////////////////////
+  /// Concept
   ColColorAttribute = class(TCustomAttribute)
 //  public
 //    constructor Create(AFontColor, ABgColor: TColor)
@@ -68,6 +71,7 @@ type
 
   DataRowsAttribute = class(TCustomAttribute)
   end;
+{$ENDREGION 'GridAttribute'}
 
   { Utils }
   TGridColProp = record
@@ -89,9 +93,10 @@ implementation
 
 { TGridColAttribute }
 
-constructor TGridColAttribute.Create(AFormat: string);
+constructor TGridColAttribute.Create(ADisplayWidth: Integer; AFormat: string);
 begin
   FFormat := AFormat;
+  FColWidth := ADisplayWidth;
 end;
 
 { StrColAttribute }

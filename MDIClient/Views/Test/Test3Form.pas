@@ -3,7 +3,7 @@ unit Test3Form;
 interface
 
 uses
-  DTF.Types.View, DTF.GridInfo,
+  DTF.Types.View, DTF.Utils.Grid,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
   DTF.Frame.Base, DTF.Frame.Title, FireDAC.Stan.Intf, FireDAC.Stan.Option,
@@ -17,23 +17,23 @@ type
     [IntCol][FieldName('INT_DATA')]
     Int: Integer;
 
-    [IntCol('#,###')][FieldName('INT_DATA2')]
+    [IntCol(80, '#,###')][FieldName('INT_DATA2')]
     Int2: Integer;
 
     [StrCol][FieldName('STR_DATA')]
     Str: string;
 
-    [DblCol('#,##0.###')][FieldName('DBL_DATA')]
+    [DblCol(100, '#,##0.###')][FieldName('DBL_DATA')]
     Dbl: Single;
 
-    [DtmCol('YYYY-MM-DD')][FieldName('DTM_DATA')]
+    [DtmCol(100, 'YYYY-MM-DD')][FieldName('DTM_DATA')]
     Dtm: TDatetime;
 
 
     [IntCol]
     Sum: Integer;
 
-    [DblCol('#,##0.###')][Avg('Int, Int2')]
+    [DblCol(100, '#,##0.###')][Avg('Int, Int2')]
     Avg: Single;
 
     [AutoCalc]
@@ -150,7 +150,7 @@ begin
 
   Data.Calc;
 
-  DTFStrGridFrame1.FillDataRowsRec<TGridData, TDataItem>(Data);
+  DTFStrGridFrame1.WriteDatas<TGridData, TDataItem>(Data);
 end;
 
 initialization

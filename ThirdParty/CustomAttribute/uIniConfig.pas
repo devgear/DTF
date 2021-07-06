@@ -96,9 +96,10 @@ type
 
   TIniConfig = class(TInterfacedObject)
   private
+    FTarget: TObject;
     FIniFile: TIniFile;
   public
-    constructor Create(const AName: string = ''); virtual;
+    constructor Create(const ATarget: TObject; const AName: string = ''); virtual;
     destructor Destroy; override;
 
     procedure LoadFromFile;
@@ -230,20 +231,22 @@ end;
 
 { TIniConfig }
 
-constructor TIniConfig.Create(const AName: string);
+constructor TIniConfig.Create(const ATarget: TObject; const AName: string);
 var
   LRttiContext: TRttiContext;
   LRttiType: TRttiType;
   LAttribute: TCustomAttribute;
   LName, LFilename: string;
 begin
+  FTarget := ATarget;
+
   if AName <> '' then
     LName := AName
   else
   begin
     LRttiContext := TRttiContext.Create;
     try
-      LRttiType := LRttiContext.GetType(Self.ClassType);
+      LRttiType := LRttiContext.GetType(FTarget.ClassType);
       for LAttribute in LRttiType.GetAttributes do
       begin
         if LAttribute is IniFilenameAttribute then
@@ -289,7 +292,7 @@ var
 begin
   LRttiContext := TRttiContext.Create;
   try
-    LRttiType := LRttiContext.GetType(Self.ClassType);
+    LRttiType := LRttiContext.GetType(FTarget.ClassType);
     for LProp in LRttiType.GetProperties do
     begin
       if not LProp.IsReadable then
@@ -349,7 +352,7 @@ var
 begin
   LRttiContext := TRttiContext.Create;
   try
-    LRttiType := LRttiContext.GetType(Self.ClassType);
+    LRttiType := LRttiContext.GetType(FTarget.ClassType);
     for LProp in LRttiType.GetProperties do
     begin
       if not LProp.IsWritable then
