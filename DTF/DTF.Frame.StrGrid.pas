@@ -86,7 +86,7 @@ procedure TDTFStrGridFrame.SetDataRow<T>(const ARow: Integer; AColProps: TGridCo
 var
   I: Integer;
   ColProp: TGridColProp;
-  Value: TValue;
+  Value, ArrValue, RecValue: TValue;
   StrVal: string;
 begin
   for I := 0 to Length(AColProps) - 1 do
@@ -97,10 +97,20 @@ begin
       Continue;
 
     Value := TValue.Empty;
-    if Assigned(ColProp.Field) then
-      Value := ColProp.Field.GetValue(@AData)
-    else if Assigned(ColProp.Method) then
-      Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
+
+    case ColProp.Kind of
+      cpkField:
+        Value := ColProp.Field.GetValue(@AData);
+      cpkMethod:
+        Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
+      cpkArray:
+        begin
+          ArrValue := ColProp.ArrayField.GetValue(@AData);
+          RecValue := ArrValue.GetArrayElement(ColProp.ArrayIndex);
+          if RecValue.TypeInfo.Kind = tkRecord then
+            Value := ColProp.Field.GetValue(ArrValue.GetReferenceToRawArrayElement(ColProp.ArrayIndex));
+        end;
+    end;
 
     if Value.IsEmpty then
       Continue;

@@ -199,6 +199,10 @@
         <DCCReference Include="..\DTF\DTF.Service.Config.pas"/>
         <DCCReference Include="..\DTF\DTF.Config.IniLoader.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.View.pas"/>
+        <DCCReference Include="Views\Test\Test4Form.pas">
+            <Form>frmTest4</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

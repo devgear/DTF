@@ -254,9 +254,6 @@ begin
     CreateMDIForm((trvMenus.Selected as TMenuNode).Code);
 
   App.Log.Info('test');
-
-  App.View.ShowView('')
-//  App.View.ShowMenu('');
 end;
 
 procedure TfrmMain.trvMenusCreateNodeClass(Sender: TCustomTreeView;

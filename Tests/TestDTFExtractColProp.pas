@@ -34,6 +34,12 @@ type
 
     [Test]
     procedure TestFillDataRowsRec;
+
+    [Test]
+    procedure TestGetColPropsStaticArray;
+
+    [Test]
+    procedure TestDataRecStaticArray;
   end;
 
 
@@ -41,7 +47,7 @@ implementation
 
 uses
   System.Rtti, System.SysUtils,
-  DTF.GridInfo, DTF.Utils, DTF.Frame.StrGrid;
+  DTF.Utils.Grid, DTF.Utils, DTF.Frame.StrGrid;
 
 procedure TTestDTFExtractColProp.Setup;
 begin
@@ -63,10 +69,10 @@ type
     [StrCol]
     Str: string;
 
-    [DblCol('#,##0.###')]
+    [DblCol(100, '#,##0.###')]
     Dbl: Single;
 
-    [DtmCol('YYYY-MM-DD')]
+    [DtmCol(120, 'YYYY-MM-DD')]
     Dtm: TDatetime;
 
     [IntCol]
@@ -93,10 +99,10 @@ type
     [StrCol]
     Str: string;
 
-    [DblCol('#,##0.###')]
+    [DblCol(100, '#,##0.###')]
     Dbl: Single;
 
-    [DtmCol('YYYY-MM-DD')]
+    [DtmCol(120, 'YYYY-MM-DD')]
     Dtm: TDatetime;
   end;
 
@@ -131,6 +137,22 @@ type
     [StrCol]
     Str: string;
     C: TRecItem5; // 8 cols
+  end;
+
+  TRecItem7 = record
+    [IntCol]
+    I: Integer;
+  end;
+  TArr4<T> = array[0..3] of T;
+  TRec7 = record
+    [StrCol]
+    S: string;
+    [ColArray(4)]
+    Ints: TArr4<TRecItem7>;
+  end;
+  TRecList7 = record
+    [DataRows]
+    Items: TArray<TRec7>;
   end;
 {$ENDREGION}
 
@@ -202,6 +224,35 @@ begin
   WriteLn(Length(ADatas).ToString);
 end;
 
+procedure TTestDTFExtractColProp.TestDataRecStaticArray;
+var
+  Datas: TRecList7;
+  Frame: TDTFStrGridFrame;
+begin
+  Frame := TDTFStrGridFrame.Create(nil);
+  try
+    SetLength(Datas.Items, 2);
+    Datas.Items[0].S := 'abc1';
+    Datas.Items[0].Ints[0].I := 11;
+    Datas.Items[0].Ints[1].I := 12;
+    Datas.Items[0].Ints[2].I := 13;
+    Datas.Items[0].Ints[3].I := 14;
+
+    Datas.Items[1].S := 'abc2';
+    Datas.Items[1].Ints[0].I := 21;
+    Datas.Items[1].Ints[1].I := 22;
+    Datas.Items[1].Ints[2].I := 23;
+    Datas.Items[1].Ints[3].I := 24;
+
+    Frame.WriteDatas<TRecList7, TRec7>(Datas);
+
+    Assert.AreEqual(Frame.Grid.Cells[1, 1], '11');
+
+  finally
+    Frame.Free;
+  end;
+end;
+
 procedure TTestDTFExtractColProp.TestGetDataRowsArrayType;
 var
   LCtx: TRttiContext;
@@ -224,6 +275,16 @@ begin
   end;
 end;
 
+procedure TTestDTFExtractColProp.TestGetColPropsStaticArray;
+var
+  ColProps: TGridColProps;
+begin
+  if not TExtractColProp.TryGetColProps<TRec7>(ColProps) then
+    Assert.Fail;
+
+  Assert.AreEqual(Length(ColProps), 5);
+end;
+
 procedure TTestDTFExtractColProp.TestFillDataRowsRec;
 var
   Datas: TRec4;
@@ -244,7 +305,7 @@ begin
     Datas.Items[1].Dbl := 1.234;
     Datas.Items[1].Dtm := Now + 10;
 
-    Frame.FillDataRowsRec<TRec4, TRec1>(Datas);
+    Frame.WriteDatas<TRec4, TRec1>(Datas);
 
     Assert.AreEqual(Frame.Grid.Cells[0, 1], '10');
 

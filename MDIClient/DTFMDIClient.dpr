@@ -43,7 +43,8 @@ uses
   DTF.Logger.ODS in '..\DTF\DTF.Logger.ODS.pas',
   DTF.Service.Config in '..\DTF\DTF.Service.Config.pas',
   DTF.Config.IniLoader in '..\DTF\DTF.Config.IniLoader.pas',
-  DTF.Service.View in '..\DTF\DTF.Service.View.pas';
+  DTF.Service.View in '..\DTF\DTF.Service.View.pas',
+  Test4Form in 'Views\Test\Test4Form.pas' {frmTest4};
 
 {$R *.res}
 

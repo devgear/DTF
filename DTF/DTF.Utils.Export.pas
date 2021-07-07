@@ -12,10 +12,8 @@ type
 
   TExportUtil = class
     class procedure SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
-      const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
+      const ASetNumberFormatLocal: Boolean = True; const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
     class procedure PrintFromDataSet(const ADataSet: TDataSet; const ATitle: string = '');
-//    class procedure PrintDataRows<T>(const ADatas: TArray<T>;
-//      const ATitle: string);
   end;
 
 
@@ -90,9 +88,8 @@ begin
   Printer.Free;
 end;
 
-class procedure TExportUtil.SaveToXlsFromDataset(const ADataSet: TDataSet;
-  const AFilename: string; const ASheetName: string = '';
-  const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
+class procedure TExportUtil.SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
+      const ASetNumberFormatLocal: Boolean = True; const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
 var
   I: Integer;
   LExcel: Variant;
@@ -134,10 +131,7 @@ begin
 
     if ASheetName = '' then
     begin
-  //    if LWorkBook.Sheets.Count > 0 then
-  //      LWorkSheet := LWorkBook.ActiveSheet
-  //    else
-        LWorkSheet := LWorkBook.WorkSheets.Add;
+      LWorkSheet := LWorkBook.WorkSheets.Add;
     end
     else
     begin
@@ -162,10 +156,6 @@ begin
 
     ///////////////////////
     // Export data
-    Rows := ADataSet.RecordCount;
-    if AIncludeLabel then
-      Rows := Rows + 1;
-
     Cols := 0;
     SetLength(ColIdxs, ADataSet.FieldCount);
     for I := 0 to ADataSet.FieldCount -1 do
@@ -181,16 +171,22 @@ begin
     end;
 
     Row := 0;
-    LDatas := VarArrayCreate([0, Rows-1,0, Cols-1], VarVariant);
-    if AIncludeLabel then
-    begin
-      for I := 0 to Cols - 1 do
-        LDatas[0, I] := ADataSet.Fields[ColIdxs[I]].DisplayLabel;
-      Row := 1;
-    end;
     LBookmark := ADataSet.GetBookmark;
     ADataSet.DisableControls;
     try
+      ADataSet.Last; // FetchRowSize 지정된 경우 일부만 출력될 수 있음
+      Rows := ADataSet.RecordCount;
+      if AIncludeLabel then
+        Rows := Rows + 1;
+
+      LDatas := VarArrayCreate([0, Rows-1,0, Cols-1], VarVariant);
+      if AIncludeLabel then
+      begin
+        for I := 0 to Cols - 1 do
+          LDatas[0, I] := ADataSet.Fields[ColIdxs[I]].DisplayLabel;
+        Row := 1;
+      end;
+
       ADataSet.First;
       while not Eof do
       begin
@@ -225,8 +221,13 @@ begin
 
     LRange := LRange + IntToStr(Rows);
 
+    if ASetNumberFormatLocal then
+    begin
+      for I := 0 to Cols - 1 do
+        if ADataSet.Fields[ColIdxs[I]].DataType in [ftString, ftWideString] then
+          LWorkSheet.Columns[I+1].NumberFormatLocal := '@';
+    end;
     LWorkSheet.Range[LRange].Value := LDatas;
-
 
     ///////////////////////
     // Save file

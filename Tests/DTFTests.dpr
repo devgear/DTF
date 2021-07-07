@@ -23,7 +23,8 @@ uses
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
   DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
-  TestDTFUtils in 'TestDTFUtils.pas';
+  TestDTFUtils in 'TestDTFUtils.pas',
+  DTF.Types.View in '..\DTF\DTF.Types.View.pas';
 
 {$IFNDEF TESTINSIGHT}
 var

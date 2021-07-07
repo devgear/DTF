@@ -74,16 +74,20 @@ type
 {$ENDREGION 'GridAttribute'}
 
   { Utils }
+  TGridColPropKind = (cpkField, cpkMethod, cpkArray);
   TGridColProp = record
+    Kind: TGridColPropKind;
     Attr: TGridColAttribute;
     Field: TRttiField;
     Method: TRttiMethod;
+    ArrayField: TRttiField;
+    ArrayIndex: Integer;
   end;
 
   TGridColProps = TArray<TGridColProp>;
 
   TExtractColProp = class
-    class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps): Boolean; overload;
+    class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean; overload;
     class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
   end;
 
@@ -156,7 +160,7 @@ end;
 // Out of index
 
 class function TExtractColProp.TryGetColProps(ATypeInfo: PTypeInfo;
-  var Props: TGridColProps): Boolean;
+  var Props: TGridColProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -164,31 +168,51 @@ var
   LMethod: TRttiMethod;
   LAttr: TGridColAttribute;
   LFieldType: TRttiType;
+  LArrType: TRttiArrayType;
 
   LCount: Integer;
-  Idx: Integer;
+  I, J, Idx, MinVal, MaxVal: Integer;
   cls: TClass;
+  Val: TValue;
+  LTypeData: PTypeData;
 begin
   Result := False;
   try
     LCtx := TRttiContext.Create;
     try
       LType := LCtx.GetType(ATypeInfo);
-//
-//      if Length(Props) = 0 then
-//      begin
-//        LCount := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LType);
-//        SetLength(Props, LCount);
-//      end;
 
       for LField in LType.GetFields do
       begin
+        if not Assigned(LField.FieldType) then
+          raise Exception.Create('If using static array then define the type first.(e.g. array[0..1] of string -> TArr2<string>, TArr2<T> = array[0..2] of T)');
+
         // 레코드 필드인 경우 레코드 분석
         if LField.FieldType.IsRecord then
         begin
           LFieldType := LField.FieldType;
           if not TryGetColProps(LFieldType.Handle, Props) then
             Exit;
+        end;
+
+        // 정적배열
+        if LField.FieldType.TypeKind = tkArray then
+        begin
+          LArrType := LField.FieldType as TRttiArrayType;
+
+          for I := 0 to (LArrType.TotalElementCount div LArrType.DimensionCount) - 1 do
+          begin
+            if not TryGetColProps(LArrType.ElementType.Handle, Props, LField, I) then
+              Exit;
+            // add
+//            Idx := Length(Props);
+//            SetLength(Props, Idx + 1);
+//
+//            Props[Idx].Kind := cpkArray;
+//            Props[Idx].Attr := LAttr;
+//            Props[Idx].Field := LField;
+//            Props[Idx].ArrayIndex := I;
+          end;
         end;
 
         // 배열인 경우 배열 타입 분석
@@ -206,8 +230,14 @@ begin
         Idx := Length(Props);
         SetLength(Props, Idx + 1);
 
+        if Assigned(ArrayField) then
+          Props[Idx].Kind := cpkArray
+        else
+          Props[Idx].Kind := cpkField;
         Props[Idx].Attr := LAttr;
         Props[Idx].Field := LField;
+        Props[Idx].ArrayField := ArrayField;
+        Props[Idx].ArrayIndex := ArrayIndex;
       end;
 
       for LMethod in LType.GetMethods do
@@ -219,6 +249,7 @@ begin
         Idx := Length(Props);
         SetLength(Props, Idx + 1);
 
+        Props[Idx].Kind := cpkMethod;
         Props[Idx].Attr := LAttr;
         Props[Idx].Method := LMethod;
       end;
