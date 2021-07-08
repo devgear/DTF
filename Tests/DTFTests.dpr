@@ -14,7 +14,7 @@ uses
   {$ENDIF }
   DUnitX.TestFramework,
   TestDTFExtractColProp in 'TestDTFExtractColProp.pas',
-  DTF.Utils.Grid in '..\DTF\DTF.Utils.Grid.pas',
+  DTF.Utils.Extract in '..\DTF\DTF.Utils.Extract.pas',
   DTF.Types in '..\DTF\DTF.Types.pas',
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
@@ -24,7 +24,8 @@ uses
   DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   TestDTFUtils in 'TestDTFUtils.pas',
-  DTF.Types.View in '..\DTF\DTF.Types.View.pas';
+  DTF.Types.View in '..\DTF\DTF.Types.View.pas',
+  DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame};
 
 {$IFNDEF TESTINSIGHT}
 var

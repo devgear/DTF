@@ -189,7 +189,7 @@
             <Form>frmTest3</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Utils.Grid.pas"/>
+        <DCCReference Include="..\DTF\DTF.Utils.Extract.pas"/>
         <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.View.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.pas"/>

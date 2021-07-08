@@ -3,7 +3,7 @@ unit Test2Form;
 interface
 
 uses
-  DTF.Types.View, DTF.Utils.Grid,
+  DTF.Types.View, DTF.Utils.Extract,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
   DTF.Frame.Base, DTF.Frame.Title, Vcl.StdCtrls, Vcl.WinXCtrls, Vcl.Grids, Vcl.ExtCtrls,
@@ -37,7 +37,6 @@ type
 
   [ViewId('TST2010')]
   TfrmTest2 = class(TDTFMDIChildForm)
-    DTFTitleFrame1: TDTFTitleFrame;
     DTFStrGridFrame1: TDTFStrGridFrame;
     pnlSearchPanel: TPanel;
     edtKeyword: TSearchBox;

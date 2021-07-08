@@ -25,7 +25,7 @@ implementation
 uses
   System.IOUtils, System.Variants,
   System.Win.ComObj,
-  DTF.Utils.Grid;
+  DTF.Utils.Extract;
 
 { TExportUtil }
 
@@ -36,17 +36,17 @@ var
   I: Integer;
   Printer: TDTFPrinter;
 
-  ColProp: TGridColProp;
-  ColProps: TGridColProps;
+  ColProp: TColInfoProp;
+  ColProps: TColInfoProps;
   Datas: TDataTable;
 begin
-  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
   Printer := TDTFPrinter.Create;
 
   Printer.Title.Caption := ATitle;
-//  Printer.Subtitle.Caption := '여기는 부제목';
+
   Printer.Columns.Clear;
   for ColProp in ColProps do
     Printer.Columns.Add(ColProp.Attr.Caption, ColProp.Attr.ColWidth);
@@ -59,12 +59,12 @@ begin
       I: Integer;
       Data: TDataRecord;
     begin
-      Datas := TExtractColProp.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
+      Datas := TExtractUtil.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
       for Data in Datas do
         Printer.WriteRows(Data);
     end
   );
-
+  Printer.Free;
 end;
 
 class procedure TExportUtil.PrintFromDataSet(const ADataSet: TDataSet;

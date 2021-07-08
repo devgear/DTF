@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   System.UITypes, 
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.ComCtrls,
-  Vcl.ToolWin, Vcl.DBActns, System.Actions, Vcl.ActnList, Data.DB, DTF.Types;
+  Vcl.ToolWin, Vcl.DBActns, System.Actions, Vcl.ActnList, Data.DB, DTF.Types,
+  DTF.Frame.Title;
 
 type
   TDTFDataSetFrame = class(TDTFBaseFrame)
@@ -28,6 +29,7 @@ type
     actDSSearch: TDataSetRefresh;
     actPrint: TAction;
     ToolButton2: TToolButton;
+    DTFTitleFrame1: TDTFTitleFrame;
 
     procedure actDSNewAppendExecute(Sender: TObject);
     procedure actDSDeleteExecute(Sender: TObject);

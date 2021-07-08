@@ -7,59 +7,46 @@ inherited frmTest3: TfrmTest3
   ExplicitHeight = 544
   PixelsPerInch = 96
   TextHeight = 13
-  inline DTFTitleFrame1: TDTFTitleFrame
+  inline DTFStrGridFrame1: TDTFStrGridFrame
     Left = 0
     Top = 0
     Width = 766
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 0
-    ExplicitWidth = 766
-    inherited pnlCaption: TPanel
-      Width = 766
-      ExplicitWidth = 766
-    end
-  end
-  inline DTFStrGridFrame1: TDTFStrGridFrame
-    Left = 0
-    Top = 20
-    Width = 766
-    Height = 485
+    Height = 505
     Align = alClient
-    TabOrder = 1
+    TabOrder = 0
     ExplicitTop = 20
     ExplicitWidth = 766
     ExplicitHeight = 485
     inherited tlbDataSet: TToolBar
       Width = 766
+      ExplicitLeft = 0
+      ExplicitTop = 20
       ExplicitWidth = 766
-      inherited btnDSRefresh: TToolButton
-        ExplicitWidth = 85
-      end
-      inherited btnExportXls: TToolButton
-        ExplicitWidth = 85
-      end
-      inherited ToolButton2: TToolButton
-        ExplicitWidth = 85
-      end
     end
     inherited pnlSearchControlArea: TPanel
       Width = 766
       Height = 47
+      ExplicitTop = 42
       ExplicitWidth = 766
       ExplicitHeight = 47
     end
     inherited Grid: TStringGrid
-      Top = 69
+      Top = 89
       Width = 766
       Height = 416
-      ExplicitTop = 69
+      ExplicitTop = 89
       ExplicitWidth = 766
-      ExplicitHeight = 416
+      ExplicitHeight = 396
+    end
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 766
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 766
+      inherited pnlCaption: TPanel
+        Width = 766
+        ExplicitWidth = 766
+      end
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction
@@ -73,7 +60,7 @@ inherited frmTest3: TfrmTest3
     Width = 476
     Height = 41
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object edtKeyword: TSearchBox
       Left = 7
       Top = 8

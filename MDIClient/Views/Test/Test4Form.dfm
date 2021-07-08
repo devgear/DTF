@@ -3,30 +3,13 @@ inherited frmTest4: TfrmTest4
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  inline DTFTitleFrame1: TDTFTitleFrame
+  inline DTFStrGridFrame1: TDTFStrGridFrame
     Left = 0
     Top = 0
     Width = 686
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 0
-    ExplicitWidth = 686
-    inherited pnlCaption: TPanel
-      Width = 686
-      ExplicitWidth = 686
-    end
-  end
-  inline DTFStrGridFrame1: TDTFStrGridFrame
-    Left = 0
-    Top = 20
-    Width = 686
-    Height = 467
+    Height = 487
     Align = alClient
-    TabOrder = 1
+    TabOrder = 0
     ExplicitTop = 20
     ExplicitWidth = 686
     ExplicitHeight = 467
@@ -43,6 +26,16 @@ inherited frmTest4: TfrmTest4
       Height = 422
       ExplicitWidth = 686
       ExplicitHeight = 422
+    end
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 686
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 686
+      inherited pnlCaption: TPanel
+        Width = 686
+        ExplicitWidth = 686
+      end
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction

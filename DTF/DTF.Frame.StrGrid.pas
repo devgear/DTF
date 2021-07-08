@@ -3,7 +3,8 @@ unit DTF.Frame.StrGrid;
 interface
 
 uses
-  DTF.Types, DTF.Utils.Grid,
+  DTF.Types, DTF.Frame.Title, DTF.Utils.Extract,
+
   System.Rtti, System.TypInfo,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.DBActns,
@@ -21,18 +22,26 @@ type
     actExportXls: TAction;
     actSearch: TAction;
     pnlSearchControlArea: TPanel;
+    DTFTitleFrame1: TDTFTitleFrame;
     Grid: TStringGrid;
   private
-    procedure SetDataRow<T>(const ARow: Integer; AColProps: TGridColProps; AData: T);
-    procedure SetDataRows<T>(const AStartRow: Integer; AColProps: TGridColProps; ADatas: TArray<T>);
+    FItemType: PTypeInfo;
+    FDataValue: TValue;   // TValue로 Grid출력, 인쇄 등 자동화
+
+    procedure SetDataRow<T>(const ARow: Integer; AColProps: TColInfoProps; AData: T);
+    procedure SetDataRows<T>(const AStartRow: Integer; AColProps: TColInfoProps; ADatas: TArray<T>);
   public
     procedure SetSearchPanel(APanel: TPanel);
-
     procedure ClearGrid(AColCount: Integer = -1);
+    procedure SetGridColumn<T>;
+
+//    property Data: TValue read FData write SetData;
+    procedure SetData<T>(const Value: T);
 
     procedure WriteDatas<ItemType>(const ADatas: TArray<ItemType>); overload;
     procedure WriteDatas<ItemType>(const ADatas: TList<ItemType>); overload;
     procedure WriteDatas<DataType, ItemType>(const ADataRec: DataType); overload;
+    procedure WriteDatas; overload;
   end;
 
 implementation
@@ -82,12 +91,17 @@ begin
   Grid.Rows[Grid.FixedRows].Clear;
 end;
 
-procedure TDTFStrGridFrame.SetDataRow<T>(const ARow: Integer; AColProps: TGridColProps; AData: T);
+procedure TDTFStrGridFrame.SetData<T>(const Value: T);
 begin
-  Grid.Rows[ARow].AddStrings(TExtractColProp.ExtractDataRow<T>(AColProps, AData));
+  FDataValue := TValue.From<T>(Value);
 end;
 
-procedure TDTFStrGridFrame.SetDataRows<T>(const AStartRow: Integer; AColProps: TGridColProps; ADatas: TArray<T>);
+procedure TDTFStrGridFrame.SetDataRow<T>(const ARow: Integer; AColProps: TColInfoProps; AData: T);
+begin
+  Grid.Rows[ARow].AddStrings(TExtractUtil.ExtractDataRow<T>(AColProps, AData));
+end;
+
+procedure TDTFStrGridFrame.SetDataRows<T>(const AStartRow: Integer; AColProps: TColInfoProps; ADatas: TArray<T>);
 var
   Data: T;
   Row: Integer;
@@ -106,6 +120,25 @@ begin
   end;
 end;
 
+procedure TDTFStrGridFrame.SetGridColumn<T>;
+var
+  I: Integer;
+  ColProps: TColInfoProps;
+begin
+  if not TExtractUtil.TryGetColProps<T>(ColProps) then
+    Exit;
+
+  Grid.ColCount := Length(ColProps);
+  for I := 0 to Length(ColProps) - 1 do
+  begin
+    Grid.Cells[I, 0] := ColProps[I].Caption;
+    Grid.ColWidths[I] := ColProps[I].ColWidth;
+  end;
+
+  Grid.RowCount := Grid.FixedRows + 1;
+  Grid.Rows[Grid.FixedRows].Clear;
+end;
+
 procedure TDTFStrGridFrame.WriteDatas<ItemType>(const ADatas: TList<ItemType>);
 begin
   WriteDatas<ItemType>(ADatas.ToArray);
@@ -113,9 +146,9 @@ end;
 
 procedure TDTFStrGridFrame.WriteDatas<ItemType>(const ADatas: TArray<ItemType>);
 var
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 begin
-  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
   if Length(ADatas) = 0 then
@@ -127,17 +160,25 @@ begin
 end;
 
 // DataRows Attr로 목록 확인
+procedure TDTFStrGridFrame.WriteDatas;
+begin
+
+end;
+
+{
+  DataType을 보내야하나? Variant 또는 TValue로 받는다면?
+}
 procedure TDTFStrGridFrame.WriteDatas<DataType, ItemType>(const ADataRec: DataType);
 var
   Row: Integer;
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
   DataTable: TDataTable;
   DataRow: TDataRecord;
 begin
-  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
-  DataTable := TExtractColProp.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
+  DataTable := TExtractUtil.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
 
   Grid.BeginUpdate;
   try

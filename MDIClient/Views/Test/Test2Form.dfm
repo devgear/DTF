@@ -3,60 +3,46 @@ inherited frmTest2: TfrmTest2
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  inline DTFTitleFrame1: TDTFTitleFrame
+  inline DTFStrGridFrame1: TDTFStrGridFrame
     Left = 0
     Top = 0
     Width = 686
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 0
-    ExplicitWidth = 686
-    inherited pnlCaption: TPanel
-      Width = 686
-      Caption = 'StrGridFrame '#53580#49828#53944
-      ExplicitWidth = 686
-    end
-  end
-  inline DTFStrGridFrame1: TDTFStrGridFrame
-    Left = 0
-    Top = 20
-    Width = 686
-    Height = 467
+    Height = 487
     Align = alClient
-    TabOrder = 1
+    TabOrder = 0
     ExplicitTop = 20
     ExplicitWidth = 686
     ExplicitHeight = 467
     inherited tlbDataSet: TToolBar
       Width = 686
+      ExplicitLeft = 0
+      ExplicitTop = 20
       ExplicitWidth = 686
-      inherited btnDSRefresh: TToolButton
-        ExplicitWidth = 85
-      end
-      inherited btnExportXls: TToolButton
-        ExplicitWidth = 85
-      end
-      inherited ToolButton2: TToolButton
-        ExplicitWidth = 85
-      end
     end
     inherited pnlSearchControlArea: TPanel
       Width = 686
       Height = 51
+      ExplicitTop = 42
       ExplicitWidth = 686
       ExplicitHeight = 51
     end
     inherited Grid: TStringGrid
-      Top = 73
+      Top = 93
       Width = 686
       Height = 394
-      ExplicitTop = 73
+      ExplicitTop = 93
       ExplicitWidth = 686
-      ExplicitHeight = 394
+      ExplicitHeight = 374
+    end
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 686
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 686
+      inherited pnlCaption: TPanel
+        Width = 686
+        ExplicitWidth = 686
+      end
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction
@@ -70,7 +56,7 @@ inherited frmTest2: TfrmTest2
     Width = 476
     Height = 41
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object edtKeyword: TSearchBox
       Left = 7
       Top = 8

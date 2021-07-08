@@ -3,7 +3,7 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
   ExplicitWidth = 724
   object tlbDataSet: TToolBar
     Left = 0
-    Top = 0
+    Top = 20
     Width = 724
     Height = 22
     AutoSize = True
@@ -12,6 +12,8 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
     List = True
     ShowCaptions = True
     TabOrder = 0
+    ExplicitLeft = -3
+    ExplicitTop = 37
     object btnDSRefresh: TToolButton
       Left = 0
       Top = 0
@@ -33,7 +35,7 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
   end
   object pnlSearchControlArea: TPanel
     Left = 0
-    Top = 22
+    Top = 42
     Width = 724
     Height = 23
     Align = alTop
@@ -41,14 +43,34 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
     Caption = 'Search controls. (default hidden)'
     TabOrder = 1
     Visible = False
+    ExplicitTop = 22
   end
   object Grid: TStringGrid
     Left = 0
-    Top = 45
+    Top = 65
     Width = 724
-    Height = 343
+    Height = 323
     Align = alClient
     TabOrder = 2
+    ExplicitTop = 45
+    ExplicitHeight = 343
+  end
+  inline DTFTitleFrame1: TDTFTitleFrame
+    Left = 0
+    Top = 0
+    Width = 724
+    Height = 20
+    Margins.Left = 8
+    Align = alTop
+    Color = clBtnFace
+    ParentBackground = False
+    ParentColor = False
+    TabOrder = 3
+    ExplicitLeft = 8
+    ExplicitTop = 8
+    inherited pnlCaption: TPanel
+      Width = 724
+    end
   end
   object ActionList: TActionList
     Images = dmResource.vilToolButton

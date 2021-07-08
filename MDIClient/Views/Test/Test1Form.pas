@@ -17,7 +17,6 @@ type
   [ViewId('TST1010')]
   TfrmTest1 = class(TDTFMDIChildForm)
     DTFDBGridFrame1: TDTFDBGridFrame;
-    DTFTitleFrame1: TDTFTitleFrame;
     pnlSearchPanel: TPanel;
     qryMenuItems: TFDQuery;
     qryMenuItemsMENU_CODE: TWideStringField;

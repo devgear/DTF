@@ -1,4 +1,4 @@
-unit DTF.Utils.Grid;
+unit DTF.Utils.Extract;
 
 interface
 
@@ -7,9 +7,9 @@ uses
   System.Rtti, System.TypInfo;
 
 type
-{$REGION 'GridAttribute'}
+{$REGION 'ColumnInfoAttr'}
   {  Attributes }
-  TGridColAttribute = class(TCustomAttribute)
+  TColumnInfoAttribute = class(TCustomAttribute)
   const
     DEFAULT_COLWIDTH = 64;
   private
@@ -27,23 +27,23 @@ type
     function ValueToStr(Value: TValue): string; virtual; abstract;
   end;
 
-  StrColAttribute = class(TGridColAttribute)
+  StrColAttribute = class(TColumnInfoAttribute)
   public
     function ValueToStr(Value: TValue): string; override;
   end;
 
-  IntColAttribute = class(TGridColAttribute)
+  IntColAttribute = class(TColumnInfoAttribute)
   public
     function ValueToStr(Value: TValue): string; override;
   end;
 
-  FloatColAttribute = class(TGridColAttribute)
+  FloatColAttribute = class(TColumnInfoAttribute)
   public
     function ValueToStr(Value: TValue): string; override;
   end;
   DblColAttribute = FloatColAttribute;
 
-  DatetimeColAttribute = class(TGridColAttribute)
+  DatetimeColAttribute = class(TColumnInfoAttribute)
   public
     function ValueToStr(Value: TValue): string; override;
   end;
@@ -77,45 +77,52 @@ type
 {$ENDREGION 'GridAttribute'}
 
   { Utils }
-  TGridColPropKind = (cpkField, cpkMethod, cpkArray);
-  TGridColProp = record
-    Kind: TGridColPropKind;
-    Attr: TGridColAttribute;
+  TColInfoPropKind = (
+    cpkField,
+    cpkMethod,
+    cpkArray      // Static array의 Element
+  );
+  // 구조체(또는 객체)에 설정된 ColumnInfoAttr 항목(필드, 메소드) 정보
+  TColInfoProp = record
+    Kind: TColInfoPropKind;
+    Attr: TColumnInfoAttribute;
     Field: TRttiField;
     Method: TRttiMethod;
+
+    // 정적배열인 경우 정적배열의 필드정보
     ArrayField: TRttiField;
     ArrayIndex: Integer;
+
+    function Caption: string;
+    function ColWidth: Integer;
   end;
 
-  TGridColProps = TArray<TGridColProp>;
+  TColInfoProps = TArray<TColInfoProp>;
   TDataRecord = TArray<string>;
   TDataTable = TArray<TDataRecord>;
 
-  TExtractColProp = class
-    class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean; overload;
-    class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
+  TExtractUtil = class
+    class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TColInfoProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean; overload;
+    class function TryGetColProps<T>(var Props: TColInfoProps): Boolean; overload;
 
     class function GetRowCount<T>(ADataRec: T): Integer;
 
-    class function ExtractDataRow<T>(AColProps: TGridColProps; AData: T): TDataRecord;
-    class function ExtractDataTable<T>(AColProps: TGridColProps; ADatas: TArray<T>): TDataTable; overload;
-    class function ExtractDataTable<DataType, ItemType>(AColProps: TGridColProps; ADataRec: DataType): TDataTable; overload;
-
+    class function ExtractDataRow<T>(AColProps: TColInfoProps; AData: T): TDataRecord;
+    class function ExtractDataTable<T>(AColProps: TColInfoProps; ADatas: TArray<T>): TDataTable; overload;
+    class function ExtractDataTable<DataType, ItemType>(AColProps: TColInfoProps; ADataRec: DataType): TDataTable; overload;
   end;
-
-//  function DataRowcount: Integer;
 
 implementation
 
 { TGridColAttribute }
 
-constructor TGridColAttribute.Create(ADisplayWidth: Integer; AFormat: string);
+constructor TColumnInfoAttribute.Create(ADisplayWidth: Integer; AFormat: string);
 begin
   FFormat := AFormat;
   FColWidth := ADisplayWidth;
 end;
 
-constructor TGridColAttribute.Create(ACaption: string; ADisplayWidth: Integer;
+constructor TColumnInfoAttribute.Create(ACaption: string; ADisplayWidth: Integer;
   AFormat: string);
 begin
   FCaption := ACaption;
@@ -173,20 +180,43 @@ begin
   FFields := AFields;
 end;
 
+{ TColInfoProp }
+
+function TColInfoProp.Caption: string;
+var
+  StartIdx: Integer;
+begin
+  Result := Attr.Caption;
+  if Assigned(ArrayField) and Result.Contains('%d') then
+  begin
+    StartIdx := 0;
+    // array[1..2] 형태로 직접 지정 시 Dimensions 미생성
+    // array[T1to2], T1to2 = 1..2
+    if Assigned(TRttiArrayType(ArrayField.FieldType).Dimensions[0]) then
+      StartIdx := TRttiOrdinalType(TRttiArrayType(ArrayField.FieldType).Dimensions[0]).MinValue;
+    Result := Format(Result, [StartIdx + ArrayIndex]);
+  end;
+end;
+
+function TColInfoProp.ColWidth: Integer;
+begin
+  Result := Attr.ColWidth;
+end;
+
 { TExtractColProp }
 
 // 중복오류
 // ColIdx 지정하지 않고 순서대로 설정
 // Out of index
 
-class function TExtractColProp.TryGetColProps(ATypeInfo: PTypeInfo;
-  var Props: TGridColProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean;
+class function TExtractUtil.TryGetColProps(ATypeInfo: PTypeInfo;
+  var Props: TColInfoProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
   LField: TRttiField;
   LMethod: TRttiMethod;
-  LAttr: TGridColAttribute;
+  LAttr: TColumnInfoAttribute;
   LFieldType: TRttiType;
   LArrType: TRttiArrayType;
 
@@ -232,7 +262,7 @@ begin
             Exit;
         end;
 
-        LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LField.GetAttributes);
+        LAttr := TAttributeUtil.FindAttribute<TColumnInfoAttribute>(LField.GetAttributes);
         if not Assigned(LAttr) then
           Continue;
 
@@ -251,7 +281,7 @@ begin
 
       for LMethod in LType.GetMethods do
       begin
-        LAttr := TAttributeUtil.FindAttribute<TGridColAttribute>(LMethod.GetAttributes);
+        LAttr := TAttributeUtil.FindAttribute<TColumnInfoAttribute>(LMethod.GetAttributes);
         if not Assigned(LAttr) then
           Continue;
 
@@ -272,16 +302,16 @@ begin
   end;
 end;
 
-class function TExtractColProp.TryGetColProps<T>(var Props: TGridColProps): Boolean;
+class function TExtractUtil.TryGetColProps<T>(var Props: TColInfoProps): Boolean;
 begin
   Result := TryGetColProps(TypeInfo(T), Props);
 end;
 
-class function TExtractColProp.ExtractDataRow<T>(AColProps: TGridColProps;
+class function TExtractUtil.ExtractDataRow<T>(AColProps: TColInfoProps;
   AData: T): TDataRecord;
 var
   I: Integer;
-  ColProp: TGridColProp;
+  ColProp: TColInfoProp;
   Value, ArrValue: TValue;
   StrVal: string;
 begin
@@ -318,8 +348,8 @@ begin
   end;
 end;
 
-class function TExtractColProp.ExtractDataTable<DataType, ItemType>(
-  AColProps: TGridColProps; ADataRec: DataType): TDataTable;
+class function TExtractUtil.ExtractDataTable<DataType, ItemType>(
+  AColProps: TColInfoProps; ADataRec: DataType): TDataTable;
 var
   LCtx: TRttiContext;
   LType: TRttiType;
@@ -327,14 +357,13 @@ var
   LMethod: TRttiMethod;
   LAttr: DataRowsAttribute;
 
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 
   Info: PTypeInfo;
-  Data: PTypeData;
   LCount: Integer;
   Value: TValue;
 begin
-  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
   LCtx := TRttiContext.Create;
@@ -364,7 +393,7 @@ begin
   end;
 end;
 
-class function TExtractColProp.ExtractDataTable<T>(AColProps: TGridColProps;
+class function TExtractUtil.ExtractDataTable<T>(AColProps: TColInfoProps;
   ADatas: TArray<T>): TDataTable;
 var
   I: Integer;
@@ -374,7 +403,7 @@ begin
     Result[I] := ExtractDataRow<T>(AColProps, ADatas[I]);
 end;
 
-class function TExtractColProp.GetRowCount<T>(ADataRec: T): Integer;
+class function TExtractUtil.GetRowCount<T>(ADataRec: T): Integer;
 var
   LCtx: TRttiContext;
   LType: TRttiType;

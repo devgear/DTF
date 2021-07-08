@@ -7,31 +7,67 @@ inherited frmTest1: TfrmTest1
   TextHeight = 13
   inline DTFDBGridFrame1: TDTFDBGridFrame
     Left = 0
-    Top = 20
+    Top = 0
     Width = 686
-    Height = 299
+    Height = 319
     Align = alClient
-    Padding.Left = 8
-    Padding.Top = 4
-    Padding.Right = 8
     TabOrder = 0
     ExplicitTop = 20
     ExplicitWidth = 686
     ExplicitHeight = 299
     inherited tlbDataSet: TToolBar
-      Width = 670
+      Left = 0
+      Top = 20
+      Width = 686
+      ExplicitTop = 24
       ExplicitWidth = 670
+      inherited btnDSRefresh: TToolButton
+        ExplicitWidth = 53
+      end
+      inherited btnDSNew: TToolButton
+        ExplicitWidth = 75
+      end
+      inherited btnDSSave: TToolButton
+        ExplicitWidth = 53
+      end
+      inherited btnDSCancel: TToolButton
+        ExplicitWidth = 75
+      end
+      inherited btnDSDelete: TToolButton
+        ExplicitWidth = 53
+      end
+      inherited btnExportXls: TToolButton
+        ExplicitWidth = 89
+      end
+      inherited ToolButton2: TToolButton
+        ExplicitWidth = 53
+      end
     end
     inherited grdMaster: TDBGrid
-      Top = 89
-      Width = 670
-      Height = 210
+      Left = 0
+      Top = 105
+      Width = 686
+      Height = 214
     end
     inherited pnlSearchControlArea: TPanel
-      Width = 670
+      Left = 0
+      Top = 42
+      Width = 686
       Height = 63
+      ExplicitTop = 46
       ExplicitWidth = 670
       ExplicitHeight = 63
+    end
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Left = 0
+      Top = 0
+      Width = 686
+      ExplicitTop = 4
+      ExplicitWidth = 670
+      inherited pnlCaption: TPanel
+        Width = 686
+        ExplicitWidth = 670
+      end
     end
     inherited ActionList: TActionList
       Left = 96
@@ -49,31 +85,13 @@ inherited frmTest1: TfrmTest1
       Top = 248
     end
   end
-  inline DTFTitleFrame1: TDTFTitleFrame
-    Left = 0
-    Top = 0
-    Width = 686
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 1
-    ExplicitWidth = 686
-    inherited pnlCaption: TPanel
-      Width = 686
-      Caption = #47700#45684' '#51312#54924
-      ExplicitWidth = 686
-    end
-  end
   object pnlSearchPanel: TPanel
     Left = 8
-    Top = 52
+    Top = 72
     Width = 476
     Height = 41
     BevelOuter = bvNone
-    TabOrder = 2
+    TabOrder = 1
     object edtSchMenuName: TSearchBox
       Left = 7
       Top = 8
@@ -89,7 +107,7 @@ inherited frmTest1: TfrmTest1
     Width = 686
     Height = 109
     Align = alBottom
-    TabOrder = 3
+    TabOrder = 2
     object Label1: TLabel
       Left = 16
       Top = 12

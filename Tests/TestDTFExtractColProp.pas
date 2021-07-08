@@ -40,6 +40,10 @@ type
 
     [Test]
     procedure TestDataRecStaticArray;
+
+    [Test]
+    procedure TestDetectItemType;
+    function DetectItemType<T>(Value: T): string;
   end;
 
 
@@ -47,7 +51,7 @@ implementation
 
 uses
   System.Rtti, System.SysUtils,
-  DTF.Utils.Grid, DTF.Utils, DTF.Frame.StrGrid;
+  DTF.Utils.Extract, DTF.Utils, DTF.Frame.StrGrid;
 
 procedure TTestDTFExtractColProp.Setup;
 begin
@@ -164,18 +168,18 @@ begin
   LCtx := TRttiContext.Create;
   try
     // Rec
-    C1 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec1)));
+    C1 := TAttributeUtil.GetAttributeCount<TColumnInfoAttribute>(LCtx.GetType(TypeInfo(TRec1)));
     Assert.AreEqual(C1, 6);
 
     // Rec in Rec
-    C2 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec2)));
+    C2 := TAttributeUtil.GetAttributeCount<TColumnInfoAttribute>(LCtx.GetType(TypeInfo(TRec2)));
     Assert.AreEqual(C2, 5);
 
     // TArray<Rec>
-    C3 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec3)));
+    C3 := TAttributeUtil.GetAttributeCount<TColumnInfoAttribute>(LCtx.GetType(TypeInfo(TRec3)));
     Assert.AreEqual(C3, 6);
 
-    C6 := TAttributeUtil.GetAttributeCount<TGridColAttribute>(LCtx.GetType(TypeInfo(TRec6)));
+    C6 := TAttributeUtil.GetAttributeCount<TColumnInfoAttribute>(LCtx.GetType(TypeInfo(TRec6)));
     Assert.AreEqual(C6, 8);
 
   finally
@@ -185,7 +189,7 @@ end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsRec;
 var
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 begin
   if not TExtractColProp.TryGetColProps<TRec1>(ColProps) then
     Assert.Fail;
@@ -197,7 +201,7 @@ end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsChildRec;
 var
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 begin
   if not TExtractColProp.TryGetColProps<TRec2>(ColProps) then
     Assert.Fail;
@@ -209,7 +213,7 @@ end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsArrayT;
 var
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 begin
   if not TExtractColProp.TryGetColProps<TRec3>(ColProps) then
     Assert.Fail;
@@ -253,6 +257,20 @@ begin
   end;
 end;
 
+function TTestDTFExtractColProp.DetectItemType<T>(Value: T): string;
+begin
+
+end;
+
+procedure TTestDTFExtractColProp.TestDetectItemType;
+var
+  R4: TRec4;  // [DaraRow]Items: TArray<TRec1>
+  A1: TArray<TRec1>;
+begin
+  Assert.AreEqual(DetectItemType<TArray<TRec1>>(A1),  'TRec1');
+  Assert.AreEqual(DetectItemType<TRec4>(R4),          'TRec1');
+end;
+
 procedure TTestDTFExtractColProp.TestGetDataRowsArrayType;
 var
   LCtx: TRttiContext;
@@ -277,7 +295,7 @@ end;
 
 procedure TTestDTFExtractColProp.TestGetColPropsStaticArray;
 var
-  ColProps: TGridColProps;
+  ColProps: TColInfoProps;
 begin
   if not TExtractColProp.TryGetColProps<TRec7>(ColProps) then
     Assert.Fail;

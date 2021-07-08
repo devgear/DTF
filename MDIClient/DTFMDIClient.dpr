@@ -34,7 +34,7 @@ uses
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
   DTF.Utils in '..\DTF\DTF.Utils.pas',
   Test3Form in 'Views\Test\Test3Form.pas' {frmTest3},
-  DTF.Utils.Grid in '..\DTF\DTF.Utils.Grid.pas',
+  DTF.Utils.Extract in '..\DTF\DTF.Utils.Extract.pas',
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   DTF.Types.View in '..\DTF\DTF.Types.View.pas',
   DTF.Logger in '..\DTF\DTF.Logger.pas',

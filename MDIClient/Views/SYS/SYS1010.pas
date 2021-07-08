@@ -52,10 +52,7 @@ type
     btnMenuRefresh: TSpeedButton;
     Label5: TLabel;
     edtCateCode: TDBEdit;
-    DTFTitleFrame1: TDTFTitleFrame;
     DTFTitleFrame2: TDTFTitleFrame;
-    DTFTitleFrame3: TDTFTitleFrame;
-    DTFTitleFrame4: TDTFTitleFrame;
     qryMenuCatesCATE_CODE: TWideStringField;
     qryMenuGroupsGROUP_CODE: TWideStringField;
     qryMenuGroupsCATE_CODE: TWideStringField;
