@@ -15,9 +15,12 @@ type
   private
     FFormat: string;
     FColWidth: Integer;
+    FCaption: string;
   public
+    constructor Create(ACaption: string; ADisplayWidth: Integer = DEFAULT_COLWIDTH; AFormat: string = ''); overload;
     constructor Create(ADisplayWidth: Integer = DEFAULT_COLWIDTH; AFormat: string = ''); overload;
 
+    property Caption: string read FCaption;
     property Format: string read FFormat;
     property ColWidth: Integer read FColWidth;
 
@@ -85,10 +88,19 @@ type
   end;
 
   TGridColProps = TArray<TGridColProp>;
+  TDataRecord = TArray<string>;
+  TDataTable = TArray<TDataRecord>;
 
   TExtractColProp = class
     class function TryGetColProps(ATypeInfo: PTypeInfo; var Props: TGridColProps; ArrayField: TRttiField = nil; ArrayIndex: Integer = -1): Boolean; overload;
     class function TryGetColProps<T>(var Props: TGridColProps): Boolean; overload;
+
+    class function GetRowCount<T>(ADataRec: T): Integer;
+
+    class function ExtractDataRow<T>(AColProps: TGridColProps; AData: T): TDataRecord;
+    class function ExtractDataTable<T>(AColProps: TGridColProps; ADatas: TArray<T>): TDataTable; overload;
+    class function ExtractDataTable<DataType, ItemType>(AColProps: TGridColProps; ADataRec: DataType): TDataTable; overload;
+
   end;
 
 //  function DataRowcount: Integer;
@@ -99,6 +111,14 @@ implementation
 
 constructor TGridColAttribute.Create(ADisplayWidth: Integer; AFormat: string);
 begin
+  FFormat := AFormat;
+  FColWidth := ADisplayWidth;
+end;
+
+constructor TGridColAttribute.Create(ACaption: string; ADisplayWidth: Integer;
+  AFormat: string);
+begin
+  FCaption := ACaption;
   FFormat := AFormat;
   FColWidth := ADisplayWidth;
 end;
@@ -172,9 +192,6 @@ var
 
   LCount: Integer;
   I, J, Idx, MinVal, MaxVal: Integer;
-  cls: TClass;
-  Val: TValue;
-  LTypeData: PTypeData;
 begin
   Result := False;
   try
@@ -204,14 +221,6 @@ begin
           begin
             if not TryGetColProps(LArrType.ElementType.Handle, Props, LField, I) then
               Exit;
-            // add
-//            Idx := Length(Props);
-//            SetLength(Props, Idx + 1);
-//
-//            Props[Idx].Kind := cpkArray;
-//            Props[Idx].Attr := LAttr;
-//            Props[Idx].Field := LField;
-//            Props[Idx].ArrayIndex := I;
           end;
         end;
 
@@ -252,6 +261,8 @@ begin
         Props[Idx].Kind := cpkMethod;
         Props[Idx].Attr := LAttr;
         Props[Idx].Method := LMethod;
+        Props[Idx].ArrayField := ArrayField;
+        Props[Idx].ArrayIndex := ArrayIndex;
       end;
     finally
       LCtx.Free;
@@ -264,6 +275,137 @@ end;
 class function TExtractColProp.TryGetColProps<T>(var Props: TGridColProps): Boolean;
 begin
   Result := TryGetColProps(TypeInfo(T), Props);
+end;
+
+class function TExtractColProp.ExtractDataRow<T>(AColProps: TGridColProps;
+  AData: T): TDataRecord;
+var
+  I: Integer;
+  ColProp: TGridColProp;
+  Value, ArrValue: TValue;
+  StrVal: string;
+begin
+  SetLength(Result, Length(AColProps));
+  for I := 0 to Length(AColProps) - 1 do
+  begin
+    ColProp := AColProps[I];
+
+    if not Assigned(ColProp.Attr) then
+      Continue;
+
+    Value := TValue.Empty;
+
+    case ColProp.Kind of
+      cpkField:
+        Value := ColProp.Field.GetValue(@AData);
+      cpkMethod:
+        Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
+      cpkArray:
+        begin
+          ArrValue := ColProp.ArrayField.GetValue(@AData);
+          Value := ArrValue.GetArrayElement(ColProp.ArrayIndex);
+          if Value.TypeInfo.Kind = tkRecord then
+            Value := ColProp.Field.GetValue(ArrValue.GetReferenceToRawArrayElement(ColProp.ArrayIndex))
+        end;
+    end;
+
+    if Value.IsEmpty then
+      Continue;
+
+    StrVal := ColProp.Attr.ValueToStr(Value);
+
+    Result[I] := StrVal;
+  end;
+end;
+
+class function TExtractColProp.ExtractDataTable<DataType, ItemType>(
+  AColProps: TGridColProps; ADataRec: DataType): TDataTable;
+var
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LField: TRttiField;
+  LMethod: TRttiMethod;
+  LAttr: DataRowsAttribute;
+
+  ColProps: TGridColProps;
+
+  Info: PTypeInfo;
+  Data: PTypeData;
+  LCount: Integer;
+  Value: TValue;
+begin
+  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+    Exit;
+
+  LCtx := TRttiContext.Create;
+  try
+    LType := LCtx.GetType(TypeInfo(DataType));
+
+    LCount := 0;
+    for LField in LType.GetFields do
+    begin
+      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+      if LField.FieldType.TypeKind = tkDynArray then
+      begin
+        Value := LField.GetValue(@ADataRec);
+        Result := Result + ExtractDataTable<ItemType>(ColProps, Value.AsType<TArray<ItemType>>);
+      end
+      else if LField.FieldType.IsRecord then
+      begin
+        Value := LField.GetValue(@ADataRec);
+        Result := Result + [ExtractDataRow<ItemType>(ColProps, Value.AsType<ItemType>)];
+      end;
+    end;
+  finally
+    LCtx.Free;
+  end;
+end;
+
+class function TExtractColProp.ExtractDataTable<T>(AColProps: TGridColProps;
+  ADatas: TArray<T>): TDataTable;
+var
+  I: Integer;
+begin
+  SetLength(Result, Length(ADatas));
+  for I := 0 to Length(ADatas) - 1 do
+    Result[I] := ExtractDataRow<T>(AColProps, ADatas[I]);
+end;
+
+class function TExtractColProp.GetRowCount<T>(ADataRec: T): Integer;
+var
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LField: TRttiField;
+  LAttr: DataRowsAttribute;
+  Value: TValue;
+begin
+  LCtx := TRttiContext.Create;
+  try
+    LType := LCtx.GetType(TypeInfo(T));
+
+    Result := 0;
+    for LField in LType.GetFields do
+    begin
+      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+      if LField.FieldType.TypeKind = tkDynArray then
+      begin
+        Value := LField.GetValue(@ADataRec);
+        Result := Result + Value.GetArrayLength;
+      end
+      else if LField.FieldType.IsRecord then
+      begin
+        Inc(Result);
+      end;
+    end;
+  finally
+    LCtx.Free;
+  end;
 end;
 
 end.

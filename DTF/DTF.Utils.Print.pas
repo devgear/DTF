@@ -60,8 +60,12 @@ type
   end;
 
   TDTFPrintOption = (
-    poTitle, poTitlePerPage, poSubtitle, poSubtitlePerPage, poPageNum, poDate,
-    poShowDialog, poSequenceColumn,
+    poTitle, poTitlePerPage, poSubtitle, poSubtitlePerPage,
+    poPageNum, poPageDate,
+
+    poShowDialog,
+    poSequenceColumn,
+
     poVertLine, poHorzLine, poHeaderHorzLine, poFooterHorzLine);
   TDTFPrintOptions = set of TDTFPrintOption;
 
@@ -74,9 +78,9 @@ type
     FSubtitle: TTitle;
     FColumns: TColumns;
 
+    FCurrY: Integer;
     FRowIndex: Integer;
-    FNewPage: Boolean;
-    FTop: Integer;
+
     FPageWidth, FPageHeight: Integer;
     FCharWidth, FCharHeight: Integer;
     FRowHeight, FRowPadding, FColPadding: Integer;
@@ -86,6 +90,8 @@ type
     FTotalFieldWidth: Integer;
     FPerColWidth: Integer;
     FOptions: TDTFPrintOptions;
+
+    FInBeginRow: Boolean;
 
     function ShowDialog: Boolean;
 
@@ -99,17 +105,23 @@ type
     procedure DoBeginPage;
     procedure DoEndPage;
 
+    procedure DoNewRow;
+    procedure DoBeginRow;
+    procedure DoEndRow;
+
     procedure DoPrintPageHeader;
     procedure DoPrintTitle;
     procedure DoPrintSubTitle;
-    procedure DoPrintDate;
 
     procedure DoPrintHeader;
 
-    procedure DoPrintPageFooter;
-    procedure DoPrintPageNum;
+    procedure DoPrintSeqColumn;
 
-    procedure DoPrintHorzLine(ATop: Integer);
+    procedure DoPrintPageFooter;
+    procedure DoPrintDate(AY: Integer);
+    procedure DoPrintPageNum(AY: Integer);
+
+    procedure DoPrintHorzLine(var AY: Integer);
   public
     constructor Create;
     destructor Destroy; override;
@@ -204,7 +216,7 @@ constructor TDTFPrinter.Create;
 begin
   FColumns := TColumns.Create;
 
-  FOptions := [poTitle, poHeaderHorzLine, poFooterHorzLine, poPageNum];
+  FOptions := [poTitle, poHeaderHorzLine, poFooterHorzLine, poPageNum, poPageDate, poShowDialog];
 
   FTitle := TTitle.Create;
   FTitle.Alignment := taCenter;
@@ -307,7 +319,7 @@ end;
 
 procedure TDTFPrinter.DoBeginPage;
 begin
-  FTop  := FMargin.Top;
+  FCurrY  := FMargin.Top;
   FRowIndex := 0;
 
   DoPrintPageHeader;
@@ -316,7 +328,41 @@ end;
 
 procedure TDTFPrinter.DoEndPage;
 begin
+  DoEndRow;
+
   DoPrintPageFooter;
+end;
+
+procedure TDTFPrinter.DoNewRow;
+begin
+  DoEndRow;
+
+  if FCurrY >= (FPageHeight + FMargin.Top) then
+    DoNewPage;
+
+  DoPrintSeqColumn;
+
+  DoBeginRow;
+end;
+
+procedure TDTFPrinter.DoBeginRow;
+begin
+  if FInBeginRow then
+    Exit;
+  FInBeginRow := True;
+end;
+
+procedure TDTFPrinter.DoEndRow;
+begin
+  if not FInBeginRow then
+    Exit;
+  FInBeginRow := False;
+
+  FCurrY := FCurrY + FRowHeight;
+  Inc(FRowIndex);
+
+  if poHorzLine in FOptions then
+    DoPrintHorzLine(FCurrY);
 end;
 
 procedure TDTFPrinter.DoPrintPageHeader;
@@ -331,21 +377,21 @@ var
 begin
   if poTitle in FOptions then
   begin
-    X := FTop;
-    Y := FMargin.Left;
+    X := FMargin.Left;
+    Y := FCurrY;
     Printer.Canvas.Font.Assign(FTitle.Font);
     W := Printer.Canvas.TextWidth(FTitle.Caption);
     H := Printer.Canvas.TextHeight(FTitle.Caption);
 
     case FTitle.Alignment of
-      taLeftJustify: ;
+      taLeftJustify:  ;
       taRightJustify: X := FPageWidth - W;
-      taCenter: X := (FPageWidth - W) div 2;
+      taCenter:       X := (FPageWidth - W) div 2;
     end;
 
     Printer.Canvas.TextOut(X, Y, FTitle.Caption);
 
-    Inc(FTop, H);
+    Inc(FCurrY, H + FRowPadding);
   end;
 end;
 
@@ -357,11 +403,6 @@ begin
   end;
 end;
 
-procedure TDTFPrinter.DoPrintDate;
-begin
-
-end;
-
 procedure TDTFPrinter.DoPrintHeader;
 var
   Column: TColumn;
@@ -369,71 +410,85 @@ begin
   Printer.Canvas.Font.Assign(FHeaderFont);
 
   if poHeaderHorzLine in FOptions then
-    DoPrintHorzLine(FTop);
+    DoPrintHorzLine(FCurrY);
 
   for Column in FColumns do
-    Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FTop, Column.Caption);
+    Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FCurrY, Column.Caption);
 
-  Inc(FTop, FRowHeight);
+  Inc(FCurrY, FRowHeight);
 
   if poHeaderHorzLine in FOptions then
-    DoPrintHorzLine(FTop);
+    DoPrintHorzLine(FCurrY);
 end;
 
-procedure TDTFPrinter.DoPrintHorzLine(ATop: Integer);
-begin
-  Printer.Canvas.MoveTo(FMargin.Left, ATop);
-  Printer.Canvas.LineTo(FMargin.Left + FPageWidth, ATop);
-
-  Inc(FTop, FRowPadding);
-end;
-
-procedure TDTFPrinter.DoPrintPageFooter;
-begin
-  if poFooterHorzLine in FOptions then
-  begin
-    FTop := FMargin.Top + FPageHeight;
-    DoPrintHorzLine(FTop);
-  end;
-  DoPrintPageNum;
-end;
-
-procedure TDTFPrinter.DoPrintPageNum;
-var
-  L, W: Integer;
-  NumStr: string;
-begin
-  NumStr := Printer.PageNumber.ToString;
-  W := FCharWidth * Length(NumStr) + FColPadding;
-  L := FMargin.Left + FPageWidth - W;
-
-  Printer.Canvas.Font.Assign(FFont);
-  Printer.Canvas.TextOut(L, FTop, NumStr);
-end;
-
-function TDTFPrinter.NewRow: TDTFPrinter;
+procedure TDTFPrinter.DoPrintSeqColumn;
 var
   Column: TColumn;
   SeqCol: TSequenceColumn;
 begin
-  if FRowIndex > 0 then
-    FTop := FTop + FRowHeight;
-  Inc(FRowIndex);
-
-  if FTop >= (FPageHeight + FMargin.Top) then
-    DoNewPage;
-
   Printer.Canvas.Font.Assign(FFont);
   for Column in FColumns do
   begin
     if Column is TSequenceColumn then
     begin
       SeqCol := TSequenceColumn(Column);
-      Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FTop, SeqCol.Value.ToString);
+      Printer.Canvas.TextOut(Column.PageLeft + FColPadding, FCurrY, SeqCol.Value.ToString);
       SeqCol.Increment;
     end;
   end;
+end;
 
+procedure TDTFPrinter.DoPrintHorzLine(var AY: Integer);
+begin
+  Printer.Canvas.MoveTo(FMargin.Left,               AY);
+  Printer.Canvas.LineTo(FMargin.Left + FPageWidth,  AY);
+
+  Inc(AY, FRowPadding);
+end;
+
+procedure TDTFPrinter.DoPrintPageFooter;
+var
+  Y: Integer;
+begin
+  if poFooterHorzLine in FOptions then
+  begin
+    Y := FMargin.Top + FPageHeight;
+    DoPrintHorzLine(Y);
+  end;
+  DoPrintDate(Y);
+  DoPrintPageNum(Y);
+end;
+
+procedure TDTFPrinter.DoPrintDate(AY: Integer);
+var
+  X, Y: Integer;
+  S: string;
+begin
+  S := FormatDateTime('YYYY-MM-DD', Date);
+  X := FMargin.Left;
+  Y := AY;
+
+  Printer.Canvas.Font.Assign(FFont);
+  Printer.Canvas.TextOut(X, Y, S);
+end;
+
+procedure TDTFPrinter.DoPrintPageNum(AY: Integer);
+var
+  X, Y, W: Integer;
+  NumStr: string;
+begin
+  NumStr := Printer.PageNumber.ToString;
+  W := FCharWidth * Length(NumStr) + FColPadding;
+  X := FMargin.Left + FPageWidth - W;
+  Y := AY;
+
+  Printer.Canvas.Font.Assign(FFont);
+  Printer.Canvas.TextOut(X, Y, NumStr);
+end;
+
+function TDTFPrinter.NewRow: TDTFPrinter;
+begin
+  DoNewRow;
   Result := Self;
 end;
 
@@ -461,7 +516,7 @@ end;
 
 function TDTFPrinter.WriteCell(AColumn: TColumn; AData: string): TDTFPrinter;
 begin
-  Printer.Canvas.TextOut(AColumn.PageLeft + FColPadding, FTop, AData);
+  Printer.Canvas.TextOut(AColumn.PageLeft + FColPadding, FCurrY, AData);
 
   Result := Self;
 end;

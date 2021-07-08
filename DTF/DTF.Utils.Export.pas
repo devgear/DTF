@@ -5,7 +5,7 @@ interface
 uses
   Vcl.Forms, Vcl.Controls,
   System.SysUtils,
-  Data.DB;
+  Data.DB, DTF.Utils.Print;
 
 type
   EDTFIOException = class(Exception);
@@ -14,16 +14,58 @@ type
     class procedure SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
       const ASetNumberFormatLocal: Boolean = True; const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
     class procedure PrintFromDataSet(const ADataSet: TDataSet; const ATitle: string = '');
+
+    class procedure PrintFromDataRec<DataType, ItemType>(const ADataRec: DataType;
+      const ATitle: string = ''; ASetOptionProc: TProc<TDTFPrinter> = nil);
   end;
 
 
 implementation
 
 uses
-  System.IOUtils, System.Variants, DTF.Utils.Print,
-  System.Win.ComObj;
+  System.IOUtils, System.Variants,
+  System.Win.ComObj,
+  DTF.Utils.Grid;
 
 { TExportUtil }
+
+class procedure TExportUtil.PrintFromDataRec<DataType, ItemType>(
+  const ADataRec: DataType; const ATitle: string;
+  ASetOptionProc: TProc<TDTFPrinter>);
+var
+  I: Integer;
+  Printer: TDTFPrinter;
+
+  ColProp: TGridColProp;
+  ColProps: TGridColProps;
+  Datas: TDataTable;
+begin
+  if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
+    Exit;
+
+  Printer := TDTFPrinter.Create;
+
+  Printer.Title.Caption := ATitle;
+//  Printer.Subtitle.Caption := '여기는 부제목';
+  Printer.Columns.Clear;
+  for ColProp in ColProps do
+    Printer.Columns.Add(ColProp.Attr.Caption, ColProp.Attr.ColWidth);
+
+  if Assigned(ASetOptionProc) then
+    ASetOptionProc(Printer);
+
+  Printer.Print(procedure
+    var
+      I: Integer;
+      Data: TDataRecord;
+    begin
+      Datas := TExtractColProp.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
+      for Data in Datas do
+        Printer.WriteRows(Data);
+    end
+  );
+
+end;
 
 class procedure TExportUtil.PrintFromDataSet(const ADataSet: TDataSet;
   const ATitle: string);

@@ -10,14 +10,14 @@ uses
 
 type
   TRecItem7 = record
-    [IntCol]
+    [IntCol('숫자%d', 80)]
     I: Integer;
-    [IntCol]
+    [IntCol('넘버%d', 80)]
     J: Integer;
   end;
   TArr4<T> = array[0..3] of T;
   TRec7 = record
-    [StrCol]
+    [StrCol('문자', 120)]
     S: string;
     [ColArray(4)]
     Ints: TArr4<TRecItem7>;
@@ -33,8 +33,10 @@ type
     DTFStrGridFrame1: TDTFStrGridFrame;
     procedure DTFStrGridFrame1actSearchExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure DTFStrGridFrame1actPrintExecute(Sender: TObject);
   private
     { Private declarations }
+    Datas: TRecList7;
   public
     { Public declarations }
   end;
@@ -46,9 +48,22 @@ implementation
 
 {$R *.dfm}
 
+uses DTF.Utils.Export, DTF.Utils.Print;
+
+procedure TfrmTest4.DTFStrGridFrame1actPrintExecute(Sender: TObject);
+begin
+  inherited;
+
+  TExportUtil.PrintFromDataRec<TRecList7, TRec7>(
+    Datas, '테스트',
+    procedure(APrinter: TDTFPrinter)
+    begin
+      APrinter.Options := APrinter.Options + [poHorzLine];
+    end
+  );
+end;
+
 procedure TfrmTest4.DTFStrGridFrame1actSearchExecute(Sender: TObject);
-var
-  Datas: TRecList7;
 begin
   inherited;
 

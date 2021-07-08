@@ -83,42 +83,8 @@ begin
 end;
 
 procedure TDTFStrGridFrame.SetDataRow<T>(const ARow: Integer; AColProps: TGridColProps; AData: T);
-var
-  I: Integer;
-  ColProp: TGridColProp;
-  Value, ArrValue, RecValue: TValue;
-  StrVal: string;
 begin
-  for I := 0 to Length(AColProps) - 1 do
-  begin
-    ColProp := AColProps[I];
-
-    if not Assigned(ColProp.Attr) then
-      Continue;
-
-    Value := TValue.Empty;
-
-    case ColProp.Kind of
-      cpkField:
-        Value := ColProp.Field.GetValue(@AData);
-      cpkMethod:
-        Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
-      cpkArray:
-        begin
-          ArrValue := ColProp.ArrayField.GetValue(@AData);
-          RecValue := ArrValue.GetArrayElement(ColProp.ArrayIndex);
-          if RecValue.TypeInfo.Kind = tkRecord then
-            Value := ColProp.Field.GetValue(ArrValue.GetReferenceToRawArrayElement(ColProp.ArrayIndex));
-        end;
-    end;
-
-    if Value.IsEmpty then
-      Continue;
-
-    StrVal := ColProp.Attr.ValueToStr(Value);
-
-    Grid.Cells[I, ARow] := StrVal;
-  end;
+  Grid.Rows[ARow].AddStrings(TExtractColProp.ExtractDataRow<T>(AColProps, AData));
 end;
 
 procedure TDTFStrGridFrame.SetDataRows<T>(const AStartRow: Integer; AColProps: TGridColProps; ADatas: TArray<T>);
@@ -163,53 +129,29 @@ end;
 // DataRows Attr로 목록 확인
 procedure TDTFStrGridFrame.WriteDatas<DataType, ItemType>(const ADataRec: DataType);
 var
-  LCtx: TRttiContext;
-  LType: TRttiType;
-  LField: TRttiField;
-  LMethod: TRttiMethod;
-  LAttr: DataRowsAttribute;
-
+  Row: Integer;
   ColProps: TGridColProps;
-
-  Info: PTypeInfo;
-  Data: PTypeData;
-  LCount: Integer;
-  Value: TValue;
+  DataTable: TDataTable;
+  DataRow: TDataRecord;
 begin
   if not TExtractColProp.TryGetColProps<ItemType>(ColProps) then
     Exit;
 
-  LCtx := TRttiContext.Create;
+  DataTable := TExtractColProp.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
+
+  Grid.BeginUpdate;
   try
-    LType := LCtx.GetType(TypeInfo(DataType));
-
-    LCount := 0;
-    for LField in LType.GetFields do
+    Row := Grid.FixedRows;
+    for DataRow in DataTable do
     begin
-      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
+      Grid.Rows[Row].AddStrings(DataRow);
 
-      if LField.FieldType.TypeKind = tkDynArray then
-      begin
-        Value := LField.GetValue(@ADataRec);
-//        (LField.FieldType as TRttiDynamicArrayType).ElementType;
-        // ElementType 이 ItemType인지 확인
-        SetDataRows<ItemType>(Grid.FixedRows + LCount, ColProps, Value.AsType<TArray<ItemType>>);
-        LCount := LCount + Value.GetArrayLength;
-      end
-      else if LField.FieldType.IsRecord then
-      begin
-        Value := LField.GetValue(@ADataRec);
-        SetDataRow<ItemType>(Grid.FixedRows + LCount, ColProps, Value.AsType<ItemType>);
-        Inc(LCount);
-      end;
+      Inc(Row);
     end;
 
-    if LCount > 0 then
-      Grid.RowCount := Grid.FixedRows + LCount;
+    Grid.RowCount := Row;
   finally
-    LCtx.Free;
+    Grid.EndUpdate
   end;
 end;
 
