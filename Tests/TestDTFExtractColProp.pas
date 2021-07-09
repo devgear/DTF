@@ -50,7 +50,7 @@ type
 implementation
 
 uses
-  System.Rtti, System.SysUtils,
+  System.Rtti, System.TypInfo, System.SysUtils,
   DTF.Utils.Extract, DTF.Utils, DTF.Frame.StrGrid;
 
 procedure TTestDTFExtractColProp.Setup;
@@ -119,6 +119,13 @@ type
     Items: TArray<TRec1>;
     [DataRows]
     Sum: TRec1;
+  end;
+
+  TRec4_2 = record
+    [DataRows]
+    Sum: TRec1;
+    [DataRows]
+    Items: TArray<TRec1>;
   end;
 
   TRecItem5 = record
@@ -191,7 +198,7 @@ procedure TTestDTFExtractColProp.TestGetColPropsRec;
 var
   ColProps: TColInfoProps;
 begin
-  if not TExtractColProp.TryGetColProps<TRec1>(ColProps) then
+  if not TExtractUtil.TryGetColProps<TRec1>(ColProps) then
     Assert.Fail;
 
   Assert.AreEqual(Length(ColProps), 6);
@@ -203,7 +210,7 @@ procedure TTestDTFExtractColProp.TestGetColPropsChildRec;
 var
   ColProps: TColInfoProps;
 begin
-  if not TExtractColProp.TryGetColProps<TRec2>(ColProps) then
+  if not TExtractUtil.TryGetColProps<TRec2>(ColProps) then
     Assert.Fail;
 
   Assert.AreEqual(Length(ColProps), 5);
@@ -215,7 +222,7 @@ procedure TTestDTFExtractColProp.TestGetColPropsArrayT;
 var
   ColProps: TColInfoProps;
 begin
-  if not TExtractColProp.TryGetColProps<TRec3>(ColProps) then
+  if not TExtractUtil.TryGetColProps<TRec3>(ColProps) then
     Assert.Fail;
 
   Assert.AreEqual(Length(ColProps), 6);
@@ -258,17 +265,39 @@ begin
 end;
 
 function TTestDTFExtractColProp.DetectItemType<T>(Value: T): string;
+var
+  LType: TRttiType;
+  LField: TRttiField;
 begin
-
+  LType := TRttiContext.Create.GetType(TypeInfo(T));
+  case LType.TypeKind of
+  tkDynArray:
+    Result := (LType as TRttiDynamicArrayType).ElementType.Name;
+  tkRecord:
+    begin
+      for LField in LType.GetFields do
+      begin
+        if Assigned(TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes)) then
+        begin
+          if LField.FieldType.TypeKind = tkDynArray then
+            Exit((LField.FieldType as TRttiDynamicArrayType).ElementType.Name)
+          else if LField.FieldType.TypeKind = tkRecord then
+            Exit(LField.FieldType.Name);
+        end;
+      end;
+    end;
+  end;
 end;
 
 procedure TTestDTFExtractColProp.TestDetectItemType;
 var
-  R4: TRec4;  // [DaraRow]Items: TArray<TRec1>
   A1: TArray<TRec1>;
+  R4: TRec4;  // [DaraRow]Items: TArray<TRec1>
+  R42: TRec4_2;  // [DaraRow]Sum: TRec1
 begin
   Assert.AreEqual(DetectItemType<TArray<TRec1>>(A1),  'TRec1');
   Assert.AreEqual(DetectItemType<TRec4>(R4),          'TRec1');
+  Assert.AreEqual(DetectItemType<TRec4_2>(R42),       'TRec1');
 end;
 
 procedure TTestDTFExtractColProp.TestGetDataRowsArrayType;
@@ -297,7 +326,7 @@ procedure TTestDTFExtractColProp.TestGetColPropsStaticArray;
 var
   ColProps: TColInfoProps;
 begin
-  if not TExtractColProp.TryGetColProps<TRec7>(ColProps) then
+  if not TExtractUtil.TryGetColProps<TRec7>(ColProps) then
     Assert.Fail;
 
   Assert.AreEqual(Length(ColProps), 5);

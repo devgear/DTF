@@ -14,7 +14,7 @@ type
     [TearDown]
     procedure TearDown;
 
-    [Test]
+//    [Test]
     procedure TestPrinterBasic;
   end;
 
@@ -37,8 +37,10 @@ var
   I: Integer;
   Printer: TDTFPrinter;
 begin
+Exit;
   Printer := TDTFPrinter.Create;
 
+  Printer.Options := Printer.Options - [poShowDialog];
   Printer.Options := Printer.Options + [poSequenceColumn];
 
   Printer.Title.Caption := 'Print test';
