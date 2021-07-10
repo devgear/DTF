@@ -19,7 +19,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Buttons, DTF.Frame.Title;
+  Vcl.Buttons, DTF.Frame.Title, DTF.Frame.View;
 
 type
   [ViewId('SYS1010')]
@@ -52,7 +52,6 @@ type
     btnMenuRefresh: TSpeedButton;
     Label5: TLabel;
     edtCateCode: TDBEdit;
-    DTFTitleFrame2: TDTFTitleFrame;
     qryMenuCatesCATE_CODE: TWideStringField;
     qryMenuGroupsGROUP_CODE: TWideStringField;
     qryMenuGroupsCATE_CODE: TWideStringField;
@@ -79,6 +78,7 @@ type
     actMenuTreeDown: TAction;
     qryMenuUpdate: TFDQuery;
     FDUpdateSQL1: TFDUpdateSQL;
+    DTFTitleFrame1: TDTFTitleFrame;
     procedure FormCreate(Sender: TObject);
     procedure qryMenuCatesAfterPost(DataSet: TDataSet);
     procedure qryMenuGroupsAfterPost(DataSet: TDataSet);
@@ -331,7 +331,7 @@ end;
 
 procedure TfrmSYS1010.LoadMenus(ACateCode: string);
 var
-  GroupName, MenuName: string;
+  GroupName: string;
   Group, Item: TMenuNode;
 begin
   FIsChagnedMenuTree := False;

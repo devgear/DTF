@@ -1,41 +1,44 @@
 inherited frmTest4: TfrmTest4
+  BorderWidth = 1
   Caption = 'frmTest4'
+  ClientHeight = 485
+  ClientWidth = 684
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inline DTFStrGridFrame1: TDTFStrGridFrame
     Left = 0
     Top = 0
-    Width = 686
-    Height = 487
+    Width = 684
+    Height = 485
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 20
-    ExplicitWidth = 686
-    ExplicitHeight = 467
+    ExplicitWidth = 684
+    ExplicitHeight = 485
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 684
+      ExplicitWidth = 684
+      inherited pnlCaption: TPanel
+        Width = 680
+        ExplicitWidth = 680
+      end
+    end
     inherited tlbDataSet: TToolBar
-      Width = 686
-      ExplicitWidth = 686
+      Width = 684
+      ExplicitWidth = 684
+      inherited ToolButton2: TToolButton
+        OnClick = nil
+      end
     end
     inherited pnlSearchControlArea: TPanel
-      Width = 686
-      ExplicitWidth = 686
+      Width = 684
+      ExplicitWidth = 684
     end
     inherited Grid: TStringGrid
-      Width = 686
-      Height = 422
-      ExplicitWidth = 686
-      ExplicitHeight = 422
-    end
-    inherited DTFTitleFrame1: TDTFTitleFrame
-      Width = 686
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 686
-      inherited pnlCaption: TPanel
-        Width = 686
-        ExplicitWidth = 686
-      end
+      Width = 684
+      Height = 420
+      ExplicitWidth = 684
+      ExplicitHeight = 420
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction
@@ -43,7 +46,6 @@ inherited frmTest4: TfrmTest4
       end
       inherited actPrint: TAction
         Visible = True
-        OnExecute = DTFStrGridFrame1actPrintExecute
       end
       inherited actExportXls: TAction
         Visible = True

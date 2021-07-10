@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, DTF.Frame.View;
 
 type
   { TODO : Design 관련 Attr 추가하면 좋을 듯
@@ -103,7 +103,7 @@ begin
     qryTestData.Next;
   end;
 
-  DTFStrGridFrame1.WriteDatas<TGridData>(Datas);
+  DTFStrGridFrame1.DisplayDatas(Datas);
 end;
 
 initialization

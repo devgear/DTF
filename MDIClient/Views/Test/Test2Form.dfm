@@ -10,19 +10,23 @@ inherited frmTest2: TfrmTest2
     Height = 487
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 20
     ExplicitWidth = 686
-    ExplicitHeight = 467
+    ExplicitHeight = 487
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 686
+      ExplicitWidth = 686
+      inherited pnlCaption: TPanel
+        Width = 682
+        ExplicitWidth = 682
+      end
+    end
     inherited tlbDataSet: TToolBar
       Width = 686
-      ExplicitLeft = 0
-      ExplicitTop = 20
       ExplicitWidth = 686
     end
     inherited pnlSearchControlArea: TPanel
       Width = 686
       Height = 51
-      ExplicitTop = 42
       ExplicitWidth = 686
       ExplicitHeight = 51
     end
@@ -32,17 +36,7 @@ inherited frmTest2: TfrmTest2
       Height = 394
       ExplicitTop = 93
       ExplicitWidth = 686
-      ExplicitHeight = 374
-    end
-    inherited DTFTitleFrame1: TDTFTitleFrame
-      Width = 686
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 686
-      inherited pnlCaption: TPanel
-        Width = 686
-        ExplicitWidth = 686
-      end
+      ExplicitHeight = 394
     end
     inherited ActionList: TActionList
       inherited actSearch: TAction

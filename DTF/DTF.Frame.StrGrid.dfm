@@ -1,6 +1,15 @@
 inherited DTFStrGridFrame: TDTFStrGridFrame
   Width = 724
   ExplicitWidth = 724
+  inherited DTFTitleFrame1: TDTFTitleFrame
+    Width = 724
+    TabOrder = 3
+    ExplicitWidth = 724
+    inherited pnlCaption: TPanel
+      Width = 720
+      ExplicitWidth = 720
+    end
+  end
   object tlbDataSet: TToolBar
     Left = 0
     Top = 20
@@ -12,8 +21,6 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
     List = True
     ShowCaptions = True
     TabOrder = 0
-    ExplicitLeft = -3
-    ExplicitTop = 37
     object btnDSRefresh: TToolButton
       Left = 0
       Top = 0
@@ -43,7 +50,6 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
     Caption = 'Search controls. (default hidden)'
     TabOrder = 1
     Visible = False
-    ExplicitTop = 22
   end
   object Grid: TStringGrid
     Left = 0
@@ -52,25 +58,6 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
     Height = 323
     Align = alClient
     TabOrder = 2
-    ExplicitTop = 45
-    ExplicitHeight = 343
-  end
-  inline DTFTitleFrame1: TDTFTitleFrame
-    Left = 0
-    Top = 0
-    Width = 724
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 3
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    inherited pnlCaption: TPanel
-      Width = 724
-    end
   end
   object ActionList: TActionList
     Images = dmResource.vilToolButton
@@ -88,6 +75,7 @@ inherited DTFStrGridFrame: TDTFStrGridFrame
       ImageIndex = 2
       ImageName = 'icons8-print'
       Visible = False
+      OnExecute = actPrintExecute
     end
     object actExportXls: TAction
       Category = 'Dataset'

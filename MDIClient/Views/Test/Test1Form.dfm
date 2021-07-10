@@ -12,15 +12,13 @@ inherited frmTest1: TfrmTest1
     Height = 319
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 20
     ExplicitWidth = 686
-    ExplicitHeight = 299
+    ExplicitHeight = 319
     inherited tlbDataSet: TToolBar
-      Left = 0
-      Top = 20
       Width = 686
-      ExplicitTop = 24
-      ExplicitWidth = 670
+      ExplicitLeft = 0
+      ExplicitTop = 20
+      ExplicitWidth = 686
       inherited btnDSRefresh: TToolButton
         ExplicitWidth = 53
       end
@@ -44,29 +42,27 @@ inherited frmTest1: TfrmTest1
       end
     end
     inherited grdMaster: TDBGrid
-      Left = 0
       Top = 105
       Width = 686
       Height = 214
     end
     inherited pnlSearchControlArea: TPanel
-      Left = 0
-      Top = 42
       Width = 686
       Height = 63
-      ExplicitTop = 46
-      ExplicitWidth = 670
+      ExplicitLeft = 0
+      ExplicitTop = 42
+      ExplicitWidth = 686
       ExplicitHeight = 63
     end
     inherited DTFTitleFrame1: TDTFTitleFrame
-      Left = 0
-      Top = 0
       Width = 686
-      ExplicitTop = 4
-      ExplicitWidth = 670
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 686
       inherited pnlCaption: TPanel
-        Width = 686
-        ExplicitWidth = 670
+        Width = 682
+        ExplicitLeft = 4
+        ExplicitWidth = 682
       end
     end
     inherited ActionList: TActionList
@@ -87,7 +83,7 @@ inherited frmTest1: TfrmTest1
   end
   object pnlSearchPanel: TPanel
     Left = 8
-    Top = 72
+    Top = 48
     Width = 476
     Height = 41
     BevelOuter = bvNone

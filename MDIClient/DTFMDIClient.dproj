@@ -174,7 +174,6 @@
         <DCCReference Include="Services\MenuService.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.Types.pas"/>
-        <DCCReference Include="..\DTF\DTF.Intf.pas"/>
         <DCCReference Include="..\DTF\DTF.Frame.StrGrid.pas">
             <Form>DTFStrGridFrame</Form>
             <FormType>dfm</FormType>
@@ -202,6 +201,11 @@
         <DCCReference Include="Views\Test\Test4Form.pas">
             <Form>frmTest4</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\DTF\DTF.Frame.View.pas">
+            <Form>DTFViewFrame</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

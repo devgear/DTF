@@ -84,11 +84,8 @@ type
     FPageWidth, FPageHeight: Integer;
     FCharWidth, FCharHeight: Integer;
     FRowHeight, FRowPadding, FColPadding: Integer;
-    FColWidth: TArray<Integer>;
 
     FMargin: TRect;
-    FTotalFieldWidth: Integer;
-    FPerColWidth: Integer;
     FOptions: TDTFPrintOptions;
 
     FInBeginRow: Boolean;
@@ -216,7 +213,10 @@ constructor TDTFPrinter.Create;
 begin
   FColumns := TColumns.Create;
 
-  FOptions := [poTitle, poHeaderHorzLine, poFooterHorzLine, poPageNum, poPageDate, poShowDialog];
+  FOptions := [
+    poTitle, poHeaderHorzLine, poFooterHorzLine,
+    poPageNum, poPageDate, poShowDialog
+  ];
 
   FTitle := TTitle.Create;
   FTitle.Alignment := taCenter;
@@ -241,6 +241,9 @@ begin
   FreeAndNil(FHeaderFont);
   FreeAndNil(FColumns);
 
+  FreeAndNil(FTitle);
+  FreeAndNil(FSubtitle);
+
   inherited;
 end;
 
@@ -264,7 +267,7 @@ var
   Column: TColumn;
   SumWidth: Integer;
   RestWidth: Integer;
-  I, Left: Integer;
+  Left: Integer;
 begin
   FRowIndex := 0;
 

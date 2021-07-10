@@ -82,7 +82,7 @@ type
     cpkMethod,
     cpkArray      // Static array의 Element
   );
-  // 구조체(또는 객체)에 설정된 ColumnInfoAttr 항목(필드, 메소드) 정보
+  // ColumnInfoAttr가 지정된 구조체(또는 객체)의 필드/메소드 정보
   TColInfoProp = record
     Kind: TColInfoPropKind;
     Attr: TColumnInfoAttribute;
@@ -106,10 +106,16 @@ type
     class function TryGetColProps<T>(var Props: TColInfoProps): Boolean; overload;
 
     class function GetRowCount<T>(ADataRec: T): Integer;
+    class function ExtractItemType(ADataType: PTypeInfo): PTypeInfo;
 
-    class function ExtractDataRow<T>(AColProps: TColInfoProps; AData: T): TDataRecord;
-    class function ExtractDataTable<T>(AColProps: TColInfoProps; ADatas: TArray<T>): TDataTable; overload;
-    class function ExtractDataTable<DataType, ItemType>(AColProps: TColInfoProps; ADataRec: DataType): TDataTable; overload;
+//    class function ExtractDataRow<T>(AColProps: TColInfoProps; AData: T): TDataRecord; overload;
+//    class function ExtractDataTable<T>(AColProps: TColInfoProps; ADatas: TArray<T>): TDataTable; overload;
+//    class function ExtractDataTable<DataType, ItemType>(AColProps: TColInfoProps; ADataRec: DataType): TDataTable; overload;
+
+    class function ExtractDataRecord(AColProps: TColInfoProps; ARowData: TValue): TDataRecord; overload;
+    class function ExtractDataTableFromArray(AColProps: TColInfoProps; AData: TValue): TDataTable; overload;
+    class function ExtractDataTable(AColProps: TColInfoProps; AData: TValue): TDataTable; overload;
+    class function ExtractDataTable(AData: TValue): TDataTable; overload;
   end;
 
 implementation
@@ -220,8 +226,7 @@ var
   LFieldType: TRttiType;
   LArrType: TRttiArrayType;
 
-  LCount: Integer;
-  I, J, Idx, MinVal, MaxVal: Integer;
+  I, Idx: Integer;
 begin
   Result := False;
   try
@@ -307,102 +312,6 @@ begin
   Result := TryGetColProps(TypeInfo(T), Props);
 end;
 
-class function TExtractUtil.ExtractDataRow<T>(AColProps: TColInfoProps;
-  AData: T): TDataRecord;
-var
-  I: Integer;
-  ColProp: TColInfoProp;
-  Value, ArrValue: TValue;
-  StrVal: string;
-begin
-  SetLength(Result, Length(AColProps));
-  for I := 0 to Length(AColProps) - 1 do
-  begin
-    ColProp := AColProps[I];
-
-    if not Assigned(ColProp.Attr) then
-      Continue;
-
-    Value := TValue.Empty;
-
-    case ColProp.Kind of
-      cpkField:
-        Value := ColProp.Field.GetValue(@AData);
-      cpkMethod:
-        Value := ColProp.Method.Invoke(TValue.From<Pointer>(@AData), []);
-      cpkArray:
-        begin
-          ArrValue := ColProp.ArrayField.GetValue(@AData);
-          Value := ArrValue.GetArrayElement(ColProp.ArrayIndex);
-          if Value.TypeInfo.Kind = tkRecord then
-            Value := ColProp.Field.GetValue(ArrValue.GetReferenceToRawArrayElement(ColProp.ArrayIndex))
-        end;
-    end;
-
-    if Value.IsEmpty then
-      Continue;
-
-    StrVal := ColProp.Attr.ValueToStr(Value);
-
-    Result[I] := StrVal;
-  end;
-end;
-
-class function TExtractUtil.ExtractDataTable<DataType, ItemType>(
-  AColProps: TColInfoProps; ADataRec: DataType): TDataTable;
-var
-  LCtx: TRttiContext;
-  LType: TRttiType;
-  LField: TRttiField;
-  LMethod: TRttiMethod;
-  LAttr: DataRowsAttribute;
-
-  ColProps: TColInfoProps;
-
-  Info: PTypeInfo;
-  LCount: Integer;
-  Value: TValue;
-begin
-  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
-    Exit;
-
-  LCtx := TRttiContext.Create;
-  try
-    LType := LCtx.GetType(TypeInfo(DataType));
-
-    LCount := 0;
-    for LField in LType.GetFields do
-    begin
-      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
-      if not Assigned(LAttr) then
-        Continue;
-
-      if LField.FieldType.TypeKind = tkDynArray then
-      begin
-        Value := LField.GetValue(@ADataRec);
-        Result := Result + ExtractDataTable<ItemType>(ColProps, Value.AsType<TArray<ItemType>>);
-      end
-      else if LField.FieldType.IsRecord then
-      begin
-        Value := LField.GetValue(@ADataRec);
-        Result := Result + [ExtractDataRow<ItemType>(ColProps, Value.AsType<ItemType>)];
-      end;
-    end;
-  finally
-    LCtx.Free;
-  end;
-end;
-
-class function TExtractUtil.ExtractDataTable<T>(AColProps: TColInfoProps;
-  ADatas: TArray<T>): TDataTable;
-var
-  I: Integer;
-begin
-  SetLength(Result, Length(ADatas));
-  for I := 0 to Length(ADatas) - 1 do
-    Result[I] := ExtractDataRow<T>(AColProps, ADatas[I]);
-end;
-
 class function TExtractUtil.GetRowCount<T>(ADataRec: T): Integer;
 var
   LCtx: TRttiContext;
@@ -430,6 +339,194 @@ begin
       else if LField.FieldType.IsRecord then
       begin
         Inc(Result);
+      end;
+    end;
+  finally
+    LCtx.Free;
+  end;
+end;
+
+class function TExtractUtil.ExtractItemType(ADataType: PTypeInfo): PTypeInfo;
+var
+  LType: TRttiType;
+  LField: TRttiField;
+begin
+  Result := nil;
+
+  LType := TRttiContext.Create.GetType(ADataType);
+  case LType.TypeKind of
+  tkDynArray:
+    Result := (LType as TRttiDynamicArrayType).ElementType.Handle;
+  tkRecord:
+    begin
+      for LField in LType.GetFields do
+      begin
+        if Assigned(TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes)) then
+        begin
+          if LField.FieldType.TypeKind = tkDynArray then
+            Exit((LField.FieldType as TRttiDynamicArrayType).ElementType.Handle)
+          else if LField.FieldType.TypeKind = tkRecord then
+            Exit(LField.FieldType.Handle);
+        end;
+      end;
+    end;
+  end;
+end;
+
+//class function TExtractUtil.ExtractDataRow<T>(AColProps: TColInfoProps;
+//  AData: T): TDataRecord;
+//begin
+//  Result := ExtractDataRow(AColProps, @AData);
+//end;
+
+//class function TExtractUtil.ExtractDataTable<DataType, ItemType>(
+//  AColProps: TColInfoProps; ADataRec: DataType): TDataTable;
+//var
+//  LCtx: TRttiContext;
+//  LType: TRttiType;
+//  LField: TRttiField;
+//  LMethod: TRttiMethod;
+//  LAttr: DataRowsAttribute;
+//
+//  Info: PTypeInfo;
+//  LCount: Integer;
+//  Value: TValue;
+//begin
+//  LCtx := TRttiContext.Create;
+//  try
+//    LType := LCtx.GetType(TypeInfo(DataType));
+//
+//    LCount := 0;
+//    for LField in LType.GetFields do
+//    begin
+//      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+//      if not Assigned(LAttr) then
+//        Continue;
+//
+//      if LField.FieldType.TypeKind = tkDynArray then
+//      begin
+//        Value := LField.GetValue(@ADataRec);
+//        Result := Result + ExtractDataTable<ItemType>(AColProps, Value.AsType<TArray<ItemType>>);
+//      end
+//      else if LField.FieldType.IsRecord then
+//      begin
+//        Value := LField.GetValue(@ADataRec);
+//        Result := Result + [ExtractDataRow<ItemType>(AColProps, Value.AsType<ItemType>)];
+//      end;
+//    end;
+//  finally
+//    LCtx.Free;
+//  end;
+//end;
+//
+//class function TExtractUtil.ExtractDataTable<T>(AColProps: TColInfoProps;
+//  ADatas: TArray<T>): TDataTable;
+//var
+//  I: Integer;
+//begin
+//  SetLength(Result, Length(ADatas));
+//  for I := 0 to Length(ADatas) - 1 do
+//    Result[I] := ExtractDataRow<T>(AColProps, ADatas[I]);
+//end;
+
+class function TExtractUtil.ExtractDataRecord(AColProps: TColInfoProps; ARowData: TValue): TDataRecord;
+var
+  I: Integer;
+  ColProp: TColInfoProp;
+  Value, ArrValue: TValue;
+  StrVal: string;
+begin
+  SetLength(Result, Length(AColProps));
+  for I := 0 to Length(AColProps) - 1 do
+  begin
+    ColProp := AColProps[I];
+
+    if not Assigned(ColProp.Attr) then
+      Continue;
+
+    Value := TValue.Empty;
+
+    case ColProp.Kind of
+      cpkField:
+        Value := ColProp.Field.GetValue(ARowData.GetReferenceToRawData);
+      cpkMethod:
+        Value := ColProp.Method.Invoke(ARowData, []);
+      cpkArray:
+        begin
+          ArrValue := ColProp.ArrayField.GetValue(ARowData.GetReferenceToRawData);
+          Value := ArrValue.GetArrayElement(ColProp.ArrayIndex);
+          if Value.TypeInfo.Kind = tkRecord then
+            Value := ColProp.Field.GetValue(ArrValue.GetReferenceToRawArrayElement(ColProp.ArrayIndex))
+        end;
+    end;
+
+    if Value.IsEmpty then
+      Continue;
+
+    StrVal := ColProp.Attr.ValueToStr(Value);
+
+    Result[I] := StrVal;
+  end;
+end;
+
+class function TExtractUtil.ExtractDataTableFromArray(AColProps: TColInfoProps;
+  AData: TValue): TDataTable;
+var
+  I: Integer;
+begin
+  SetLength(Result, AData.GetArrayLength);
+  for I := 0 to Length(Result) - 1 do
+    Result[I] := ExtractDataRecord(AColProps, AData.GetArrayElement(I));
+end;
+
+{
+  큰데이터는 너무 많은 메모리를 사용할 듯
+}
+class function TExtractUtil.ExtractDataTable(AData: TValue): TDataTable;
+var
+  ColProps: TColInfoProps;
+  ItemType: PTypeInfo;
+begin
+  ItemType := ExtractItemType(AData.TypeInfo);
+  if not Assigned(ItemType) then
+    Exit;
+
+  if not TExtractUtil.TryGetColProps(ItemType, ColProps) then
+    Exit;
+
+  Result := ExtractDataTable(ColProps, AData);
+end;
+
+class function TExtractUtil.ExtractDataTable(AColProps: TColInfoProps;
+  AData: TValue): TDataTable;
+var
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LField: TRttiField;
+  LMethod: TRttiMethod;
+  LAttr: DataRowsAttribute;
+
+  Value: TValue;
+begin
+  LCtx := TRttiContext.Create;
+  try
+    LType := LCtx.GetType(AData.TypeInfo);
+
+    for LField in LType.GetFields do
+    begin
+      LAttr := TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+      if LField.FieldType.TypeKind = tkDynArray then
+      begin
+        Value := LField.GetValue(AData.GetReferenceToRawData);
+        Result := Result + ExtractDataTableFromArray(AColProps, Value);
+      end
+      else if LField.FieldType.IsRecord then
+      begin
+        Value := LField.GetValue(AData.GetReferenceToRawData);
+        Result := Result + [ExtractDataRecord(AColProps, Value.GetReferenceToRawData)];
       end;
     end;
   finally

@@ -3,7 +3,7 @@ unit DTF.Utils;
 interface
 
 uses
-  System.Rtti;
+  System.Rtti, System.SysUtils;
 
 type
   TAttributeUtil = class

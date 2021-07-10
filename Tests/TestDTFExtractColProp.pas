@@ -3,7 +3,8 @@ unit TestDTFExtractColProp;
 interface
 
 uses
-  DUnitX.TestFramework;
+  DUnitX.TestFramework,
+  System.Rtti, System.TypInfo;
 
 type
   [TestFixture]
@@ -44,13 +45,20 @@ type
     [Test]
     procedure TestDetectItemType;
     function DetectItemType<T>(Value: T): string;
+
+    [Test]
+    procedure TestItemTypeValue;
+    function GetDetectItemType(Value: PTypeInfo): PTypeInfo;
+
+    [Test]
+    procedure TestExl;
   end;
 
 
 implementation
 
 uses
-  System.Rtti, System.TypInfo, System.SysUtils,
+  System.SysUtils,
   DTF.Utils.Extract, DTF.Utils, DTF.Frame.StrGrid;
 
 procedure TTestDTFExtractColProp.Setup;
@@ -117,8 +125,8 @@ type
   TRec4 = record
     [DataRows]
     Items: TArray<TRec1>;
-    [DataRows]
-    Sum: TRec1;
+//    [DataRows]
+//    Sum: TRec1;
   end;
 
   TRec4_2 = record
@@ -158,7 +166,6 @@ type
   TRec7 = record
     [StrCol]
     S: string;
-    [ColArray(4)]
     Ints: TArr4<TRecItem7>;
   end;
   TRecList7 = record
@@ -255,49 +262,13 @@ begin
     Datas.Items[1].Ints[2].I := 23;
     Datas.Items[1].Ints[3].I := 24;
 
-    Frame.WriteDatas<TRecList7, TRec7>(Datas);
+    Frame.DisplayDatas<TRecList7>(Datas);
 
     Assert.AreEqual(Frame.Grid.Cells[1, 1], '11');
 
   finally
     Frame.Free;
   end;
-end;
-
-function TTestDTFExtractColProp.DetectItemType<T>(Value: T): string;
-var
-  LType: TRttiType;
-  LField: TRttiField;
-begin
-  LType := TRttiContext.Create.GetType(TypeInfo(T));
-  case LType.TypeKind of
-  tkDynArray:
-    Result := (LType as TRttiDynamicArrayType).ElementType.Name;
-  tkRecord:
-    begin
-      for LField in LType.GetFields do
-      begin
-        if Assigned(TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes)) then
-        begin
-          if LField.FieldType.TypeKind = tkDynArray then
-            Exit((LField.FieldType as TRttiDynamicArrayType).ElementType.Name)
-          else if LField.FieldType.TypeKind = tkRecord then
-            Exit(LField.FieldType.Name);
-        end;
-      end;
-    end;
-  end;
-end;
-
-procedure TTestDTFExtractColProp.TestDetectItemType;
-var
-  A1: TArray<TRec1>;
-  R4: TRec4;  // [DaraRow]Items: TArray<TRec1>
-  R42: TRec4_2;  // [DaraRow]Sum: TRec1
-begin
-  Assert.AreEqual(DetectItemType<TArray<TRec1>>(A1),  'TRec1');
-  Assert.AreEqual(DetectItemType<TRec4>(R4),          'TRec1');
-  Assert.AreEqual(DetectItemType<TRec4_2>(R42),       'TRec1');
 end;
 
 procedure TTestDTFExtractColProp.TestGetDataRowsArrayType;
@@ -352,13 +323,134 @@ begin
     Datas.Items[1].Dbl := 1.234;
     Datas.Items[1].Dtm := Now + 10;
 
-    Frame.WriteDatas<TRec4, TRec1>(Datas);
+    Frame.DisplayDatas<TRec4>(Datas);
 
     Assert.AreEqual(Frame.Grid.Cells[0, 1], '10');
 
   finally
     Frame.Free;
   end;
+end;
+
+function TTestDTFExtractColProp.DetectItemType<T>(Value: T): string;
+var
+  LType: TRttiType;
+  LField: TRttiField;
+begin
+  LType := TRttiContext.Create.GetType(TypeInfo(T));
+  case LType.TypeKind of
+  tkDynArray:
+    Result := (LType as TRttiDynamicArrayType).ElementType.Name;
+  tkRecord:
+    begin
+      for LField in LType.GetFields do
+      begin
+        if Assigned(TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes)) then
+        begin
+          if LField.FieldType.TypeKind = tkDynArray then
+            Exit((LField.FieldType as TRttiDynamicArrayType).ElementType.Name)
+          else if LField.FieldType.TypeKind = tkRecord then
+            Exit(LField.FieldType.Name);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TTestDTFExtractColProp.TestDetectItemType;
+var
+  A1: TArray<TRec1>;
+  R4: TRec4;      // [DaraRow]Items: TArray<TRec1>
+  R42: TRec4_2;   // [DaraRow]Sum: TRec1
+begin
+  Assert.AreEqual(DetectItemType<TArray<TRec1>>(A1),  'TRec1');
+  Assert.AreEqual(DetectItemType<TRec4>(R4),          'TRec1');
+  Assert.AreEqual(DetectItemType<TRec4_2>(R42),       'TRec1');
+end;
+
+function TTestDTFExtractColProp.GetDetectItemType(Value: PTypeInfo): PTypeInfo;
+var
+  LType: TRttiType;
+  LField: TRttiField;
+begin
+  Result := nil;
+  LType := TRttiContext.Create.GetType(Value);
+  case LType.TypeKind of
+  tkDynArray:
+    Result := (LType as TRttiDynamicArrayType).ElementType.Handle;
+  tkRecord:
+    begin
+      for LField in LType.GetFields do
+      begin
+        if Assigned(TAttributeUtil.FindAttribute<DataRowsAttribute>(LField.GetAttributes)) then
+        begin
+          if LField.FieldType.TypeKind = tkDynArray then
+            Exit((LField.FieldType as TRttiDynamicArrayType).ElementType.Handle)
+          else if LField.FieldType.TypeKind = tkRecord then
+            Exit(LField.FieldType.Handle);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TTestDTFExtractColProp.TestItemTypeValue;
+var
+  A1: TArray<TRec1>;
+  R4: TRec4;      // [DaraRow]Items: TArray<TRec1>
+  R42: TRec4_2;   // [DaraRow]Sum: TRec1
+  ValA1: TValue;
+
+  ItemType: PTypeInfo;
+  ColProps: TColInfoProps;
+  ItemData: TValue;
+  Rec: TDataRecord;
+begin
+  SetLength(A1, 1);
+  A1[0].Int   := 10;
+  A1[0].Int2  := 20;
+
+  ValA1 := TValue.From<TArray<TRec1>>(A1);
+
+  ItemType := GetDetectItemType(ValA1.TypeInfo);
+  Assert.AreEqual(string(ItemType.Name),  'TRec1');
+
+  if not TExtractUtil.TryGetColProps(ItemType, ColProps) then
+    Exit;
+
+  if ValA1.Kind = tkDynArray then
+    ItemData := ValA1.GetArrayElement(0);
+
+  Rec := TExtractUtil.ExtractDataRecord(ColProps, ItemData);
+  Assert.AreEqual(Rec[0],  '10');
+end;
+
+procedure TTestDTFExtractColProp.TestExl;
+var
+  Datas: TRec4;
+  DataTable: TDataTable;
+  Val: TValue;
+
+  ItemType: PTypeInfo;
+begin
+  SetLength(Datas.Items, 2);
+  Datas.Items[0].Int := 10;
+  Datas.Items[0].Int2 := 21;
+  Datas.Items[0].Str := 'abc';
+  Datas.Items[0].Dbl := 1.123;
+  Datas.Items[0].Dtm := Now;
+
+  Datas.Items[1].Int := 20;
+  Datas.Items[1].Int2 := 42;
+  Datas.Items[1].Str := '°¡³ª´Ù';
+  Datas.Items[1].Dbl := 1.234;
+  Datas.Items[1].Dtm := Now + 10;
+
+  Val := TValue.From<TRec4>(Datas);
+
+  DataTable := TExtractUtil.ExtractDataTable(Val);
+
+  Assert.AreEqual(DataTable[1][0],  '20');
 end;
 
 initialization

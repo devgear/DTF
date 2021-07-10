@@ -265,13 +265,10 @@ begin
     LFilename := ExtractFilePath(Paramstr(0)) + LName;
 
   FIniFile := TIniFile.Create(LFilename);
-  LoadFromFile;
 end;
 
 destructor TIniConfig.Destroy;
 begin
-  SaveToFile;
-
   FIniFile.Free;
 
   inherited;
@@ -334,7 +331,7 @@ begin
 
 //        TValue.FromVarRec()
 
-        LProp.SetValue(Self, LPropValue);
+        LProp.SetValue(FTarget, LPropValue);
       end;
     end;
   finally
@@ -368,7 +365,7 @@ begin
 //          LIniAttribute.WriteIniData(FIniFIle, LProp.Name, LProp.GetValue(Self));
         end
         else
-          LIniAttribute.WriteIniData(FIniFIle, LProp.Name, LProp.GetValue(Self));
+          LIniAttribute.WriteIniData(FIniFIle, LProp.Name, LProp.GetValue(FTarget));
       end;
     end;
   finally

@@ -29,7 +29,6 @@ uses
   MenuService in 'Services\MenuService.pas',
   DTF.Service in '..\DTF\DTF.Service.pas',
   DTF.Service.Types in '..\DTF\DTF.Service.Types.pas',
-  DTF.Intf in '..\DTF\DTF.Intf.pas',
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
   DTF.Utils in '..\DTF\DTF.Utils.pas',
@@ -44,7 +43,8 @@ uses
   DTF.Service.Config in '..\DTF\DTF.Service.Config.pas',
   DTF.Config.IniLoader in '..\DTF\DTF.Config.IniLoader.pas',
   DTF.Service.View in '..\DTF\DTF.Service.View.pas',
-  Test4Form in 'Views\Test\Test4Form.pas' {frmTest4};
+  Test4Form in 'Views\Test\Test4Form.pas' {frmTest4},
+  DTF.Frame.View in '..\DTF\DTF.Frame.View.pas' {DTFViewFrame: TFrame};
 
 {$R *.res}
 

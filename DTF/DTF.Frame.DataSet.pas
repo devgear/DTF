@@ -3,14 +3,15 @@ unit DTF.Frame.DataSet;
 interface
 
 uses
+  DTF.Frame.View, DTF.Frame.Title,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  System.UITypes, 
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.ComCtrls,
+  System.UITypes,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.ToolWin, Vcl.DBActns, System.Actions, Vcl.ActnList, Data.DB, DTF.Types,
-  DTF.Frame.Title;
+  DTF.Frame.Base;
 
 type
-  TDTFDataSetFrame = class(TDTFBaseFrame)
+  TDTFDataSetFrame = class(TDTFViewFrame)
     ActionList: TActionList;
     actDSNewAppend: TDataSetInsert;
     actDSDelete: TDataSetDelete;
@@ -29,7 +30,6 @@ type
     actDSSearch: TDataSetRefresh;
     actPrint: TAction;
     ToolButton2: TToolButton;
-    DTFTitleFrame1: TDTFTitleFrame;
 
     procedure actDSNewAppendExecute(Sender: TObject);
     procedure actDSDeleteExecute(Sender: TObject);

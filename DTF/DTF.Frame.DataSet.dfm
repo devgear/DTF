@@ -12,7 +12,6 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
     List = True
     ShowCaptions = True
     TabOrder = 0
-    ExplicitTop = 40
     object btnDSRefresh: TToolButton
       Left = 0
       Top = 0
@@ -54,23 +53,6 @@ inherited DTFDataSetFrame: TDTFDataSetFrame
       Top = 0
       Action = actPrint
       AutoSize = True
-    end
-  end
-  inline DTFTitleFrame1: TDTFTitleFrame
-    Left = 0
-    Top = 0
-    Width = 594
-    Height = 20
-    Margins.Left = 8
-    Align = alTop
-    Color = clBtnFace
-    ParentBackground = False
-    ParentColor = False
-    TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    inherited pnlCaption: TPanel
-      Width = 594
     end
   end
   object ActionList: TActionList

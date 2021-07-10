@@ -3,7 +3,7 @@ unit DTF.Config;
 interface
 
 uses
-  DTF.Service.Config,
+  DTF.Service.Config, uIniConfig,
   Vcl.Forms, System.Types;
 
 type

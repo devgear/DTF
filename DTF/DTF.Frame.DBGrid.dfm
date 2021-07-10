@@ -1,43 +1,17 @@
 inherited DTFDBGridFrame: TDTFDBGridFrame
   Height = 225
-  Padding.Left = 8
-  Padding.Top = 4
-  Padding.Right = 8
   ExplicitHeight = 225
-  inherited tlbDataSet: TToolBar
-    Left = 8
-    Top = 24
-    Width = 578
-    ExplicitLeft = 8
-    ExplicitTop = 4
-    ExplicitWidth = 578
-    inherited btnDSRefresh: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited btnDSNew: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited btnDSSave: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited btnDSCancel: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited btnDSDelete: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited btnExportXls: TToolButton
-      ExplicitWidth = 85
-    end
-    inherited ToolButton2: TToolButton
-      ExplicitWidth = 85
+  inherited DTFTitleFrame1: TDTFTitleFrame
+    ExplicitWidth = 594
+    inherited pnlCaption: TPanel
+      Width = 590
     end
   end
   object grdMaster: TDBGrid [1]
-    Left = 8
-    Top = 69
-    Width = 578
-    Height = 156
+    Left = 0
+    Top = 65
+    Width = 594
+    Height = 160
     TabStop = False
     Align = alClient
     DataSource = DataSource
@@ -50,25 +24,14 @@ inherited DTFDBGridFrame: TDTFDBGridFrame
     TitleFont.Style = []
   end
   object pnlSearchControlArea: TPanel [2]
-    Left = 8
-    Top = 46
-    Width = 578
+    Left = 0
+    Top = 42
+    Width = 594
     Height = 23
     Align = alTop
     BevelOuter = bvNone
     Caption = 'Search controls. (default hidden)'
     TabOrder = 2
     Visible = False
-    ExplicitTop = 26
-    ExplicitWidth = 506
-  end
-  inherited DTFTitleFrame1: TDTFTitleFrame
-    Left = 8
-    Top = 4
-    Width = 578
-    ExplicitWidth = 594
-    inherited pnlCaption: TPanel
-      ExplicitWidth = 594
-    end
   end
 end

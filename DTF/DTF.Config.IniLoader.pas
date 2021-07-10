@@ -22,10 +22,12 @@ implementation
 constructor TIniConfigLoader.Create(const ATarget: TObject; const AIniFilename: string);
 begin
   FIniConfig := TIniConfig.Create(ATarget, AIniFilename);
+  FIniConfig.LoadFromFile;
 end;
 
 destructor TIniConfigLoader.Destroy;
 begin
+  FIniCOnfig.SaveToFile;
   FIniConfig.Free;
 
   inherited;

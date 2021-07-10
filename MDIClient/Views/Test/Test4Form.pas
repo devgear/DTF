@@ -6,7 +6,7 @@ uses
   DTF.Types.View, DTF.Utils.Extract,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Form.MDIChild, DTF.Frame.StrGrid,
-  DTF.Frame.Base, DTF.Frame.Title;
+  DTF.Frame.Base, DTF.Frame.Title, DTF.Frame.View;
 
 type
   TRecItem7 = record
@@ -21,7 +21,7 @@ type
   TRec7 = record
     [StrCol('문자', 120)]
     S: string;
-    [ColArray(4)]
+//    [ColArray(4)]
     Ints: TArr4<TRecItem7>;
   end;
   TRecList7 = record
@@ -34,7 +34,6 @@ type
     DTFStrGridFrame1: TDTFStrGridFrame;
     procedure DTFStrGridFrame1actSearchExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure DTFStrGridFrame1actPrintExecute(Sender: TObject);
   private
     { Private declarations }
     Datas: TRecList7;
@@ -57,19 +56,10 @@ begin
 
 //  DTFStrGridFrame1.ClearGrid(10);
   DTFStrGridFrame1.SetGridColumn<TRec7>;
-end;
-
-procedure TfrmTest4.DTFStrGridFrame1actPrintExecute(Sender: TObject);
-begin
-  inherited;
-
-  TExportUtil.PrintFromDataRec<TRecList7, TRec7>(
-    Datas, '테스트',
-    procedure(APrinter: TDTFPrinter)
+  DTFStrGridFrame1.SetPrintOption(procedure(APrinter: TDTFPrinter)
     begin
       APrinter.Options := APrinter.Options + [poHorzLine];
-    end
-  );
+    end);
 end;
 
 procedure TfrmTest4.DTFStrGridFrame1actSearchExecute(Sender: TObject);
@@ -97,9 +87,7 @@ begin
   Datas.Items[1].Ints[3].J := 123;
   Datas.Items[1].Ints[4].J := 124;
 
-  DTFStrGridFrame1.SetData<TRecList7>(Datas);
-
-  DTFStrGridFrame1.WriteDatas<TRecList7, TRec7>(Datas);
+  DTFStrGridFrame1.DisplayDatas<TRecList7>(Datas);
 end;
 
 initialization

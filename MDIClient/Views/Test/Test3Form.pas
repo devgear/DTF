@@ -10,33 +10,33 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, Vcl.Grids,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.WinXCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, DTF.Frame.View;
 
 type
   TDataItem = record
-    [IntCol][FieldName('INT_DATA')]
+    [IntCol]
     Int: Integer;
 
-    [IntCol(80, '#,###')][FieldName('INT_DATA2')]
+    [IntCol(80, '#,###')]
     Int2: Integer;
 
-    [StrCol][FieldName('STR_DATA')]
+    [StrCol]
     Str: string;
 
-    [DblCol(100, '#,##0.###')][FieldName('DBL_DATA')]
+    [DblCol(100, '#,##0.###')]
     Dbl: Single;
 
-    [DtmCol(100, 'YYYY-MM-DD')][FieldName('DTM_DATA')]
+    [DtmCol(100, 'YYYY-MM-DD')]
     Dtm: TDatetime;
 
 
     [IntCol]
     Sum: Integer;
 
-    [DblCol(100, '#,##0.###')][Avg('Int, Int2')]
+    [DblCol(100, '#,##0.###')]
     Avg: Single;
 
-    [AutoCalc]
+//    [AutoCalc]
     procedure Calc;
   end;
 
@@ -44,10 +44,9 @@ type
     [DataRows]
     Items: TArray<TDataItem>;
 
-    [DataRows][SumRows('Int, Int2, Dbl, Sum, Avg')]
+    [DataRows]
     Sum: TDataItem;
 
-    [AutoCalc]
     procedure Calc;
   end;
 
@@ -68,7 +67,6 @@ type
   private
     { Private declarations }
     FGrid: TStringGrid;
-    FDatas: TGridData;
   public
     { Public declarations }
   end;
@@ -149,7 +147,7 @@ begin
 
   Data.Calc;
 
-  DTFStrGridFrame1.WriteDatas<TGridData, TDataItem>(Data);
+  DTFStrGridFrame1.DisplayDatas(Data);
 end;
 
 initialization

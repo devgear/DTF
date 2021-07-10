@@ -3,7 +3,7 @@ unit DTF.Frame.DBGrid;
 interface
 
 uses
-  DTF.Frame.DataSet,
+  DTF.Types, DTF.Frame.DataSet,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls,
   Vcl.DBActns, System.Actions, Vcl.ActnList, Vcl.ComCtrls, Vcl.ToolWin,
@@ -18,9 +18,6 @@ type
   end;
 
 implementation
-
-uses
-  DTF.Intf;
 
 {$R *.dfm}
 

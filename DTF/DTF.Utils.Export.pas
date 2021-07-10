@@ -4,43 +4,46 @@ interface
 
 uses
   Vcl.Forms, Vcl.Controls,
-  System.SysUtils,
+  System.SysUtils, System.Rtti,
   Data.DB, DTF.Utils.Print;
 
 type
   EDTFIOException = class(Exception);
 
+  TPrinterOptionProc = TProc<TDTFPrinter>;
   TExportUtil = class
     class procedure SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
       const ASetNumberFormatLocal: Boolean = True; const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
     class procedure PrintFromDataSet(const ADataSet: TDataSet; const ATitle: string = '');
 
-    class procedure PrintFromDataRec<DataType, ItemType>(const ADataRec: DataType;
-      const ATitle: string = ''; ASetOptionProc: TProc<TDTFPrinter> = nil);
+    class procedure PrintFromDataValue(const AData: TValue;
+      const ATitle: string = ''; ASetOptionProc: TPrinterOptionProc = nil);
   end;
 
 
 implementation
 
 uses
-  System.IOUtils, System.Variants,
+  System.IOUtils, System.Variants, System.TypInfo,
   System.Win.ComObj,
   DTF.Utils.Extract;
 
 { TExportUtil }
 
-class procedure TExportUtil.PrintFromDataRec<DataType, ItemType>(
-  const ADataRec: DataType; const ATitle: string;
-  ASetOptionProc: TProc<TDTFPrinter>);
+class procedure TExportUtil.PrintFromDataValue(
+  const AData: TValue; const ATitle: string;
+  ASetOptionProc: TPrinterOptionProc);
 var
-  I: Integer;
   Printer: TDTFPrinter;
 
   ColProp: TColInfoProp;
   ColProps: TColInfoProps;
   Datas: TDataTable;
+
+  ItemType: PTypeInfo;
 begin
-  if not TExtractUtil.TryGetColProps<ItemType>(ColProps) then
+  ItemType := TExtractUtil.ExtractItemType(AData.TypeInfo);
+  if not TExtractUtil.TryGetColProps(ItemType, ColProps) then
     Exit;
 
   Printer := TDTFPrinter.Create;
@@ -49,17 +52,16 @@ begin
 
   Printer.Columns.Clear;
   for ColProp in ColProps do
-    Printer.Columns.Add(ColProp.Attr.Caption, ColProp.Attr.ColWidth);
+    Printer.Columns.Add(ColProp.Caption, ColProp.ColWidth);
 
   if Assigned(ASetOptionProc) then
     ASetOptionProc(Printer);
 
   Printer.Print(procedure
     var
-      I: Integer;
       Data: TDataRecord;
     begin
-      Datas := TExtractUtil.ExtractDataTable<DataType, ItemType>(ColProps, ADataRec);
+      Datas := TExtractUtil.ExtractDataTable(ColProps, AData);
       for Data in Datas do
         Printer.WriteRows(Data);
     end
@@ -77,7 +79,6 @@ var
 
   Field: TField;
   LBookmark: TBookmark;
-  OldCursor: TCursor;
 begin
   Printer := TDTFPrinter.Create;
 

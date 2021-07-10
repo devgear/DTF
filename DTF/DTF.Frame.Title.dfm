@@ -2,14 +2,16 @@ inherited DTFTitleFrame: TDTFTitleFrame
   Height = 20
   Margins.Left = 8
   Align = alTop
+  Color = clActiveCaption
+  Padding.Left = 4
   ParentBackground = False
   ParentColor = False
   ExplicitHeight = 20
   object pnlCaption: TPanel
     AlignWithMargins = True
-    Left = 0
+    Left = 4
     Top = 0
-    Width = 433
+    Width = 429
     Height = 20
     Margins.Left = 0
     Margins.Top = 0
@@ -26,9 +28,10 @@ inherited DTFTitleFrame: TDTFTitleFrame
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
-    Padding.Left = 8
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
+    ExplicitLeft = 0
+    ExplicitWidth = 433
   end
 end

@@ -3,9 +3,11 @@ unit DTF.Frame.Title;
 interface
 
 uses
+  DTF.Types,
+
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DTF.Frame.Base, Vcl.ExtCtrls,
-  Vcl.StdCtrls, DTF.Intf;
+  Vcl.StdCtrls;
 
 type
   TDTFTitleFrame = class(TDTFBaseFrame, IDTFFrameTitle)
