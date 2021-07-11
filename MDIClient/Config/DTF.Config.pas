@@ -16,6 +16,7 @@ type
   public
     [IniEnum('Window', Ord(wsNormal))]
     property WindowState: TWindowState read FWindowState write FWindowState;
+    [IniEnum('Window', Ord(wsNormal))]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
 
     [IniString('Log', 'YYYYMMDD.log')]

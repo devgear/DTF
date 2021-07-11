@@ -38,6 +38,9 @@ type
     Panel1: TPanel;
     ImageCollection1: TImageCollection;
     VirtualImageList1: TVirtualImageList;
+    qryMenuTree: TFDQuery;
+    qryMenuShortcut: TFDQuery;
+    pnlTop: TPanel;
     ToolBar1: TToolBar;
     ToolButton2: TToolButton;
     btnMenuShow: TToolButton;
@@ -49,8 +52,6 @@ type
     ToolButton9: TToolButton;
     ToolButton8: TToolButton;
     btnMenuExit: TToolButton;
-    qryMenuTree: TFDQuery;
-    qryMenuShortcut: TFDQuery;
     procedure FormCreate(Sender: TObject);
     procedure MDITabSetMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);

@@ -44,7 +44,8 @@ uses
   DTF.Config.IniLoader in '..\DTF\DTF.Config.IniLoader.pas',
   DTF.Service.View in '..\DTF\DTF.Service.View.pas',
   Test4Form in 'Views\Test\Test4Form.pas' {frmTest4},
-  DTF.Frame.View in '..\DTF\DTF.Frame.View.pas' {DTFViewFrame: TFrame};
+  DTF.Frame.View in '..\DTF\DTF.Frame.View.pas' {DTFViewFrame: TFrame},
+  DTF.Config.Types in '..\DTF\DTF.Config.Types.pas';
 
 {$R *.res}
 

@@ -21,8 +21,8 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 185
-    Top = 52
-    Height = 467
+    Top = 57
+    Height = 462
     MinSize = 185
     ResizeStyle = rsLine
     ExplicitLeft = 384
@@ -62,55 +62,62 @@ object frmMain: TfrmMain
   end
   object pnlMenu: TPanel
     Left = 0
-    Top = 52
+    Top = 57
     Width = 185
-    Height = 467
+    Height = 462
     Align = alLeft
-    BevelOuter = bvNone
     Constraints.MinWidth = 185
     TabOrder = 1
+    ExplicitTop = 52
+    ExplicitHeight = 467
     object pnlMenuTop: TPanel
-      Left = 0
-      Top = 0
-      Width = 185
+      Left = 1
+      Top = 1
+      Width = 183
       Height = 232
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 185
       object pnlShortCut: TPanel
         Left = 0
         Top = 0
-        Width = 185
+        Width = 183
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 185
         DesignSize = (
-          185
+          183
           41)
         object edtShortCut: TEdit
           Left = 8
           Top = 11
-          Width = 165
+          Width = 163
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           TextHint = #47700#45684' '#47749', '#53076#46300#47196' '#48148#47196#44032#44592
+          ExplicitWidth = 165
         end
       end
       object lstFavorites: TListView
         Left = 0
         Top = 61
-        Width = 185
+        Width = 183
         Height = 171
         Align = alClient
         Columns = <>
         TabOrder = 1
+        ExplicitWidth = 185
       end
       object Panel1: TPanel
         Left = 0
         Top = 41
-        Width = 185
+        Width = 183
         Height = 20
         Margins.Left = 12
         Align = alTop
@@ -126,13 +133,14 @@ object frmMain: TfrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 2
+        ExplicitWidth = 185
       end
     end
     object trvMenus: TTreeView
-      Left = 0
-      Top = 252
-      Width = 185
-      Height = 215
+      Left = 1
+      Top = 253
+      Width = 183
+      Height = 208
       Align = alClient
       Images = dmResource.vilMenus
       Indent = 19
@@ -145,11 +153,15 @@ object frmMain: TfrmMain
       OnChange = trvMenusChange
       OnClick = trvMenusClick
       OnCreateNodeClass = trvMenusCreateNodeClass
+      ExplicitLeft = 0
+      ExplicitTop = 252
+      ExplicitWidth = 185
+      ExplicitHeight = 215
     end
     object Panel4: TPanel
-      Left = 0
-      Top = 232
-      Width = 185
+      Left = 1
+      Top = 233
+      Width = 183
       Height = 20
       Margins.Left = 12
       Align = alTop
@@ -165,109 +177,121 @@ object frmMain: TfrmMain
       ParentBackground = False
       ParentFont = False
       TabOrder = 2
+      ExplicitLeft = 0
+      ExplicitTop = 232
+      ExplicitWidth = 185
     end
   end
-  object ToolBar1: TToolBar
+  object pnlTop: TPanel
     Left = 0
     Top = 0
     Width = 857
-    Height = 52
-    AutoSize = True
-    ButtonHeight = 52
-    ButtonWidth = 47
-    Caption = 'ToolBar1'
-    Color = clBtnFace
-    Images = VirtualImageList1
-    ParentColor = False
-    ShowCaptions = True
+    Height = 57
+    Align = alTop
     TabOrder = 2
-    object ToolButton2: TToolButton
-      Left = 0
-      Top = 0
-      Width = 17
-      Caption = 'ToolButton2'
-      ImageIndex = 1
-      ImageName = 'icons8-settings'
-      Style = tbsSeparator
-      Visible = False
-    end
-    object btnMenuShow: TToolButton
-      Left = 17
-      Top = 0
-      Hint = 'HOME'
-      Caption = #47700#45684
-      ImageIndex = 0
-      ImageName = 'icons8-menu'
-      OnClick = btnCateMenuClick
-    end
-    object ToolButton3: TToolButton
-      Left = 64
-      Top = 0
-      Width = 13
-      Caption = 'ToolButton3'
-      ImageIndex = 1
-      ImageName = 'icons8-settings'
-      Style = tbsDivider
-      Visible = False
-    end
-    object ToolButton10: TToolButton
-      Left = 77
-      Top = 0
-      Width = 14
-      Caption = 'ToolButton10'
-      ImageIndex = 6
-      Style = tbsSeparator
-    end
-    object btnMenuHR: TToolButton
-      Left = 91
-      Top = 0
-      Hint = 'HR'
-      Caption = #51064#49324
-      ImageIndex = 2
-      ImageName = 'icons8-conference_call'
-      OnClick = btnCateMenuClick
-    end
-    object btnMenuMkt: TToolButton
-      Left = 138
-      Top = 0
-      Hint = 'MKT'
-      Caption = ' '#47560#53011#54021' '
-      ImageIndex = 3
-      ImageName = 'icons8-planner'
-      OnClick = btnCateMenuClick
-    end
-    object btnMenuCS: TToolButton
-      Left = 185
-      Top = 0
-      Hint = 'CST'
-      Caption = #44256#44061
-      ImageIndex = 4
-      ImageName = 'icons8-customer_support'
-      OnClick = btnCateMenuClick
-    end
-    object ToolButton9: TToolButton
-      Left = 232
-      Top = 0
-      Width = 11
-      ImageIndex = 6
-      Style = tbsDivider
-      Visible = False
-    end
-    object ToolButton8: TToolButton
-      Left = 243
-      Top = 0
-      Width = 13
-      Caption = 'ToolButton8'
-      ImageIndex = 6
-      Style = tbsSeparator
-    end
-    object btnMenuExit: TToolButton
-      Left = 256
-      Top = 0
-      Caption = '   '#45803#44592'   '
-      ImageIndex = 5
-      ImageName = 'icons8-exit'
-      OnClick = btnMenuExitClick
+    object ToolBar1: TToolBar
+      Left = 1
+      Top = 1
+      Width = 855
+      Height = 52
+      AutoSize = True
+      ButtonHeight = 52
+      ButtonWidth = 47
+      Caption = 'ToolBar1'
+      Color = clBtnFace
+      Images = VirtualImageList1
+      ParentColor = False
+      ShowCaptions = True
+      TabOrder = 0
+      ExplicitWidth = 463
+      object ToolButton2: TToolButton
+        Left = 0
+        Top = 0
+        Width = 17
+        Caption = 'ToolButton2'
+        ImageIndex = 1
+        ImageName = 'icons8-settings'
+        Style = tbsSeparator
+        Visible = False
+      end
+      object btnMenuShow: TToolButton
+        Left = 17
+        Top = 0
+        Hint = 'HOME'
+        Caption = #47700#45684
+        ImageIndex = 0
+        ImageName = 'icons8-menu'
+        OnClick = btnCateMenuClick
+      end
+      object ToolButton3: TToolButton
+        Left = 64
+        Top = 0
+        Width = 13
+        Caption = 'ToolButton3'
+        ImageIndex = 1
+        ImageName = 'icons8-settings'
+        Style = tbsDivider
+        Visible = False
+      end
+      object ToolButton10: TToolButton
+        Left = 77
+        Top = 0
+        Width = 14
+        Caption = 'ToolButton10'
+        ImageIndex = 6
+        Style = tbsSeparator
+      end
+      object btnMenuHR: TToolButton
+        Left = 91
+        Top = 0
+        Hint = 'HR'
+        Caption = #51064#49324
+        ImageIndex = 2
+        ImageName = 'icons8-conference_call'
+        OnClick = btnCateMenuClick
+      end
+      object btnMenuMkt: TToolButton
+        Left = 138
+        Top = 0
+        Hint = 'MKT'
+        Caption = ' '#47560#53011#54021' '
+        ImageIndex = 3
+        ImageName = 'icons8-planner'
+        OnClick = btnCateMenuClick
+      end
+      object btnMenuCS: TToolButton
+        Left = 185
+        Top = 0
+        Hint = 'CST'
+        Caption = #44256#44061
+        ImageIndex = 4
+        ImageName = 'icons8-customer_support'
+        OnClick = btnCateMenuClick
+      end
+      object ToolButton9: TToolButton
+        Left = 232
+        Top = 0
+        Width = 11
+        ImageIndex = 6
+        Style = tbsDivider
+        Visible = False
+      end
+      object ToolButton8: TToolButton
+        Left = 243
+        Top = 0
+        Width = 13
+        Caption = 'ToolButton8'
+        ImageIndex = 6
+        Style = tbsSeparator
+      end
+      object btnMenuExit: TToolButton
+        Left = 256
+        Top = 0
+        Caption = '   '#45803#44592'   '
+        ImageIndex = 5
+        ImageName = 'icons8-exit'
+        OnClick = btnMenuExitClick
+      end
     end
   end
   object MainMenu: TMainMenu
