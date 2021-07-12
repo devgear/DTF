@@ -233,9 +233,9 @@ end;
 
 constructor TIniConfig.Create(const ATarget: TObject; const AName: string);
 var
-  LRttiContext: TRttiContext;
-  LRttiType: TRttiType;
-  LAttribute: TCustomAttribute;
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LAttr: TCustomAttribute;
   LName, LFilename: string;
 begin
   FTarget := ATarget;
@@ -244,18 +244,18 @@ begin
     LName := AName
   else
   begin
-    LRttiContext := TRttiContext.Create;
+    LCtx := TRttiContext.Create;
     try
-      LRttiType := LRttiContext.GetType(FTarget.ClassType);
-      for LAttribute in LRttiType.GetAttributes do
+      LType := LCtx.GetType(FTarget.ClassType);
+      for LAttr in LType.GetAttributes do
       begin
-        if LAttribute is IniFilenameAttribute then
+        if LAttr is IniFilenameAttribute then
         begin
-          LName := IniFilenameAttribute(LAttribute).Filename;
+          LName := IniFilenameAttribute(LAttr).Filename;
         end;
       end;
     finally
-      LRttiContext.Free;
+      LCtx.Free;
     end;
   end;
 

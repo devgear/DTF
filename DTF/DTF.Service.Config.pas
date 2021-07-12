@@ -6,7 +6,16 @@ uses
   DTF.Service.Types;
 
 type
+  TConfigServiceProvider = class;
+
   TConfigLoader = class abstract
+  protected
+    FConfig: TConfigServiceProvider;
+  public
+    constructor Create(AConfig: TConfigServiceProvider);
+
+    procedure Load; virtual; abstract;
+    procedure Save; virtual; abstract;
   end;
 
   TConfigServiceProvider = class(TDTFServiceProvider, IDTFConfigService)
@@ -21,6 +30,13 @@ implementation
 
 uses
   DTF.Config.IniLoader;
+
+{ TConfigLoader }
+
+constructor TConfigLoader.Create(AConfig: TConfigServiceProvider);
+begin
+  FConfig := AConfig;
+end;
 
 { TConfigServiceProvider }
 

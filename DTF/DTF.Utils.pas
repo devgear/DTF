@@ -7,9 +7,14 @@ uses
 
 type
   TAttributeUtil = class
-    class function FindAttribute<T: TCustomAttribute>(const Attrs: TArray<TCustomAttribute>): T;
-    //
+    class function FindAttribute<T: TCustomAttribute>(const Attrs: TArray<TCustomAttribute>): T; overload;
+    class function FindAttribute<T: TCustomAttribute>(const AObject: TObject): T; overload;
     class function GetAttributeCount<T: TCustomAttribute>(const AType: TRttiType): Integer;
+  end;
+
+  TGenericUtil = class
+    class function AsString(const Value): string;
+    class function AsInteger(const Value): Integer;
   end;
 
 implementation
@@ -27,6 +32,15 @@ begin
     if Attr is T then
       Exit(Attr as T);
   end;
+end;
+
+class function TAttributeUtil.FindAttribute<T>(const AObject: TObject): T;
+begin
+  Result := FindAttribute<T>(
+    TRttiContext.Create
+      .GetType(AObject.ClassType)
+      .GetAttributes
+  );
 end;
 
 class function TAttributeUtil.GetAttributeCount<T>(const AType: TRttiType): Integer;
@@ -63,6 +77,18 @@ begin
     for LAttr in LMethod.GetAttributes do
       if LAttr is T then
         Inc(Result);
+end;
+
+{ TGenericUtil }
+
+class function TGenericUtil.AsInteger(const Value): Integer;
+begin
+  Result := Integer(Value);
+end;
+
+class function TGenericUtil.AsString(const Value): string;
+begin
+  Result := string(Value);
 end;
 
 end.
