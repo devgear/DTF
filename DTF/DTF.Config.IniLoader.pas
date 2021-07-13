@@ -17,6 +17,8 @@ type
 
     procedure LoadIniFile;
     procedure LoadConfig;
+
+    function IsDefaultType(AType: TTypeKind): Boolean;
   public
     procedure Load; override;
     procedure Save; override;
@@ -33,43 +35,52 @@ uses
 type
   TIniFileHelper = class helper for TIniFile
   public
-    function ReadData<T>(const Section, Ident: string; Default: T): T;
-    procedure WriteData<T>(const Section, Ident: string; Value: T);
     function ReadValue(const Section, Ident: string; Default: TValue): TValue;
   end;
-
-function TIniFileHelper.ReadData<T>(const Section, Ident: string;
-  Default: T): T;
-var
-  Value: TValue;
-begin
-  case PTypeInfo(TypeInfo(T)).Kind of
-    tkInteger: Value := ReadInteger(Section, Ident, TGenericUtil.AsInteger(Default));
-    tkString: Value := ReadString(Section, Ident, TGenericUtil.AsString(Default));
-  end;
-end;
 
 function TIniFileHelper.ReadValue(const Section, Ident: string;
   Default: TValue): TValue;
 begin
   Result := TValue.Empty;
+
   case Default.TypeInfo.Kind of
-    tkInteger: Result := TValue.From<Integer>(ReadInteger(Section, Ident, Default.AsInteger));
+    tkInteger:  Result := TValue.From<Integer>(ReadInteger(Section, Ident, Default.AsInteger));
+    tkInt64:    Result := TValue.From<Int64>(ReadInt64(Section, Ident, Default.AsInt64));
+    tkString,
+    tkUString,
+    tkWString,
+    tkLString:  Result := TValue.From<string>(ReadString(Section, Ident, Default.AsString));
+    tkEnumeration:  Result := TValue.From<Boolean>(ReadBool(Section, Ident, Default.AsBoolean));
+{
+ReadString
+ReadInt64
+ReadBool
+ReadFloat
+
+}
   end;
-
-end;
-
-procedure TIniFileHelper.WriteData<T>(const Section, Ident: string; Value: T);
-begin
 
 end;
 
 { TIniConfigLoader }
 
+function TIniConfigLoader.IsDefaultType(AType: TTypeKind): Boolean;
+begin
+  Result := (AType in [
+    tkInteger, tkInt64,
+    tkString, tkUString, tkWString, tkLString
+  ]);
+end;
+
 procedure TIniConfigLoader.Load;
 begin
   LoadIniFile;
   LoadConfig;
+end;
+
+procedure TIniConfigLoader.Save;
+begin
+  FIniFile.Free;
 end;
 
 procedure TIniConfigLoader.LoadIniFile;
@@ -95,7 +106,8 @@ var
   LProp: TRttiProperty;
 
   LAttr: TConfigPropAttribute;
-  LValue: TValue;
+  LValue, LDefault: TValue;
+  EnumVal: Integer;
 begin
   LCtx := TRttiContext.Create;
   try
@@ -109,23 +121,36 @@ begin
       if not Assigned(LAttr) then
         Continue;
 
-      { TODO : 타입의존성 제거할 것 }
-      // FIniFile.ReadValue(S, I, Default): TValue;
-      if LProp.PropertyType.TypeKind in [tkInteger, tkInt64] then
+      if IsDefaultType(LProp.PropertyType.TypeKind) then
       begin
         LValue := FIniFile.ReadValue(LAttr.Section, LProp.Name, LAttr.Default);
         LProp.SetValue(FConfig, LValue);
+      end
+      else if LProp.PropertyType.TypeKind = tkEnumeration then
+      begin
+        if LAttr is BoolPropAttribute then
+        begin
+          LValue := FIniFile.ReadBool(LAttr.Section, LProp.Name, LAttr.Default.AsBoolean);
+          LProp.SetValue(FConfig, LValue);
+        end
+        else if LAttr is EnumPropAttribute then
+        begin
+          EnumVal := GetEnumValue(LProp.PropertyType.Handle, LAttr.Default.AsString);
+          LDefault := TValue.From<Integer>(EnumVal);
+          LValue := TValue.From<Integer>(FIniFile.ReadInteger(LAttr.Section, LProp.Name, LDefault.AsInteger));
+          { TODO : Integer value to Enum value }
+//          LProp.SetValue(FConfig, LValue);
+        end;
+      end
+      else if LProp.PropertyType.TypeKind = tkRecord then
+      begin
+
       end;
 
     end;
   finally
     LCtx.Free;
   end;
-end;
-
-procedure TIniConfigLoader.Save;
-begin
-  FIniFile.Free;
 end;
 
 end.

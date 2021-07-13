@@ -14,18 +14,8 @@ uses
   {$ENDIF }
   DUnitX.TestFramework,
   TestDTFExtractColProp in 'TestDTFExtractColProp.pas',
-  DTF.Utils.Extract in '..\DTF\DTF.Utils.Extract.pas',
-  DTF.Types in '..\DTF\DTF.Types.pas',
-  DTF.Utils in '..\DTF\DTF.Utils.pas',
-  DTF.Form.MDIChild in '..\DTF\DTF.Form.MDIChild.pas' {DTFMDIChildForm},
-  DTF.Form.Base in '..\DTF\DTF.Form.Base.pas' {DTFBaseForm},
-  DTF.Intf in '..\DTF\DTF.Intf.pas',
-  DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
-  DTF.Frame.Base in '..\DTF\DTF.Frame.Base.pas' {DTFBaseFrame: TFrame},
-  DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   TestDTFUtils in 'TestDTFUtils.pas',
-  DTF.Types.View in '..\DTF\DTF.Types.View.pas',
-  DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame};
+  TestDTFConfig in 'TestDTFConfig.pas';
 
 {$IFNDEF TESTINSIGHT}
 var

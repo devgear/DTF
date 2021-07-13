@@ -18,6 +18,7 @@ type
   TConfigPropAttribute = class(TCustomAttribute)
   private
     FSection: string;
+  protected
     FDefault: TValue;
   public
     property Section: string read FSection;
@@ -27,14 +28,20 @@ type
   PropAttribute<T> = class(TConfigPropAttribute)
   protected
     FSection: string;
-    FValue: TValue;
   public
     constructor Create(ASection: string; ADefault: T);
   end;
 
   IntPropAttribute = class(PropAttribute<Integer>)
-  public
-    constructor Create(ASection: string; ADefault: Integer);
+  end;
+
+  BoolPropAttribute = class(PropAttribute<Boolean>)
+  end;
+
+  StrPropAttribute = class(PropAttribute<string>)
+  end;
+
+  EnumPropAttribute = class(PropAttribute<string>)
   end;
 
 
@@ -52,14 +59,7 @@ end;
 constructor PropAttribute<T>.Create(ASection: string; ADefault: T);
 begin
   FSection := ASection;
-end;
-
-{ IntPropAttribute }
-
-constructor IntPropAttribute.Create(ASection: string; ADefault: Integer);
-begin
-  FValue := TValue.From<Integer>(ADefault);
-  FValue := ADefault;
+  FDefault := TValue.From<T>(ADefault);
 end;
 
 end.

@@ -74,8 +74,9 @@ begin
   if not FDict.TryGetValue(AId, Data) then
     raise Exception.Create('Not registration service. ' + AID.ToString);
 
-  if Assigned(Data.Instance) then
-    Exit(Data.Instance);
+  if not Assigned(Data.Instance) then
+    Data.Instance := Data.Cls.Create;
+  Result := Data.Instance;
 end;
 
 procedure TServiceLoader.SetServiceProvider(AID: TGUID;

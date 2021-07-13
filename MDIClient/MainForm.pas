@@ -52,6 +52,7 @@ type
     ToolButton9: TToolButton;
     ToolButton8: TToolButton;
     btnMenuExit: TToolButton;
+    StatusBar1: TStatusBar;
     procedure FormCreate(Sender: TObject);
     procedure MDITabSetMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);

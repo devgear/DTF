@@ -46,10 +46,12 @@ begin
     ALoader := TIniConfigLoader.Create(Self);
 
   FLoader := ALoader;
+  FLoader.Load;
 end;
 
 destructor TConfigServiceProvider.Destroy;
 begin
+  FLoader.Save;
   FLoader.Free;
 
   inherited;

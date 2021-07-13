@@ -22,7 +22,7 @@ object frmMain: TfrmMain
   object Splitter1: TSplitter
     Left = 185
     Top = 57
-    Height = 462
+    Height = 443
     MinSize = 185
     ResizeStyle = rsLine
     ExplicitLeft = 384
@@ -48,7 +48,7 @@ object frmMain: TfrmMain
   end
   object MDITabSet: TTabSet
     Left = 0
-    Top = 519
+    Top = 500
     Width = 857
     Height = 21
     Align = alBottom
@@ -59,17 +59,17 @@ object frmMain: TfrmMain
     Font.Style = []
     OnChange = MDITabSetChange
     OnMouseUp = MDITabSetMouseUp
+    ExplicitTop = 519
   end
   object pnlMenu: TPanel
     Left = 0
     Top = 57
     Width = 185
-    Height = 462
+    Height = 443
     Align = alLeft
     Constraints.MinWidth = 185
     TabOrder = 1
-    ExplicitTop = 52
-    ExplicitHeight = 467
+    ExplicitHeight = 462
     object pnlMenuTop: TPanel
       Left = 1
       Top = 1
@@ -78,9 +78,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 185
       object pnlShortCut: TPanel
         Left = 0
         Top = 0
@@ -89,7 +86,6 @@ object frmMain: TfrmMain
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 185
         DesignSize = (
           183
           41)
@@ -101,7 +97,6 @@ object frmMain: TfrmMain
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           TextHint = #47700#45684' '#47749', '#53076#46300#47196' '#48148#47196#44032#44592
-          ExplicitWidth = 165
         end
       end
       object lstFavorites: TListView
@@ -112,7 +107,6 @@ object frmMain: TfrmMain
         Align = alClient
         Columns = <>
         TabOrder = 1
-        ExplicitWidth = 185
       end
       object Panel1: TPanel
         Left = 0
@@ -133,14 +127,13 @@ object frmMain: TfrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 2
-        ExplicitWidth = 185
       end
     end
     object trvMenus: TTreeView
       Left = 1
       Top = 253
       Width = 183
-      Height = 208
+      Height = 189
       Align = alClient
       Images = dmResource.vilMenus
       Indent = 19
@@ -153,10 +146,7 @@ object frmMain: TfrmMain
       OnChange = trvMenusChange
       OnClick = trvMenusClick
       OnCreateNodeClass = trvMenusCreateNodeClass
-      ExplicitLeft = 0
-      ExplicitTop = 252
-      ExplicitWidth = 185
-      ExplicitHeight = 215
+      ExplicitHeight = 208
     end
     object Panel4: TPanel
       Left = 1
@@ -177,9 +167,6 @@ object frmMain: TfrmMain
       ParentBackground = False
       ParentFont = False
       TabOrder = 2
-      ExplicitLeft = 0
-      ExplicitTop = 232
-      ExplicitWidth = 185
     end
   end
   object pnlTop: TPanel
@@ -203,7 +190,6 @@ object frmMain: TfrmMain
       ParentColor = False
       ShowCaptions = True
       TabOrder = 0
-      ExplicitWidth = 463
       object ToolButton2: TToolButton
         Left = 0
         Top = 0
@@ -293,6 +279,18 @@ object frmMain: TfrmMain
         OnClick = btnMenuExitClick
       end
     end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 521
+    Width = 857
+    Height = 19
+    Panels = <
+      item
+        Width = 100
+      end>
+    ExplicitLeft = -8
+    ExplicitTop = 532
   end
   object MainMenu: TMainMenu
     Left = 216

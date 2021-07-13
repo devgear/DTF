@@ -7,7 +7,7 @@ uses
 
 type
   [TestFixture]
-  TMyTestObject = class
+  TTestDTFUtils = class
   public
     [Setup]
     procedure Setup;
@@ -24,15 +24,15 @@ uses
   System.SysUtils,
   DTF.Utils.Print;
 
-procedure TMyTestObject.Setup;
+procedure TTestDTFUtils.Setup;
 begin
 end;
 
-procedure TMyTestObject.TearDown;
+procedure TTestDTFUtils.TearDown;
 begin
 end;
 
-procedure TMyTestObject.TestPrinterBasic;
+procedure TTestDTFUtils.TestPrinterBasic;
 var
   I: Integer;
   Printer: TDTFPrinter;
@@ -79,6 +79,6 @@ Exit;
 end;
 
 initialization
-  TDUnitX.RegisterTestFixture(TMyTestObject);
+  TDUnitX.RegisterTestFixture(TTestDTFUtils);
 
 end.
