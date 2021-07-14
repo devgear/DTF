@@ -32,17 +32,18 @@ type
   public
 //    [IntProp('Test', 10)]
 //    property Int: Integer read FInt write FInt;
-
+//
 //    [StrProp('Test', 'abc')]
 //    property Str: string read FStr write FStr;
+//
+    [BoolProp('Test', True)]
+    property Bool: Boolean read FBool write FBool;
+//
+//    [EnumProp('Test', 'wsMaximized')]
+//    property WindowState: TWindowState read FWindowState write FWindowState;
 
-//    [BoolProp('Test', True)]
-//    property Bool: Boolean read FBool write FBool;
-
-    [EnumProp('Test', 'wsMaximized')]
-    property WindowState: TWindowState read FWindowState write FWindowState;
-//    [RecProp('Test', '0,0,0,0')]
-//    property WindowBounds: TRect read FWindowBounds write FWindowBounds;
+    [RecProp('Test', '10,20,30,40')]
+    property WindowBounds: TRect read FWindowBounds write FWindowBounds;
   end;
 
 { TTestDTFConfig }
@@ -55,10 +56,9 @@ begin
 
 //  Assert.AreEqual(Config.Int, 10);
 //  Assert.AreEqual(Config.Str, 'abc');
-//  Assert.AreEqual(Config.Bool, True);
-  Assert.AreEqual(Config.WindowState, wsMaximized);
-//  Assert.AreEqual(Config.Bool, True);
-
+  Assert.AreEqual(Config.Bool, True);
+//  Assert.AreEqual(Config.WindowState, wsMaximized);
+  Assert.AreEqual(Config.WindowBounds.Left, 10);
 
   Config.Free;
 end;

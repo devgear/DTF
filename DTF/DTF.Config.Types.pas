@@ -26,23 +26,29 @@ type
   end;
 
   PropAttribute<T> = class(TConfigPropAttribute)
-  protected
-    FSection: string;
   public
     constructor Create(ASection: string; ADefault: T);
   end;
 
-  IntPropAttribute = class(PropAttribute<Integer>)
+  IntegerPropAttribute = class(PropAttribute<Integer>)
   end;
+  IntPropAttribute = IntegerPropAttribute;
 
-  BoolPropAttribute = class(PropAttribute<Boolean>)
+  BooleanPropAttribute = class(PropAttribute<Boolean>)
   end;
+  BoolPropAttribute = BooleanPropAttribute;
 
-  StrPropAttribute = class(PropAttribute<string>)
+  StringPropAttribute = class(PropAttribute<string>)
   end;
+  StrPropAttribute = StringPropAttribute;
 
-  EnumPropAttribute = class(PropAttribute<string>)
+  EnumerationPropAttribute = class(PropAttribute<string>)
   end;
+  EnumPropAttribute = EnumerationPropAttribute;
+
+  RecordPropAttribute = class(PropAttribute<string>)
+  end;
+  RecPropAttribute = RecordPropAttribute;
 
 
 implementation

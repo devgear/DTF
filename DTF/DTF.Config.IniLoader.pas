@@ -6,7 +6,8 @@ uses
   DTF.Config.Types,
   DTF.Service.Config,
   System.SysUtils,
-  System.IniFiles;
+  System.IniFiles,
+  System.Rtti;
 
 
 type
@@ -19,6 +20,7 @@ type
     procedure LoadConfig;
 
     function IsDefaultType(AType: TTypeKind): Boolean;
+    function ConvertStrToValue(AType: TTypeKind; AStr: string): TValue;
   public
     procedure Load; override;
     procedure Save; override;
@@ -27,7 +29,7 @@ type
 implementation
 
 uses
-  System.Rtti, System.TypInfo,
+  System.TypInfo,
   DTF.Utils;
 
 { TIniFileHelper }
@@ -63,6 +65,37 @@ ReadFloat
 end;
 
 { TIniConfigLoader }
+
+function TIniConfigLoader.ConvertStrToValue(AType: TTypeKind;
+  AStr: string): TValue;
+begin
+  case AType of
+    tkInteger,
+    tkInt64: Result := TValue.From<Integer>(StrToIntDef(AStr, 0));
+
+    tkFloat: ;
+
+    tkString,
+    tkLString,
+    tkWString,
+    tkUString: Result := TValue.From<string>(AStr);
+
+    tkUnknown: ;
+    tkEnumeration: ;
+    tkSet: ;
+    tkClass: ;
+    tkMethod: ;
+    tkVariant: ;
+    tkArray: ;
+    tkRecord: ;
+    tkInterface: ;
+    tkDynArray: ;
+    tkClassRef: ;
+    tkPointer: ;
+    tkProcedure: ;
+    tkMRecord: ;
+  end;
+end;
 
 function TIniConfigLoader.IsDefaultType(AType: TTypeKind): Boolean;
 begin
@@ -104,10 +137,15 @@ var
   LCtx: TRttiContext;
   LType: TRttiType;
   LProp: TRttiProperty;
+  LField: TRttiField;
+  LRecord: TRttiRecordType;
 
   LAttr: TConfigPropAttribute;
-  LValue, LDefault: TValue;
-  EnumVal: Integer;
+  LValue, LDefaultValue: TValue;
+  EnumInt, DefEnumInt: Integer;
+
+  I: Integer;
+  LDefaultVals: TArray<string>;
 begin
   LCtx := TRttiContext.Create;
   try
@@ -135,18 +173,38 @@ begin
         end
         else if LAttr is EnumPropAttribute then
         begin
-          EnumVal := GetEnumValue(LProp.PropertyType.Handle, LAttr.Default.AsString);
-          LDefault := TValue.From<Integer>(EnumVal);
-          LValue := TValue.From<Integer>(FIniFile.ReadInteger(LAttr.Section, LProp.Name, LDefault.AsInteger));
-          { TODO : Integer value to Enum value }
-//          LProp.SetValue(FConfig, LValue);
+          DefEnumInt := GetEnumValue(LProp.PropertyType.Handle, LAttr.Default.AsString);
+          EnumInt := FIniFile.ReadInteger(LAttr.Section, LProp.Name, DefEnumInt);
+          LValue := TValue.FromOrdinal(LProp.PropertyType.Handle, EnumInt);
+          LProp.SetValue(FConfig, LValue);
         end;
       end
       else if LProp.PropertyType.TypeKind = tkRecord then
       begin
+        if not (LAttr is RecPropAttribute) then
+          Exit;
 
+        LRecord := LCtx.GetType(LProp.GetValue(FConfig).TypeInfo).AsRecord;
+        LDefaultVals := LAttr.Default.AsString.Split([',']);
+        for I := 0 to Length(LRecord.GetFields) - 1 do
+        begin
+          LField := LRecord.GetFields[I];
+          if IsDefaultType(LField.FieldType.TypeKind) then
+          begin
+            LDefaultValue := ConvertStrToValue(LField.FieldType.TypeKind, LDefaultVals[I]);
+
+            LValue := FIniFile.ReadValue(LAttr.Section, LProp.Name + '.' + LField.Name, LDefaultValue);
+            WriteLn(LValue.ToString);
+
+            { TODO : 어떤 인스턴스를 전달해야 하는가? }
+
+//            LField.SetValue(LRecord.Handle.TypeData, LValue);
+//            LField.SetValue(LRecord.AsInstance, LValue);
+            LField.SetValue(LRecord, LValue);
+//            LField.SetValue(FConfig, LValue);
+          end;
+        end;
       end;
-
     end;
   finally
     LCtx.Free;
