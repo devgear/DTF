@@ -29,7 +29,7 @@ type
 implementation
 
 uses
-  System.TypInfo,
+  System.TypInfo, System.Types,
   DTF.Utils;
 
 { TIniFileHelper }
@@ -146,6 +146,8 @@ var
 
   I: Integer;
   LDefaultVals: TArray<string>;
+  LRecValue: TValue;
+  R: TRect;
 begin
   LCtx := TRttiContext.Create;
   try
@@ -184,26 +186,24 @@ begin
         if not (LAttr is RecPropAttribute) then
           Exit;
 
-        LRecord := LCtx.GetType(LProp.GetValue(FConfig).TypeInfo).AsRecord;
+        LRecValue := LProp.GetValue(FConfig);
+
+        R := LRecValue.AsType<TRect>;
+
         LDefaultVals := LAttr.Default.AsString.Split([',']);
-        for I := 0 to Length(LRecord.GetFields) - 1 do
+        I := 0;
+        for LField in LProp.PropertyType.GetFields do
         begin
-          LField := LRecord.GetFields[I];
           if IsDefaultType(LField.FieldType.TypeKind) then
           begin
             LDefaultValue := ConvertStrToValue(LField.FieldType.TypeKind, LDefaultVals[I]);
+            Inc(I);
 
             LValue := FIniFile.ReadValue(LAttr.Section, LProp.Name + '.' + LField.Name, LDefaultValue);
-            WriteLn(LValue.ToString);
-
-            { TODO : 어떤 인스턴스를 전달해야 하는가? }
-
-//            LField.SetValue(LRecord.Handle.TypeData, LValue);
-//            LField.SetValue(LRecord.AsInstance, LValue);
-            LField.SetValue(LRecord, LValue);
-//            LField.SetValue(FConfig, LValue);
+            LField.SetValue(LRecValue.GetReferenceToRawData, LValue);
           end;
         end;
+        LProp.SetValue(FConfig, LRecValue);
       end;
     end;
   finally

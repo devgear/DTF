@@ -1,1 +1,36 @@
-﻿
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<test-results name="C:\Temps\DTF\Tests\Win32\Debug\DTFTests.exe" total="12" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-07-15" time="6.281">
+  <culture-info current-culture="en" current-uiculture="en" />
+  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="6.281" asserts="0">
+    <results>
+        <test-suite type="Namespace" name="TestDTFConfig" executed="true" result="Success" success="True" time="6.281" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTestDTFConfig" executed="True" result="Success" success="True" time="6.281" >
+                <results>
+                  <test-case name="TestConfigLoad" executed="True" result="Success" success="True" time="6.239" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="0.040" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="0.040" >
+                <results>
+                  <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="TestGetColPropsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestGetColPropsChildRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestGetColPropsArrayT" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestGetDataRowsArrayType" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestFillDataRowsRec" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="TestGetColPropsStaticArray" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestDataRecStaticArray" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="TestDetectItemType" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestItemTypeValue" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestExl" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+    </results>
+  </test-suite>
+</test-results>

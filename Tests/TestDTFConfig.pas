@@ -30,17 +30,17 @@ type
     FWindowState: TWindowState;
     FWindowBounds: TRect;
   public
-//    [IntProp('Test', 10)]
-//    property Int: Integer read FInt write FInt;
-//
-//    [StrProp('Test', 'abc')]
-//    property Str: string read FStr write FStr;
-//
+    [IntProp('Test', 10)]
+    property Int: Integer read FInt write FInt;
+
+    [StrProp('Test', 'abc')]
+    property Str: string read FStr write FStr;
+
     [BoolProp('Test', True)]
     property Bool: Boolean read FBool write FBool;
-//
-//    [EnumProp('Test', 'wsMaximized')]
-//    property WindowState: TWindowState read FWindowState write FWindowState;
+
+    [EnumProp('Test', 'wsMaximized')]
+    property WindowState: TWindowState read FWindowState write FWindowState;
 
     [RecProp('Test', '10,20,30,40')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
@@ -54,10 +54,10 @@ var
 begin
   Config := TTestConfig.Create;
 
-//  Assert.AreEqual(Config.Int, 10);
-//  Assert.AreEqual(Config.Str, 'abc');
+  Assert.AreEqual(Config.Int, 10);
+  Assert.AreEqual(Config.Str, 'abc');
   Assert.AreEqual(Config.Bool, True);
-//  Assert.AreEqual(Config.WindowState, wsMaximized);
+  Assert.AreEqual(Config.WindowState, wsMaximized);
   Assert.AreEqual(Config.WindowBounds.Left, 10);
 
   Config.Free;
