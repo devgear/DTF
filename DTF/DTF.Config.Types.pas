@@ -30,17 +30,27 @@ type
     constructor Create(ASection: string; ADefault: T);
   end;
 
+  StringPropAttribute = class(PropAttribute<string>)
+  end;
+  StrPropAttribute = StringPropAttribute;
+
   IntegerPropAttribute = class(PropAttribute<Integer>)
   end;
   IntPropAttribute = IntegerPropAttribute;
 
+  Int64PropAttribute = class(PropAttribute<Int64>)
+  end;
+
+  FloatPropAttribute = class(PropAttribute<Double>)
+  end;
+  DblPropAttribute = FloatPropAttribute;
+
+  DateTimeAttribute = class(PropAttribute<TDateTime>)
+  end;
+
   BooleanPropAttribute = class(PropAttribute<Boolean>)
   end;
   BoolPropAttribute = BooleanPropAttribute;
-
-  StringPropAttribute = class(PropAttribute<string>)
-  end;
-  StrPropAttribute = StringPropAttribute;
 
   EnumerationPropAttribute = class(PropAttribute<string>)
   end;
