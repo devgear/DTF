@@ -16,9 +16,8 @@ type
   end;
 
   TConfigPropAttribute = class(TCustomAttribute)
-  private
-    FSection: string;
   protected
+    FSection: string;
     FDefault: TValue;
   public
     property Section: string read FSection;
@@ -27,7 +26,7 @@ type
 
   PropAttribute<T> = class(TConfigPropAttribute)
   public
-    constructor Create(ASection: string; ADefault: T); overload; virtual;
+    constructor Create(ASection: string; ADefault: T); overload;
     constructor Create(ASection: string); overload;
   end;
 
@@ -58,8 +57,16 @@ type
   EnumPropAttribute = EnumerationPropAttribute;
 
   RecordPropAttribute = class(PropAttribute<string>)
-//  public
-//    constructor Create(ASection: string; ADefault: string); override;
+  private
+    FField: string;
+    FFields: TArray<string>;
+    FDefaults: TArray<string>;
+  public
+    constructor Create(ASection: string; AFields: string; ADefaults: string = ''); overload;
+
+    property Field: string read FField;
+    property Fields: TArray<string> read FFields;
+    property Defaults: TArray<string> read FDefaults;
   end;
   RecPropAttribute = RecordPropAttribute;
 
@@ -88,10 +95,15 @@ end;
 
 { RecordPropAttribute }
 
-//constructor RecordPropAttribute.Create(ASection, ADefault: string);
-//begin
-//  inherited ;
-//
-//end;
+constructor RecordPropAttribute.Create(ASection, AFields, ADefaults: string);
+begin
+  FSection := ASection;
+  FDefault := ADefaults;
+  FField := AFields;
+
+  FFields := FField.Split([' , ', ', ', ' ,', ',']);
+  if not FDefault.IsEmpty then
+    FDefaults := FDefault.AsString.Split([' , ', ', ', ' ,', ',']);
+end;
 
 end.

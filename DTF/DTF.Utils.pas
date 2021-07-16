@@ -3,7 +3,8 @@ unit DTF.Utils;
 interface
 
 uses
-  System.Rtti, System.SysUtils;
+  System.Rtti, System.SysUtils,
+  System.Generics.Defaults;
 
 type
   TAttributeUtil = class
@@ -12,9 +13,14 @@ type
     class function GetAttributeCount<T: TCustomAttribute>(const AType: TRttiType): Integer;
   end;
 
-  TGenericUtil = class
+  TGenericsUtil = class
     class function AsString(const Value): string;
     class function AsInteger(const Value): Integer;
+  end;
+
+  TArrayUtil = class
+    class function IndexOf<T>(const Items: TArray<T>; Value:T): Integer;
+    class function Contains<T>(const Items: TArray<T>; Value: T): Boolean;
   end;
 
 implementation
@@ -79,16 +85,34 @@ begin
         Inc(Result);
 end;
 
-{ TGenericUtil }
+{ TGenericsUtil }
 
-class function TGenericUtil.AsInteger(const Value): Integer;
+class function TGenericsUtil.AsInteger(const Value): Integer;
 begin
   Result := Integer(Value);
 end;
 
-class function TGenericUtil.AsString(const Value): string;
+class function TGenericsUtil.AsString(const Value): string;
 begin
   Result := string(Value);
+end;
+
+{ TArrayUtil }
+
+class function TArrayUtil.IndexOf<T>(const Items: TArray<T>; Value: T): Integer;
+var
+  I: Integer;
+begin
+
+  Result := -1;
+  for I := 0 to Length(Items) - 1 do
+    if TComparer<T>.Default.Compare(Items[I], Value) = 0 then
+      Exit(I);
+end;
+
+class function TArrayUtil.Contains<T>(const Items: TArray<T>; Value: T): Boolean;
+begin
+  Result := IndexOf<T>(Items, Value) <> -1;
 end;
 
 end.

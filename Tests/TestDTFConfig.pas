@@ -35,6 +35,11 @@ uses
   System.SysUtils, System.IOUtils;
 
 type
+  TTestWS = record
+    WS1: TWindowState;
+    WS2: TWindowState;
+  end;
+
   [IniFilename('config.ini')]
   TTestConfig = class(TConfigServiceProvider)
   private
@@ -43,6 +48,7 @@ type
     FBool: Boolean;
     FWindowState: TWindowState;
     FWindowBounds: TRect;
+    FTestWS: TTestWS;
   public
     [IntProp('Test', 10)]
     property Int: Integer read FInt write FInt;
@@ -56,8 +62,13 @@ type
     [EnumProp('Test', 'wsMaximized')]
     property WindowState: TWindowState read FWindowState write FWindowState;
 
+//    [RecProp('Test', 'WS1, WS2', 'wsMinimized, wsMaximized')]
+    [RecProp('Test', 'WS1, WS2')]
+    property TestWS: TTestWS read FTestWS write FTestWS;
+
 //    [RecProp('Test', 'Left=10,Top=20')]
-    [RecProp('Test', '10,20,30,40')]
+//    [RecProp('Test', 'Left, Top', '10,20,30,40')]
+    [RecProp('Test', 'Left, Top', '10,20')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
   end;
 
@@ -86,6 +97,7 @@ begin
   Assert.AreEqual(Config.Str, 'abc');
   Assert.AreEqual(Config.Bool, True);
   Assert.AreEqual(Config.WindowState, wsMaximized);
+  Assert.AreEqual(Config.TestWS.WS2, wsNormal); // No Default
   Assert.AreEqual(Config.WindowBounds.Left, 10);
 
   Config.Free;
@@ -95,12 +107,18 @@ procedure TTestDTFConfig.TestSaveValue;
 var
   Inifile: TInifile;
   Config: TTestConfig;
+  TestWS: TTestWS;
 begin
   Config := TTestConfig.Create;
   Config.Int := 100;
+  TestWS := Config.TestWS;
+  TestWS.WS1 := wsMaximized;
+  TestWS.WS2 := wsMinimized;
+  Config.TestWS := TestWS;
   Config.Free;
 
   Inifile := TIniFile.Create(FFilename);
+  Assert.AreEqual(Inifile.ReadInteger('Test', 'TestWS.WS1', -1), Ord(wsMaximized));
   Inifile.Free;
 end;
 

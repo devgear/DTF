@@ -63,6 +63,7 @@ var
   LField: TRttiField;
 
   LAttr: TConfigPropAttribute;
+  LRecAttr: RecordPropAttribute;
   LValue: TValue;
 begin
   LCtx := TRttiContext.Create;
@@ -92,17 +93,20 @@ begin
         // 구조체 필드에 설정값 로드
       begin
         LValue := LProp.GetValue(FConfig);
-
-        var Idx := 0;
-        var DefStrVals: TArray<string> := LAttr.Default.AsString.Split([',']);
+        LRecAttr := LAttr as RecPropAttribute;
 
         for LField in LProp.PropertyType.GetFields do
         begin
-          if Length(DefStrVals) <= Idx then
-            Break;
+          var Idx := TArrayUtil.IndexOf<string>(LRecAttr.Fields, LField.Name);
+          if Idx = -1 then
+            Continue;
+
+          var DefStrVal: string := '';
+          if Length(LRecAttr.Defaults) > Idx then
+            DefStrVal := LRecAttr.Defaults[Idx];
 
           var DefaultValue: TValue;
-          if TryConvertStrToValue(LField.FieldType.Handle, DefStrVals[Idx], DefaultValue) then
+          if TryConvertStrToValue(LField.FieldType.Handle, DefStrVal, DefaultValue) then
           begin
             var FieldValue: TValue := ReadValue(LAttr.Section, LProp.Name + '.' + LField.Name, DefaultValue);
             LField.SetValue(LValue.GetReferenceToRawData, FieldValue);
@@ -132,6 +136,7 @@ var
   LField: TRttiField;
 
   LAttr: TConfigPropAttribute;
+  LRecAttr: RecPropAttribute;
   LValue: TValue;
 begin
   LCtx := TRttiContext.Create;
@@ -149,8 +154,19 @@ begin
       if LAttr is RecPropAttribute{default = 'string,string,..'} then
       // [구조체] 지정한 필드만 저장
       begin
+        LValue := LProp.GetValue(FConfig);
+        LRecAttr := LAttr as RecPropAttribute;
         for LField in LProp.PropertyType.GetFields do
         begin
+          var Idx := TArrayUtil.IndexOf<string>(LRecAttr.Fields, LField.Name);
+          if Idx = -1 then
+            Continue;
+
+          WriteValue(
+            LAttr.Section,
+            LProp.Name + '.' + LField.Name,
+            LField.GetValue(LValue.GetReferenceToRawData)
+          );
         end;
       end
       else
@@ -167,10 +183,10 @@ begin
   Value := TValue.Empty;
   try
     case ATypeInfo.Kind of
-      tkInteger: Value := TValue.From<Integer>(StrToInt(AStr));
-      tkInt64: Value := TValue.From<Int64>(StrToInt64(AStr));
+      tkInteger: Value := TValue.From<Integer>(StrToIntDef(AStr, 0));
+      tkInt64: Value := TValue.From<Int64>(StrToInt64Def(AStr, 0));
 
-      tkFloat: Value := TValue.From<Double>(StrToFloat(AStr));
+      tkFloat: Value := TValue.From<Double>(StrToFloatDef(AStr, 0));
 
       tkString,
       tkLString,
@@ -179,7 +195,11 @@ begin
 
       tkEnumeration:
         begin
-          var EnumValue: Integer := GetEnumValue(ATypeInfo, AStr);
+          var EnumValue: Integer;
+          if AStr = '' then
+            EnumValue := GetTypeData(ATypeInfo)^.MinValue
+          else
+            EnumValue := GetEnumValue(ATypeInfo, AStr);
           Value := TValue.FromOrdinal(ATypeInfo, EnumValue);
         end;
 
