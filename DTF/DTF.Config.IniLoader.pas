@@ -19,7 +19,7 @@ type
     procedure CreateIniFile;
   protected
     function ReadValue(const ASection, AIdent: string; ADefault: TValue): TValue; override;
-    procedure WriteValue(const AAttr: TConfigPropAttribute; const ASection, AIdent: string; AValue: TValue); override;
+    procedure WriteValue(const ASection, AIdent: string; AValue: TValue); override;
   public
     procedure LoadConfig; override;
     procedure SaveConfig; override;
@@ -28,40 +28,8 @@ type
 implementation
 
 uses
-  System.Types,
+  System.Types, System.TypInfo,
   DTF.Utils;
-
-{ TIniFileHelper }
-
-type
-  TIniFileHelper = class helper for TIniFile
-  public
-    function ReadValue(const Section, Ident: string; Default: TValue): TValue;
-  end;
-
-function TIniFileHelper.ReadValue(const Section, Ident: string;
-  Default: TValue): TValue;
-begin
-  Result := TValue.Empty;
-
-  case Default.TypeInfo.Kind of
-    tkInteger:  Result := TValue.From<Integer>(ReadInteger(Section, Ident, Default.AsInteger));
-    tkInt64:    Result := TValue.From<Int64>(ReadInt64(Section, Ident, Default.AsInt64));
-    tkString,
-    tkUString,
-    tkWString,
-    tkLString:  Result := TValue.From<string>(ReadString(Section, Ident, Default.AsString));
-    tkEnumeration:  Result := TValue.From<Boolean>(ReadBool(Section, Ident, Default.AsBoolean));
-{
-ReadString
-ReadInt64
-ReadBool
-ReadFloat
-
-}
-  end;
-
-end;
 
 { TIniConfigLoader }
 
@@ -123,11 +91,28 @@ begin
   end;
 end;
 
-procedure TIniConfigLoader.WriteValue(const AAttr: TConfigPropAttribute;
-  const ASection, AIdent: string; AValue: TValue);
+procedure TIniConfigLoader.WriteValue(const ASection, AIdent: string; AValue: TValue);
 begin
-  if AAttr is IntegerPropAttribute then
-    FIniFile.WriteInteger(ASection, AIdent, AValue.AsInteger);
+  case AValue.Kind of
+    tkString,
+    tkLString,
+    tkWString,
+    tkUString:
+      FIniFile.WriteString(ASection, AIdent, AValue.AsString);
+    tkInteger:
+      FIniFile.WriteInteger(ASection, AIdent, AValue.AsInteger);
+    tkInt64:
+      FIniFile.WriteInt64(ASection, AIdent, AValue.AsInt64);
+    tkFloat:
+      FIniFile.WriteFloat(ASection, AIdent, AValue.AsExtended);
+    tkEnumeration:
+      if AValue.TypeInfo.Name = 'Boolean' then
+        FIniFile.WriteBool(ASection, AIdent, AValue.AsBoolean)
+      else
+        FIniFile.WriteInteger(ASection, AIdent, AValue.AsOrdinal);
+  else
+    raise Exception.CreateFmt('[TIniConfigLoader] Not support type.(type: %s)', [AValue.TypeInfo.Name]);
+  end;
 end;
 
 end.

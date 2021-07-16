@@ -34,7 +34,6 @@ end;
 
 procedure TTestDTFUtils.TestPrinterBasic;
 var
-  I: Integer;
   Printer: TDTFPrinter;
 begin
 Exit;

@@ -27,7 +27,8 @@ type
 
   PropAttribute<T> = class(TConfigPropAttribute)
   public
-    constructor Create(ASection: string; ADefault: T);
+    constructor Create(ASection: string; ADefault: T); overload; virtual;
+    constructor Create(ASection: string); overload;
   end;
 
   StringPropAttribute = class(PropAttribute<string>)
@@ -57,6 +58,8 @@ type
   EnumPropAttribute = EnumerationPropAttribute;
 
   RecordPropAttribute = class(PropAttribute<string>)
+//  public
+//    constructor Create(ASection: string; ADefault: string); override;
   end;
   RecPropAttribute = RecordPropAttribute;
 
@@ -77,5 +80,18 @@ begin
   FSection := ASection;
   FDefault := TValue.From<T>(ADefault);
 end;
+
+constructor PropAttribute<T>.Create(ASection: string);
+begin
+  FSection := ASection;
+end;
+
+{ RecordPropAttribute }
+
+//constructor RecordPropAttribute.Create(ASection, ADefault: string);
+//begin
+//  inherited ;
+//
+//end;
 
 end.

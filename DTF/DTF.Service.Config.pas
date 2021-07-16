@@ -24,11 +24,11 @@ type
     function ReadValue(const ASection, AIdent: string;
       ADefault: TValue): TValue; virtual; abstract;
     ///  상속후 메소드 재구현 : ASection, AIdent 값으로 저장
-    procedure WriteValue(const AAttr: TConfigPropAttribute;
-      const ASection, AIdent: string; AValue: TValue);  virtual; abstract;
+    procedure WriteValue(const ASection, AIdent: string;
+      AValue: TValue);  virtual; abstract;
     /// ******** ///
   public
-    constructor Create(AConfig: TConfigServiceProvider);
+    constructor Create{(AConfig: TConfigServiceProvider)};
   end;
 
   TConfigServiceProvider = class(TDTFServiceProvider, IDTFConfigService)
@@ -49,9 +49,9 @@ uses
 
 { TConfigLoader }
 
-constructor TConfigLoader.Create(AConfig: TConfigServiceProvider);
+constructor TConfigLoader.Create{(AConfig: TConfigServiceProvider)};
 begin
-  FConfig := AConfig;
+//  FConfig := AConfig;
 end;
 
 // FConfig에서 TConfigPropAttribute 지정된 항목의 값을 읽어(ReadValue 호출) 할당
@@ -61,7 +61,6 @@ var
   LType: TRttiType;
   LProp: TRttiProperty;
   LField: TRttiField;
-  LRecord: TRttiRecordType;
 
   LAttr: TConfigPropAttribute;
   LValue: TValue;
@@ -81,26 +80,34 @@ begin
       LValue := TValue.Empty;
 
       if LAttr is EnumPropAttribute{default = string} then
+      // [열거형] 기본값 = 문자열
+        // 문자열기본값을 열거형타입으로 변환 후 읽기
       begin
         var DefaultValue: TValue;
         if TryConvertStrToValue(LProp.PropertyType.Handle, LAttr.Default.AsString, DefaultValue) then
           LValue := ReadValue(LAttr.Section, LProp.Name, DefaultValue);
       end
       else if LAttr is RecPropAttribute{default = 'string,string,..'} then
+      // [구조체] 기본값 = 문자열(쉼표로 복수 지정)
+        // 구조체 필드에 설정값 로드
       begin
         LValue := LProp.GetValue(FConfig);
 
-        var DefaultVals := LAttr.Default.AsString.Split([',']);
         var Idx := 0;
+        var DefStrVals: TArray<string> := LAttr.Default.AsString.Split([',']);
+
         for LField in LProp.PropertyType.GetFields do
         begin
-          var DefaultValue: TValue;
-          if TryConvertStrToValue(LField.FieldType.Handle, DefaultVals[Idx], DefaultValue) then
-          begin
-            Inc(Idx);
+          if Length(DefStrVals) <= Idx then
+            Break;
 
+          var DefaultValue: TValue;
+          if TryConvertStrToValue(LField.FieldType.Handle, DefStrVals[Idx], DefaultValue) then
+          begin
             var FieldValue: TValue := ReadValue(LAttr.Section, LProp.Name + '.' + LField.Name, DefaultValue);
             LField.SetValue(LValue.GetReferenceToRawData, FieldValue);
+
+            Inc(Idx);
           end;
         end;
       end
@@ -108,7 +115,7 @@ begin
         LValue := ReadValue(LAttr.Section, LProp.Name, LAttr.Default);
 
       if LValue.IsEmpty then
-        raise Exception.CreateFmt('Not support property type.(type: )', [LProp.PropertyType.Name]);
+        raise Exception.CreateFmt('[TConfigLoader] Not support property type.(type: %s)', [LProp.PropertyType.Name]);
 
       LProp.SetValue(Fconfig, LValue);
     end;
@@ -118,8 +125,40 @@ begin
 end;
 
 procedure TConfigLoader.SaveConfig;
-begin
+var
+  LCtx: TRttiContext;
+  LType: TRttiType;
+  LProp: TRttiProperty;
+  LField: TRttiField;
 
+  LAttr: TConfigPropAttribute;
+  LValue: TValue;
+begin
+  LCtx := TRttiContext.Create;
+  try
+    LType := LCtx.GetType(FConfig.ClassType);
+    for LProp in LType.GetProperties do
+    begin
+      if not LProp.IsReadable then
+        Continue;
+
+      LAttr := TAttributeUtil.FindAttribute<TConfigPropAttribute>(LProp.GetAttributes);
+      if not Assigned(LAttr) then
+        Continue;
+
+      if LAttr is RecPropAttribute{default = 'string,string,..'} then
+      // [구조체] 지정한 필드만 저장
+      begin
+        for LField in LProp.PropertyType.GetFields do
+        begin
+        end;
+      end
+      else
+        WriteValue(LAttr.Section, LProp.Name, LProp.GetValue(FConfig));
+    end;
+  finally
+    LCtx.Free;
+  end;
 end;
 
 function TConfigLoader.TryConvertStrToValue(ATypeInfo: PTypeInfo; AStr: string;
@@ -172,9 +211,10 @@ end;
 constructor TConfigServiceProvider.Create(ALoader: TConfigLoader);
 begin
   if not Assigned(ALoader) then
-    ALoader := TIniConfigLoader.Create(Self);
+    ALoader := TIniConfigLoader.Create;//(Self);
 
   FLoader := ALoader;
+  FLoader.FConfig := Self;
   FLoader.LoadConfig;
 end;
 

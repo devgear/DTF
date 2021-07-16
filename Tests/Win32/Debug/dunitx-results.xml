@@ -1,32 +1,33 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="12" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-07-15" time="2.308">
+<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="13" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-07-16" time="17.986">
   <culture-info current-culture="en" current-uiculture="en" />
-  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="2.308" asserts="0">
+  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="17.986" asserts="0">
     <results>
-        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="2.307" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFConfig" executed="true" result="Success" success="True" time="17.986" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="2.307" >
+              <test-suite type="Fixture" name="TTestDTFConfig" executed="True" result="Success" success="True" time="17.986" >
                 <results>
-                  <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="TestLoadDefaultValue" executed="True" result="Success" success="True" time="13.810" asserts="0" />
+                  <test-case name="TestSaveValue" executed="True" result="Success" success="True" time="4.094" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="0.076" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="0.076" >
+                <results>
+                  <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsChildRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsArrayT" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="TestGetDataRowsArrayType" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="TestGetDataRowsArrayType" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                   <test-case name="TestFillDataRowsRec" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                   <test-case name="TestGetColPropsStaticArray" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestDataRecStaticArray" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestDetectItemType" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestItemTypeValue" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestExl" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                </results>
-              </test-suite>
-          </results>
-        </test-suite>
-        <test-suite type="Namespace" name="TestDTFConfig" executed="true" result="Success" success="True" time="2.248" asserts="0" >
-          <results>
-              <test-suite type="Fixture" name="TTestDTFConfig" executed="True" result="Success" success="True" time="2.248" >
-                <results>
-                  <test-case name="TestConfigLoad" executed="True" result="Success" success="True" time="2.243" asserts="0" />
                 </results>
               </test-suite>
           </results>

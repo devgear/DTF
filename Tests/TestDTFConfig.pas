@@ -8,9 +8,19 @@ uses
 type
   [TestFixture]
   TTestDTFConfig = class
+  private
+    FFilename: string;
   public
+    [Setup]
+    procedure Setup;
+    [TearDown]
+    procedure TearDown;
+
     [Test]
-    procedure TestConfigLoad;
+    procedure TestLoadDefaultValue;
+
+    [Test]
+    procedure TestSaveValue;
   end;
 
 implementation
@@ -18,7 +28,11 @@ implementation
 uses
   DTF.Config.Types,
   DTF.Service.Config,
-  Vcl.Forms, System.Types;
+  DTF.Config.IniLoader,
+
+  Vcl.Forms, System.Types,
+  System.IniFiles,
+  System.SysUtils, System.IOUtils;
 
 type
   [IniFilename('config.ini')]
@@ -42,16 +56,30 @@ type
     [EnumProp('Test', 'wsMaximized')]
     property WindowState: TWindowState read FWindowState write FWindowState;
 
+//    [RecProp('Test', 'Left=10,Top=20')]
     [RecProp('Test', '10,20,30,40')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
   end;
 
 { TTestDTFConfig }
 
-procedure TTestDTFConfig.TestConfigLoad;
+procedure TTestDTFConfig.Setup;
+begin
+  FFilename := ExtractFilePath(Paramstr(0)) + 'config.ini';
+end;
+
+procedure TTestDTFConfig.TearDown;
+begin
+
+end;
+
+procedure TTestDTFConfig.TestLoadDefaultValue;
 var
   Config: TTestConfig;
 begin
+  if TFile.Exists(FFilename) then
+    TFile.Delete(FFilename);
+
   Config := TTestConfig.Create;
 
   Assert.AreEqual(Config.Int, 10);
@@ -61,6 +89,19 @@ begin
   Assert.AreEqual(Config.WindowBounds.Left, 10);
 
   Config.Free;
+end;
+
+procedure TTestDTFConfig.TestSaveValue;
+var
+  Inifile: TInifile;
+  Config: TTestConfig;
+begin
+  Config := TTestConfig.Create;
+  Config.Int := 100;
+  Config.Free;
+
+  Inifile := TIniFile.Create(FFilename);
+  Inifile.Free;
 end;
 
 initialization

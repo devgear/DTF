@@ -19,9 +19,9 @@ type
     [IntProp('Test', 10)]
     property Int: Integer read FInt write FInt;
 
-    [IniEnum('Window', Ord(wsNormal))]
+    [IniEnum('Window')]
     property WindowState: TWindowState read FWindowState write FWindowState;
-    [IniEnum('Window', Ord(wsNormal))]
+    [IniEnum('Window')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
 
     [IniString('Log', 'YYYYMMDD.log')]
