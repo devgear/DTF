@@ -1,21 +1,30 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="13" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-07-17" time="3.943">
+<test-results name="D:\Works\DTF\Tests\Win32\Debug\DTFTests.exe" total="14" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2021-07-17" time="5.500">
   <culture-info current-culture="en" current-uiculture="en" />
-  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="3.943" asserts="0">
+  <test-suite type="Assembly" name="DTFTests.exe" executed="true" result="Success" success="True" time="5.500" asserts="0">
     <results>
-        <test-suite type="Namespace" name="TestDTFConfig" executed="true" result="Success" success="True" time="3.943" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFUtils" executed="true" result="Success" success="True" time="5.500" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TTestDTFConfig" executed="True" result="Success" success="True" time="3.943" >
+              <test-suite type="Fixture" name="TTestDTFUtils" executed="True" result="Success" success="True" time="5.500" >
                 <results>
-                  <test-case name="TestLoadDefaultValue" executed="True" result="Success" success="True" time="0.009" asserts="0" />
-                  <test-case name="TestSaveValue" executed="True" result="Success" success="True" time="3.873" asserts="0" />
+                  <test-case name="TestArrayUtil" executed="True" result="Success" success="True" time="5.406" asserts="0" />
                 </results>
               </test-suite>
           </results>
         </test-suite>
-        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="0.054" asserts="0" >
+        <test-suite type="Namespace" name="TestDTFConfig" executed="true" result="Success" success="True" time="0.093" asserts="0" >
           <results>
-              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="0.054" >
+              <test-suite type="Fixture" name="TTestDTFConfig" executed="True" result="Success" success="True" time="0.093" >
+                <results>
+                  <test-case name="TestLoadDefaultValue" executed="True" result="Success" success="True" time="0.011" asserts="0" />
+                  <test-case name="TestSaveValue" executed="True" result="Success" success="True" time="0.017" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+        <test-suite type="Namespace" name="TestDTFExtractColProp" executed="true" result="Success" success="True" time="0.047" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTestDTFExtractColProp" executed="True" result="Success" success="True" time="0.047" >
                 <results>
                   <test-case name="TestGetAttrCount" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="TestGetColPropsRec" executed="True" result="Success" success="True" time="0.000" asserts="0" />

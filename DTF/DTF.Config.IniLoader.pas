@@ -77,7 +77,10 @@ begin
     tkInt64:
       Result := TValue.From<Int64>(FIniFile.ReadInt64(ASection, AIdent, ADefault.AsInt64));
     tkFloat:
-      Result := TValue.From<Double>(FIniFile.ReadFloat(ASection, AIdent, ADefault.AsExtended));
+      if ADefault.TypeInfo.Name = 'TDateTime' then
+        Result := TValue.From<TDateTime>(FIniFile.ReadDateTime(ASection, AIdent, ADefault.AsExtended))
+      else
+        Result := TValue.From<Double>(FIniFile.ReadFloat(ASection, AIdent, ADefault.AsExtended));
     tkEnumeration:
       if ADefault.TypeInfo.Name = 'Boolean' then
         Result := TValue.From<Boolean>(FIniFile.ReadBool(ASection, AIdent, ADefault.AsBoolean))
@@ -93,7 +96,7 @@ end;
 
 procedure TIniConfigLoader.WriteValue(const ASection, AIdent: string; AValue: TValue);
 begin
-  case AValue.Kind of
+  case AValue.TypeInfo.Kind of
     tkString,
     tkLString,
     tkWString,
@@ -104,7 +107,10 @@ begin
     tkInt64:
       FIniFile.WriteInt64(ASection, AIdent, AValue.AsInt64);
     tkFloat:
-      FIniFile.WriteFloat(ASection, AIdent, AValue.AsExtended);
+      if AValue.TypeInfo.Name = 'TDateTime' then
+        FIniFile.WriteDateTime(ASection, AIdent, AValue.AsExtended)
+      else
+        FIniFile.WriteFloat(ASection, AIdent, AValue.AsExtended);
     tkEnumeration:
       if AValue.TypeInfo.Name = 'Boolean' then
         FIniFile.WriteBool(ASection, AIdent, AValue.AsBoolean)

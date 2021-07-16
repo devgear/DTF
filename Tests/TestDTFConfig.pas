@@ -49,6 +49,8 @@ type
     FWindowState: TWindowState;
     FWindowBounds: TRect;
     FTestWS: TTestWS;
+    FDtm: TDatetime;
+    FDbl: Double;
   public
     [IntProp('Test', 10)]
     property Int: Integer read FInt write FInt;
@@ -66,10 +68,15 @@ type
     [RecProp('Test', 'WS1, WS2')]
     property TestWS: TTestWS read FTestWS write FTestWS;
 
-//    [RecProp('Test', 'Left=10,Top=20')]
-//    [RecProp('Test', 'Left, Top', '10,20,30,40')]
+//    [RecProp('Test', 'Left, Top')]
     [RecProp('Test', 'Left, Top', '10,20')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
+
+    [DateTime('Test')]
+    property Dtm: TDatetime read FDtm write FDtm;
+
+    [DblProp('Test', 10.23)]
+    property Dbl: Double read FDbl write FDbl;
   end;
 
 { TTestDTFConfig }
@@ -111,14 +118,18 @@ var
 begin
   Config := TTestConfig.Create;
   Config.Int := 100;
+  Config.Str := 'Humphrey';
   TestWS := Config.TestWS;
   TestWS.WS1 := wsMaximized;
   TestWS.WS2 := wsMinimized;
   Config.TestWS := TestWS;
+  Config.Dtm := Now;
   Config.Free;
 
   Inifile := TIniFile.Create(FFilename);
-  Assert.AreEqual(Inifile.ReadInteger('Test', 'TestWS.WS1', -1), Ord(wsMaximized));
+  Assert.AreEqual(Inifile.ReadInteger('Test',   'Int', -1), 100);
+  Assert.AreEqual(Inifile.ReadString('Test',    'Str', ''), 'Humphrey');
+  Assert.AreEqual(Inifile.ReadInteger('Test',   'TestWS.WS1', -1), Ord(wsMaximized));
   Inifile.Free;
 end;
 

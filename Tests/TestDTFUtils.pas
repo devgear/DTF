@@ -16,12 +16,16 @@ type
 
 //    [Test]
     procedure TestPrinterBasic;
+
+    [Test]
+    procedure TestArrayUtil;
   end;
 
 implementation
 
 uses
   System.SysUtils,
+  DTF.Utils,
   DTF.Utils.Print;
 
 procedure TTestDTFUtils.Setup;
@@ -30,6 +34,17 @@ end;
 
 procedure TTestDTFUtils.TearDown;
 begin
+end;
+
+procedure TTestDTFUtils.TestArrayUtil;
+var
+  Items: TArray<string>;
+begin
+  Items := ['1', ' b'];
+
+  TArrayUtil.Trim(Items);
+
+  Assert.AreEqual(Items[1], 'b');
 end;
 
 procedure TTestDTFUtils.TestPrinterBasic;

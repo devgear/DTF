@@ -63,7 +63,7 @@ var
   LField: TRttiField;
 
   LAttr: TConfigPropAttribute;
-  LRecAttr: RecordPropAttribute;
+  LRecAttr: RecPropAttribute;
   LValue: TValue;
 begin
   LCtx := TRttiContext.Create;
@@ -110,8 +110,6 @@ begin
           begin
             var FieldValue: TValue := ReadValue(LAttr.Section, LProp.Name + '.' + LField.Name, DefaultValue);
             LField.SetValue(LValue.GetReferenceToRawData, FieldValue);
-
-            Inc(Idx);
           end;
         end;
       end

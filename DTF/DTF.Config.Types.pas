@@ -21,7 +21,7 @@ type
     FDefault: TValue;
   public
     property Section: string read FSection;
-    property Default: TValue read FDefault;
+    property &Default: TValue read FDefault;
   end;
 
   PropAttribute<T> = class(TConfigPropAttribute)
@@ -52,10 +52,19 @@ type
   end;
   BoolPropAttribute = BooleanPropAttribute;
 
+{
+    [EnumProp('Test', 'wsMaximized')]
+    property WindowState: TWindowState read FWindowState write FWindowState;
+}
   EnumerationPropAttribute = class(PropAttribute<string>)
   end;
   EnumPropAttribute = EnumerationPropAttribute;
 
+  {
+    [RecProp('Test', 'Left,Top', '10, 20')]
+    [RecProp('Test', 'Left,Top,Rigth,Bottom', '10, 20')]
+    property WindowBounds: TRect read FWindowBounds write FWindowBounds;
+  }
   RecordPropAttribute = class(PropAttribute<string>)
   private
     FField: string;
@@ -91,6 +100,7 @@ end;
 constructor PropAttribute<T>.Create(ASection: string);
 begin
   FSection := ASection;
+  FDefault := TValue.From<T>(System.Default(T));
 end;
 
 { RecordPropAttribute }
@@ -101,9 +111,12 @@ begin
   FDefault := ADefaults;
   FField := AFields;
 
-  FFields := FField.Split([' , ', ', ', ' ,', ',']);
+  FFields := FField.Split([',']);
   if not FDefault.IsEmpty then
-    FDefaults := FDefault.AsString.Split([' , ', ', ', ' ,', ',']);
+    FDefaults := FDefault.AsString.Split([',']);
+
+  TArrayUtil.Trim(FFields);
+  TArrayUtil.Trim(FDefaults);
 end;
 
 end.

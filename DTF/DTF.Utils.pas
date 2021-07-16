@@ -21,6 +21,10 @@ type
   TArrayUtil = class
     class function IndexOf<T>(const Items: TArray<T>; Value:T): Integer;
     class function Contains<T>(const Items: TArray<T>; Value: T): Boolean;
+
+    class function Add<T>(var Items: TArray<T>; Value: T): Integer;
+
+    class procedure Trim(var Items: TArray<string>);
   end;
 
 implementation
@@ -108,6 +112,20 @@ begin
   for I := 0 to Length(Items) - 1 do
     if TComparer<T>.Default.Compare(Items[I], Value) = 0 then
       Exit(I);
+end;
+
+//class function TArrayUtil.Trim(const Items: TArray<string>): TArray<string>;
+class procedure TArrayUtil.Trim(var Items: TArray<string>);
+begin
+  for var I: Integer := 0 to Length(Items) - 1 do
+    Items[I] := System.SysUtils.Trim(Items[I]);
+end;
+
+class function TArrayUtil.Add<T>(var Items: TArray<T>; Value: T): Integer;
+begin
+  Result := Length(Items);
+  SetLength(Items, Result + 1);
+  Items[Result] := Value;
 end;
 
 class function TArrayUtil.Contains<T>(const Items: TArray<T>; Value: T): Boolean;
