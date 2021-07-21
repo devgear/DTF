@@ -14,17 +14,13 @@ type
     FWindowState: TWindowState;
     FWindowBounds: TRect;
     FLogFileFormat: string;
-    FInt: Integer;
   public
-    [IntProp('Test', 10)]
-    property Int: Integer read FInt write FInt;
-
-    [IniEnum('Window')]
+    [EnumProp('Window')]
     property WindowState: TWindowState read FWindowState write FWindowState;
-    [IniEnum('Window')]
+    [RecProp('Window', 'Left,Top,Right,Bottom')]
     property WindowBounds: TRect read FWindowBounds write FWindowBounds;
 
-    [IniString('Log', 'YYYYMMDD.log')]
+    [StrProp('Log', 'YYYYMMDD.log')]
     property LogFileFormat: string read FLogFileFormat write FLogFileFormat;
   end;
 

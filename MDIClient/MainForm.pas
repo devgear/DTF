@@ -120,9 +120,8 @@ begin
         end)
   );
 
-  ExtractFilePath(Application.ExeName);
   WindowState := App.Config.WindowState;
-//  BoundsRect := App.Config.WindowBounds;
+  BoundsRect := App.Config.WindowBounds;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);

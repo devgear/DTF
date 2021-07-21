@@ -82,6 +82,9 @@ type
 
 implementation
 
+uses
+  DTF.Utils;
+
 { IniFilenameAttribute }
 
 constructor IniFilenameAttribute.Create(AFilename: string);

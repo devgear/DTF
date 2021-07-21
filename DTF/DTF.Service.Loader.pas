@@ -7,6 +7,10 @@ uses
   DTF.Service.Types;
 
 type
+{
+  역할은?
+    서비스 주입?
+}
   TServiceLoader = class
     type
       TProviderData = class

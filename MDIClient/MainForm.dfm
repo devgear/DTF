@@ -59,7 +59,6 @@ object frmMain: TfrmMain
     Font.Style = []
     OnChange = MDITabSetChange
     OnMouseUp = MDITabSetMouseUp
-    ExplicitTop = 519
   end
   object pnlMenu: TPanel
     Left = 0
@@ -69,7 +68,6 @@ object frmMain: TfrmMain
     Align = alLeft
     Constraints.MinWidth = 185
     TabOrder = 1
-    ExplicitHeight = 462
     object pnlMenuTop: TPanel
       Left = 1
       Top = 1
@@ -146,7 +144,6 @@ object frmMain: TfrmMain
       OnChange = trvMenusChange
       OnClick = trvMenusClick
       OnCreateNodeClass = trvMenusCreateNodeClass
-      ExplicitHeight = 208
     end
     object Panel4: TPanel
       Left = 1
@@ -289,8 +286,6 @@ object frmMain: TfrmMain
       item
         Width = 100
       end>
-    ExplicitLeft = -8
-    ExplicitTop = 532
   end
   object MainMenu: TMainMenu
     Left = 216
