@@ -4,12 +4,14 @@ interface
 
 uses
   DMX.DesignPattern,    // using DevMax frameworks(https://github.com/hjfactory/DevMax)
-  DTF.Form.MDIChild;
+  DTF.Form.MDIChild,
+  DTF.Form.Base;
 
 type
   ///////////////////////////////////////////////
   ///  View
   TDTFForm = TDTFMDIChildForm;
+//  TDTFForm = TDTFBaseForm;
   TDTFFormClass = class of TDTFForm;
 
   TAttributeClass = class of TCustomAttribute;

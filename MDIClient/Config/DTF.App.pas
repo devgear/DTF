@@ -87,7 +87,8 @@ procedure TApp.InitLoader;
 var
   Logger: TFileLogger;
 begin
-  FServiceLoader.ServiceProvider[IDTFConfigService] := TConfig.Create({TIniConfigLoader.Create(Self, 'Config.ini')});
+  FServiceLoader.RegistServiceProvider(IDTFConfigService, TConfig.Create);
+//  FServiceLoader.ServiceProvider[IDTFConfigService] := TConfig.Create({TIniConfigLoader.Create(Self, 'Config.ini')});
 
 //  Logger := TFileLogger.Create;
 //  Logger.FileFormat := 'YYYY-MM-DD.log';

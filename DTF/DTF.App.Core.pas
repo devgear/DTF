@@ -22,8 +22,8 @@ type
     function GetService(const AID: TGUID): TDTFServiceProvider;
     procedure AddService(const AID: TGUID; const AService: IDTFService);
 
-    function GetViewService: TViewServiceProvider;
-    function GetLogService: TLogService;
+    function GetViewService: IDTFViewService;
+    function GetLogService: IDTFLogService;
 
     procedure InitLoader; virtual;
   public
@@ -34,8 +34,8 @@ type
     procedure RegistService(const AID: TGUID; const ACls: TDTFServiceProviderClass);
 
     // property Auth;
-     property View: TViewServiceProvider read GetViewService;
-     property Log: TLogService read GetLogService;
+     property View: IDTFViewService read GetViewService;
+     property Log: IDTFLogService read GetLogService;
   end;
 
 implementation
@@ -63,9 +63,9 @@ procedure TAppCore<T>.AddService(const AID: TGUID; const AService: IDTFService);
 begin
 end;
 
-function TAppCore<T>.GetLogService: TLogService;
+function TAppCore<T>.GetLogService: IDTFLogService;
 begin
-  Result := GetService(IDTFLogService) as TLogService;
+  Result := GetService(IDTFLogService) as IDTFLogService;
 end;
 
 function TAppCore<T>.GetService(const AID: TGUID): TDTFServiceProvider;
@@ -73,9 +73,9 @@ begin
   Result := FServiceLoader.ServiceProvider[AId];
 end;
 
-function TAppCore<T>.GetViewService: TViewServiceProvider;
+function TAppCore<T>.GetViewService: IDTFViewService;
 begin
-  Result := GetService(IDTFViewService) as TViewServiceProvider;
+  Result := GetService(IDTFViewService) as IDTFViewService;
 end;
 
 procedure TAppCore<T>.InitLoader;

@@ -32,7 +32,7 @@ uses
 
 function Logger: TLogger;
 begin
-  Result := App.Log;
+  Result := App.Log as TLogger;
 end;
 
 { TLogger }

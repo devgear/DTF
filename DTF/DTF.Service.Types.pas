@@ -2,6 +2,10 @@ unit DTF.Service.Types;
 
 interface
 
+uses
+  DTF.Types.View,
+  System.SysUtils;
+
 type
   TDTFServiceProvider = class(TInterfacedObject)
   end;
@@ -20,6 +24,8 @@ type
   { Core services }
   IDTFViewService = interface(IDTFImmediateService)
     ['{CBF4176A-A149-4899-827B-38953EE767FC}']
+    function Show(AViewId: string; ACreationProc: TProc<TDTFForm>): Boolean;
+    procedure Regist(ACls: TDTFFormClass);
   end;
 
   IDTFConfigService = interface(IDTFImmediateService)
@@ -28,6 +34,7 @@ type
 
   IDTFLogService = interface(IDTFDeferService)
     ['{61199B3F-0515-439F-8078-3A13D8EB19E4}']
+    procedure Info(const ALog: string);
   end;
 
 implementation

@@ -262,14 +262,14 @@ inherited frmSYS1010: TfrmSYS1010
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
-        ExplicitLeft = 1
-        ExplicitTop = 1
-        ExplicitWidth = 459
+        ExplicitLeft = 2
+        ExplicitTop = 2
+        ExplicitWidth = 457
         inherited pnlCaption: TPanel
           Width = 453
           Caption = #48120#47532#48372#44592
           ExplicitLeft = 4
-          ExplicitWidth = 455
+          ExplicitWidth = 453
         end
       end
     end

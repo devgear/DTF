@@ -109,6 +109,7 @@ implementation
 
 uses
   MenuTypes,
+  DTF.App,
   DTF.Module.Resource;
 
 procedure TfrmSYS1010.actMenuTreeDownExecute(Sender: TObject);
@@ -377,6 +378,7 @@ begin
 end;
 
 initialization
+  App.View.Regist(TfrmSYS1010);
   TViewFactory.Instance.Regist(TfrmSYS1010);
 
 finalization

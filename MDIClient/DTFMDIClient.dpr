@@ -59,8 +59,9 @@ begin
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);
-  Application.CreateForm(TdmUser, dmUser);
   Application.CreateForm(TdmResource, dmResource);
+  Application.CreateForm(TdmUser, dmUser);
+
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.
