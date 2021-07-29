@@ -45,7 +45,8 @@ uses
   DTF.Service.View in '..\DTF\DTF.Service.View.pas',
   Test4Form in 'Views\Test\Test4Form.pas' {frmTest4},
   DTF.Frame.View in '..\DTF\DTF.Frame.View.pas' {DTFViewFrame: TFrame},
-  DTF.Config.Types in '..\DTF\DTF.Config.Types.pas';
+  DTF.Config.Types in '..\DTF\DTF.Config.Types.pas',
+  DTF.Custom.Types in 'Config\DTF.Custom.Types.pas';
 
 {$R *.res}
 
@@ -61,7 +62,6 @@ begin
   Application.CreateForm(TdmDatabase, dmDatabase);
   Application.CreateForm(TdmResource, dmResource);
   Application.CreateForm(TdmUser, dmUser);
-
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.

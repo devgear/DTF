@@ -14,7 +14,6 @@ type
   IDTFService = interface
     ['{A4CE7D68-245A-43A5-92C9-4A9AF7BBD20D}']
   end;
-
   IDTFImmediateService = IDTFService;
 
   IDTFDeferService = interface(IDTFService)
@@ -24,8 +23,8 @@ type
   { Core services }
   IDTFViewService = interface(IDTFImmediateService)
     ['{CBF4176A-A149-4899-827B-38953EE767FC}']
-    function Show(AViewId: string; ACreationProc: TProc<TDTFForm>): Boolean;
-    procedure Regist(ACls: TDTFFormClass);
+    function Show(AViewId: string; ACreationProc: TProc<TDTFView>): Boolean;
+    procedure Regist(ACls: TDTFViewClass);
   end;
 
   IDTFConfigService = interface(IDTFImmediateService)

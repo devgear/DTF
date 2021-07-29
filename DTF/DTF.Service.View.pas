@@ -7,51 +7,84 @@ uses
   DTF.Service.Types,
   DTF.Types.View,
   System.SysUtils,
+  System.Generics.Collections,
   System.UITypes;
 
 type
   TViewServiceProvider = class(TDTFServiceProvider, IDTFViewService)
   type
-    TViewFactory = class(TClassFactory<string, TDTFFormClass>)
+    TViewFactory = class(TClassFactory<string, TDTFViewClass>)
     protected
-      function CalcKey(ACls: TDTFFormClass): string; override;
+      function CalcKey(ACls: TDTFViewClass): string; override;
     end;
   private
     FFactory: TViewFactory;
+    FViewItems: TList<TDTFView>;
   public
-    function Show(AViewId: string; ACreationProc: TProc<TDTFForm>): Boolean;
-    procedure Regist(ACls: TDTFFormClass);
+    constructor Create;
+    destructor Destroy; override;
+
+    function Show(AViewId: string; ACreationProc: TProc<TDTFView>): Boolean;
+    procedure Regist(ACls: TDTFViewClass);
   end;
 
 implementation
 
 uses
+  Vcl.Forms,
   DTF.App;
 
 { TViewServiceProvider.TViewFactory }
 
-function TViewServiceProvider.TViewFactory.CalcKey(ACls: TDTFFormClass): string;
+function TViewServiceProvider.TViewFactory.CalcKey(ACls: TDTFViewClass): string;
 begin
   Result := ACls.GetViewId
 end;
 
 { TViewServiceProvider }
 
-procedure TViewServiceProvider.Regist(ACls: TDTFFormClass);
+constructor TViewServiceProvider.Create;
+begin
+  FViewItems := TList<TDTFView>.Create;
+end;
+
+destructor TViewServiceProvider.Destroy;
+begin
+  FViewItems.Free;
+
+  inherited;
+end;
+
+procedure TViewServiceProvider.Regist(ACls: TDTFViewClass);
 begin
   TViewFactory.Instance.Regist(ACls);
 end;
 
-function TViewServiceProvider.Show(AViewId: string; ACreationProc: TProc<TDTFForm>): Boolean;
+function TViewServiceProvider.Show(AViewId: string; ACreationProc: TProc<TDTFView>): Boolean;
 var
-  ViewCls: TDTFFormClass;
+  ViewCls: TDTFViewClass;
+  View: TDTFView;
 begin
   ViewCls := TViewFactory.Instance.GetClass(AViewId);
   if not Assigned(ViewCls) then
     Exit;
 
+  for View in FViewItems do
+  begin
+    if View.ClassType = ViewCls then
+    begin
+      View.Show;
+      Exit(True);
+    end;
+  end;
 
+  View := ViewCls.Create(Application.MainForm);
+  FViewItems.Add(View);
 
+  if Assigned(ACreationProc) then
+    ACreationProc(View);
+
+  View.Show;
 end;
 
 initialization

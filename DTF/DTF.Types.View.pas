@@ -10,11 +10,10 @@ uses
 type
   ///////////////////////////////////////////////
   ///  View
-  TDTFForm = TDTFMDIChildForm;
-//  TDTFForm = TDTFBaseForm;
-  TDTFFormClass = class of TDTFForm;
+  TDTFView = TDTFBaseForm;
+  TDTFVIewClass = class of TDTFView;
 
-  TAttributeClass = class of TCustomAttribute;
+  TDTFMDIForm = TDTFMDIChildForm;
 
   ViewIdAttribute = class(TCustomAttribute)
   private
@@ -24,9 +23,9 @@ type
     property ViewId: string read FViewId;
   end;
 
-  TViewFactory = class(TClassFactory<string, TDTFFormClass>)
+  TViewFactory = class(TClassFactory<string, TDTFVIewClass>)
   protected
-    function CalcKey(ACls: TDTFFormClass): string; override;
+    function CalcKey(ACls: TDTFVIewClass): string; override;
   end;
 
 implementation
@@ -40,7 +39,7 @@ end;
 
 { TViewFactory }
 
-function TViewFactory.CalcKey(ACls: TDTFFormClass): string;
+function TViewFactory.CalcKey(ACls: TDTFVIewClass): string;
 begin
   Result := ACls.GetViewId
 end;

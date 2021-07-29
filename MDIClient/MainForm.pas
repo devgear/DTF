@@ -152,28 +152,29 @@ end;
 procedure TfrmMain.CreateMDIForm(AMenuId: string);
 var
   I: Integer;
-  Form: TDTFForm;
-  FormClass: TDTFFormClass;
+  Form: TDTFMDIForm;
+  FormClass: TDTFViewClass;
 begin
   // App.View.Show(AMenuId);
     // App.View.Create
 
   if not App.View.Show(AMenuId,
-    procedure{Creation}(AView: TDTFForm)
+    procedure{Creation}(AView: TDTFView)
+    var
+      MDIForm: TDTFMDIForm absolute AView;
     begin
-      AView.OnMDIActivate  := ChildFormActivate;
-      AView.OnMDIDestroy   := ChildFormDestroy;
+      MDIForm.OnMDIActivate  := ChildFormActivate;
+      MDIForm.OnMDIDestroy   := ChildFormDestroy;
 
-      AView.WindowState := wsMaximized;
-      AView.Show;
+      MDIForm.WindowState := wsMaximized;
 
-      MDITabSet.Tabs.AddObject(AView.SimpleCaption, AView);
+      MDITabSet.Tabs.AddObject(MDIForm.SimpleCaption, AView);
       MDITabSet.TabIndex := MDITabSet.Tabs.Count - 1;
     end) then
   begin
     ShowMessage(Format('해당 메뉴의 폼을 찾을 수 없습니다.(Menu Id: %s)', [AMenuId]));
   end;
-
+Exit;
   FormClass := TViewFactory.Instance.GetClass(AMenuId);
   if not Assigned(FormClass) then
   begin
@@ -191,7 +192,7 @@ begin
   end;
 
 
-  Form := FormClass.Create(Self);
+  Form := FormClass.Create(Self) as TDTFMDIForm;
   Form.OnMDIActivate  := ChildFormActivate;
   Form.OnMDIDestroy   := ChildFormDestroy;
 

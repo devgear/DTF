@@ -208,6 +208,7 @@
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="..\DTF\DTF.Config.Types.pas"/>
+        <DCCReference Include="Config\DTF.Custom.Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

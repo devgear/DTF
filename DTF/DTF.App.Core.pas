@@ -89,6 +89,8 @@ end;
 
 procedure TAppCore<T>.StartUp;
 begin
+//  FServiceLoader.RegistServiceProvider(IDTFViewService, TViewServiceProvider.Create);
+
   InitLoader;
 end;
 
