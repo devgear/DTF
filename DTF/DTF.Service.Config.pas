@@ -35,7 +35,7 @@ type
   private
     FLoader: TConfigLoader;
   public
-    constructor Create(ALoader: TConfigLoader = nil);
+    constructor Create(ALoader: TConfigLoader = nil); reintroduce;
     destructor Destroy; override;
   end;
 

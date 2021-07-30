@@ -379,8 +379,5 @@ end;
 
 initialization
   App.View.Regist(TfrmSYS1010);
-  TViewFactory.Instance.Regist(TfrmSYS1010);
-
-finalization
 
 end.

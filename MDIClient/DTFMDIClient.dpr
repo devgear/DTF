@@ -22,11 +22,8 @@ uses
   Test1Form in 'Views\Test\Test1Form.pas' {frmTest1},
   uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'Views\USR\ManageUserForm.pas' {DTFMDIChildForm1},
-  DTF.Auth in '..\DTF\DTF.Auth.pas',
   DTF.App.Core in '..\DTF\DTF.App.Core.pas',
   DTF.App in 'Config\DTF.App.pas',
-  AuthService in 'Services\AuthService.pas',
-  MenuService in 'Services\MenuService.pas',
   DTF.Service in '..\DTF\DTF.Service.pas',
   DTF.Service.Types in '..\DTF\DTF.Service.Types.pas',
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
@@ -37,7 +34,6 @@ uses
   DTF.Utils.Print in '..\DTF\DTF.Utils.Print.pas',
   DTF.Types.View in '..\DTF\DTF.Types.View.pas',
   DTF.Logger in '..\DTF\DTF.Logger.pas',
-  DTF.Service.Loader in '..\DTF\DTF.Service.Loader.pas',
   DTF.Logger.FileLog in '..\DTF\DTF.Logger.FileLog.pas',
   DTF.Logger.ODS in '..\DTF\DTF.Logger.ODS.pas',
   DTF.Service.Config in '..\DTF\DTF.Service.Config.pas',
@@ -56,7 +52,7 @@ begin
 
   ReportMemoryLeaksOnShutdown := True;
 
-  App.StartUp;
+//  App.StartUp;
 
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmDatabase, dmDatabase);

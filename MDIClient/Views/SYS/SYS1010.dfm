@@ -93,8 +93,6 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited tlbDataSet: TToolBar
           Width = 458
-          ExplicitLeft = 2
-          ExplicitTop = 22
           ExplicitWidth = 458
           inherited btnDSRefresh: TToolButton
             ExplicitWidth = 53
@@ -315,8 +313,6 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited tlbDataSet: TToolBar
           Width = 458
-          ExplicitLeft = 2
-          ExplicitTop = 22
           ExplicitWidth = 458
           inherited btnDSRefresh: TToolButton
             ExplicitWidth = 53
@@ -444,8 +440,6 @@ inherited frmSYS1010: TfrmSYS1010
         end
         inherited tlbDataSet: TToolBar
           Width = 457
-          ExplicitLeft = 2
-          ExplicitTop = 22
           ExplicitWidth = 457
           inherited btnDSRefresh: TToolButton
             ExplicitWidth = 53

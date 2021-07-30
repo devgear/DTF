@@ -13,7 +13,7 @@ type
   protected
     procedure DoWriteLog(const ALog: string); virtual; abstract;
   public
-    constructor Create; virtual;
+    constructor Create; override;
 
     procedure Log(const ALevel: TLogLevel; ALog: string); virtual;
     procedure Info(const ALog: string); virtual;
@@ -41,7 +41,7 @@ procedure TLogger.Log(const ALevel: TLogLevel; ALog: string);
 const
   cLogLevelStrs: array [TLogLevel] of String = ('TRC', 'DBG', 'INF', 'WRN', 'ERR', 'FTL');
 var
-  Log, Level: string;
+  Log: string;
 begin
   if ALevel < FLogLevel then
     Exit;

@@ -4,16 +4,22 @@ inherited frmTest2: TfrmTest2
   PixelsPerInch = 96
   TextHeight = 13
   inline DTFStrGridFrame1: TDTFStrGridFrame
-    Left = 0
-    Top = 0
-    Width = 686
-    Height = 487
+    Left = 2
+    Top = 4
+    Width = 682
+    Height = 481
     Align = alClient
+    Padding.Left = 2
+    Padding.Top = 2
+    Padding.Right = 2
+    Padding.Bottom = 2
     TabOrder = 0
-    ExplicitWidth = 686
-    ExplicitHeight = 487
+    ExplicitLeft = 2
+    ExplicitTop = 4
+    ExplicitWidth = 682
+    ExplicitHeight = 481
     inherited DTFTitleFrame1: TDTFTitleFrame
-      Width = 686
+      Width = 678
       ExplicitWidth = 686
       inherited pnlCaption: TPanel
         Width = 682
@@ -21,19 +27,19 @@ inherited frmTest2: TfrmTest2
       end
     end
     inherited tlbDataSet: TToolBar
-      Width = 686
+      Width = 678
       ExplicitWidth = 686
     end
     inherited pnlSearchControlArea: TPanel
-      Width = 686
+      Width = 678
       Height = 51
       ExplicitWidth = 686
       ExplicitHeight = 51
     end
     inherited Grid: TStringGrid
-      Top = 93
-      Width = 686
-      Height = 394
+      Top = 95
+      Width = 678
+      Height = 384
       ExplicitTop = 93
       ExplicitWidth = 686
       ExplicitHeight = 394

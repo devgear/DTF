@@ -18,10 +18,9 @@ type
       function CalcKey(ACls: TDTFViewClass): string; override;
     end;
   private
-    FFactory: TViewFactory;
     FViewItems: TList<TDTFView>;
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     function Show(AViewId: string; ACreationProc: TProc<TDTFView>): Boolean;
@@ -65,9 +64,11 @@ var
   ViewCls: TDTFViewClass;
   View: TDTFView;
 begin
+  Result := True;
+
   ViewCls := TViewFactory.Instance.GetClass(AViewId);
   if not Assigned(ViewCls) then
-    Exit;
+    Exit(False);
 
   for View in FViewItems do
   begin
@@ -86,8 +87,5 @@ begin
 
   View.Show;
 end;
-
-initialization
-  App.RegistService(IDTFViewService, TViewServiceProvider);
 
 end.

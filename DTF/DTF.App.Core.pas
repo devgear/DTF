@@ -6,46 +6,41 @@ interface
 uses
   System.SysUtils,
   System.Generics.Collections,
+  DMX.DesignPattern,    // using DevMax frameworks(https://github.com/hjfactory/DevMax)
 
   DTF.Types,
-  DTF.Service.Types,
-  DTF.Service.Loader,
-  DTF.Service.View,
-  DTF.Logger,
-  DMX.DesignPattern;
+  DTF.Service.Types;
 
 type
   TAppCore<T: class> = class(TSingleton<T>)
   private
-    FBindFuncs: TDictionary<TGUID, TFunc<IDTFService>>;
-    FInstances: TDictionary<TGUID, IDTFService>;
+    FBindFuncs: TDictionary<TGUID, TFunc<TDTFServiceProvider>>;
+    FInstances: TObjectDictionary<TGUID, TDTFServiceProvider>;
   protected
-    FServiceLoader: TServiceLoader;
+    procedure Bind(const AID: TGUID; AFunc: TFunc<TDTFServiceProvider>); overload;
+    procedure Bind(const AID: TGUID; AClass: TDTFServiceProviderClass); overload;
 
-    procedure Bind(const AID: TGUID; AFunc: TFunc<IDTFService>); overload;
-    procedure Bind(const AID: TGUID; AClass: TClass); overload;
+    procedure RegistCoreServices;
+    procedure RegistCustomServices; virtual;
 
     function GetService(const AID: TGUID): TDTFServiceProvider;
-    procedure AddService(const AID: TGUID; const AService: IDTFService);
 
     function GetViewService: IDTFViewService;
     function GetLogService: IDTFLogService;
-
-    procedure InitLoader; virtual;
   public
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
 
-    procedure StartUp;
-
-    procedure RegistService(const AID: TGUID; const ACls: TDTFServiceProviderClass);
-
-    // property Auth;
-     property View: IDTFViewService read GetViewService;
-     property Log: IDTFLogService read GetLogService;
+    // Default core serivce
+    property View: IDTFViewService read GetViewService;
+    property Log: IDTFLogService read GetLogService;
   end;
 
 implementation
+
+uses
+  DTF.Service.View,
+  DTF.Logger.ODS;
 
 { TAppCore<T> }
 
@@ -53,11 +48,11 @@ procedure TAppCore<T>.AfterConstruction;
 begin
   inherited;
 
-  FBindFuncs := TDictionary<TGUID, TFunc<IDTFService>>.Create;
-  FInstances := TDictionary<TGUID, IDTFService>.Create;
+  FBindFuncs := TDictionary<TGUID, TFunc<TDTFServiceProvider>>.Create;
+  FInstances := TObjectDictionary<TGUID, TDTFServiceProvider>.Create([doOwnsValues]);
 
-//  RegistCoreServices;
-//  RegistCustomServices;
+  RegistCoreServices;
+  RegistCustomServices;
 end;
 
 procedure TAppCore<T>.BeforeDestruction;
@@ -68,23 +63,43 @@ begin
   FInstances.Free;
 end;
 
-procedure TAppCore<T>.Bind(const AID: TGUID; AClass: TClass);
+procedure TAppCore<T>.Bind(const AID: TGUID; AClass: TDTFServiceProviderClass);
 begin
-  Bind(AID, function: IDTFService
-    var
-      Intf: IDTFService;
+  Bind(AID, function: TDTFServiceProvider
     begin
-      Supports(AClass.Create, IDTFService, Result);
+      Result := AClass.Create;
     end);
 end;
 
-procedure TAppCore<T>.Bind(const AID: TGUID; AFunc: TFunc<IDTFService>);
+procedure TAppCore<T>.Bind(const AID: TGUID; AFunc: TFunc<TDTFServiceProvider>);
 begin
   FBindFuncs.Add(AID, AFunc);
 end;
 
-procedure TAppCore<T>.AddService(const AID: TGUID; const AService: IDTFService);
+procedure TAppCore<T>.RegistCoreServices;
 begin
+  Bind(IDTFViewService, TViewServiceProvider);
+  Bind(IDTFLogService,  TODSLogger);
+end;
+
+procedure TAppCore<T>.RegistCustomServices;
+begin
+end;
+
+function TAppCore<T>.GetService(const AID: TGUID): TDTFServiceProvider;
+var
+  Func: TFunc<TDTFServiceProvider>;
+begin
+  if not FInstances.TryGetValue(AID, Result) then
+  begin
+    if FBindFuncs.TryGetValue(AID, Func) then
+    begin
+      Result := Func as TDTFServiceProvider;
+      FInstances.Add(AID, Result);
+    end
+    else
+      raise Exception.CreateFmt('Service is not registered.(IID: %s)', [AID.ToString]);
+  end;
 end;
 
 function TAppCore<T>.GetLogService: IDTFLogService;
@@ -92,30 +107,9 @@ begin
   Result := GetService(IDTFLogService) as IDTFLogService;
 end;
 
-function TAppCore<T>.GetService(const AID: TGUID): TDTFServiceProvider;
-begin
-  Result := FServiceLoader.ServiceProvider[AId];
-end;
-
 function TAppCore<T>.GetViewService: IDTFViewService;
 begin
   Result := GetService(IDTFViewService) as IDTFViewService;
-end;
-
-procedure TAppCore<T>.InitLoader;
-begin
-end;
-
-procedure TAppCore<T>.RegistService(const AID: TGUID; const ACls: TDTFServiceProviderClass);
-begin
-  FServiceLoader.RegistServiceProvider(AID, ACls);
-end;
-
-procedure TAppCore<T>.StartUp;
-begin
-//  FServiceLoader.RegistServiceProvider(IDTFViewService, TViewServiceProvider.Create);
-
-  InitLoader;
 end;
 
 end.

@@ -93,7 +93,6 @@ uses
   DatabaseModule,
   DTF.App,
   DTF.Types.View,
-  DTF.Module.Resource,
   DTF.Utils.AutoComplete;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -150,14 +149,7 @@ begin
 end;
 
 procedure TfrmMain.CreateMDIForm(AMenuId: string);
-var
-  I: Integer;
-  Form: TDTFMDIForm;
-  FormClass: TDTFViewClass;
 begin
-  // App.View.Show(AMenuId);
-    // App.View.Create
-
   if not App.View.Show(AMenuId,
     procedure{Creation}(AView: TDTFView)
     var
@@ -174,33 +166,6 @@ begin
   begin
     ShowMessage(Format('해당 메뉴의 폼을 찾을 수 없습니다.(Menu Id: %s)', [AMenuId]));
   end;
-Exit;
-  FormClass := TViewFactory.Instance.GetClass(AMenuId);
-  if not Assigned(FormClass) then
-  begin
-    ShowMessage(Format('해당 메뉴의 폼을 찾을 수 없습니다.(Menu Id: %s)', [AMenuId]));
-    Exit
-  end;
-
-  for I := 0 to MDIChildCount - 1 do
-  begin
-    if MDIChildren[I].ClassType = FormClass then
-    begin
-      MDICHildren[I].Show;
-      Exit;
-    end;
-  end;
-
-
-  Form := FormClass.Create(Self) as TDTFMDIForm;
-  Form.OnMDIActivate  := ChildFormActivate;
-  Form.OnMDIDestroy   := ChildFormDestroy;
-
-  Form.WindowState := wsMaximized;
-  Form.Show;
-
-  MDITabSet.Tabs.AddObject(Form.SimpleCaption, Form);
-  MDITabSet.TabIndex := MDITabSet.Tabs.Count - 1;
 end;
 
 procedure TfrmMain.LoadTreeMenu(ACateCode: string);
@@ -230,14 +195,11 @@ begin
       Group.SelectedIndex := 0;
     end;
 
-//    trvMenus.Items.addchildobj
-
     Item := trvMenus.Items.AddChild(Group, qryMenuTree.FieldByName('menu_name').AsString) as TMenuNode;
     Item.Code := qryMenuTree.FieldByName('menu_code').AsString;
     Item.ParentCode := Group.Code;
     Item.ImageIndex := 1;
     Item.SelectedIndex := 1;
-//    Item.Enabled := False;
 
     qryMenuTree.Next;
   end;

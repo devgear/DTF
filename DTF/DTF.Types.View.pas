@@ -3,7 +3,6 @@ unit DTF.Types.View;
 interface
 
 uses
-  DMX.DesignPattern,    // using DevMax frameworks(https://github.com/hjfactory/DevMax)
   DTF.Form.MDIChild,
   DTF.Form.Base;
 
@@ -23,11 +22,6 @@ type
     property ViewId: string read FViewId;
   end;
 
-  TViewFactory = class(TClassFactory<string, TDTFVIewClass>)
-  protected
-    function CalcKey(ACls: TDTFVIewClass): string; override;
-  end;
-
 implementation
 
 { ViewIdAttribute }
@@ -35,13 +29,6 @@ implementation
 constructor ViewIdAttribute.Create(AViewId: string);
 begin
   FViewId := AViewId;
-end;
-
-{ TViewFactory }
-
-function TViewFactory.CalcKey(ACls: TDTFVIewClass): string;
-begin
-  Result := ACls.GetViewId
 end;
 
 end.

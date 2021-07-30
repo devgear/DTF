@@ -167,11 +167,8 @@
             <Form>DTFMDIChildForm1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\DTF\DTF.Auth.pas"/>
         <DCCReference Include="..\DTF\DTF.App.Core.pas"/>
         <DCCReference Include="Config\DTF.App.pas"/>
-        <DCCReference Include="Services\AuthService.pas"/>
-        <DCCReference Include="Services\MenuService.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.Types.pas"/>
         <DCCReference Include="..\DTF\DTF.Frame.StrGrid.pas">
@@ -192,7 +189,6 @@
         <DCCReference Include="..\DTF\DTF.Utils.Print.pas"/>
         <DCCReference Include="..\DTF\DTF.Types.View.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.pas"/>
-        <DCCReference Include="..\DTF\DTF.Service.Loader.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.FileLog.pas"/>
         <DCCReference Include="..\DTF\DTF.Logger.ODS.pas"/>
         <DCCReference Include="..\DTF\DTF.Service.Config.pas"/>

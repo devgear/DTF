@@ -78,7 +78,9 @@ implementation
 
 {$R *.dfm}
 
-uses DatabaseModule, System.StrUtils;
+uses
+  DTF.App,
+  DatabaseModule, System.StrUtils;
 
 { TDataItem }
 
@@ -151,6 +153,6 @@ begin
 end;
 
 initialization
-  TViewFactory.Instance.Regist(TfrmTest3);
+  App.View.Regist(TfrmTest3);
 
 end.

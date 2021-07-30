@@ -503,7 +503,6 @@ var
   LCtx: TRttiContext;
   LType: TRttiType;
   LField: TRttiField;
-  LMethod: TRttiMethod;
   LAttr: DataRowsAttribute;
 
   Value: TValue;

@@ -14,7 +14,7 @@ type
     procedure SetFileFormat(const Value: string);
     procedure SetDir(const Value: string);
   protected
-    procedure DoWriteLog(const ALog: string);
+    procedure DoWriteLog(const ALog: string); override;
   public
     constructor Create; override;
     destructor Destroy; override;

@@ -48,7 +48,9 @@ implementation
 
 {$R *.dfm}
 
-uses DTF.Utils.Export, DTF.Utils.Print;
+uses
+  DTF.App,
+  DTF.Utils.Export, DTF.Utils.Print;
 
 procedure TfrmTest4.FormCreate(Sender: TObject);
 begin
@@ -91,5 +93,5 @@ begin
 end;
 
 initialization
-  TViewFactory.Instance.Regist(TfrmTest4);
+  App.View.Regist(TfrmTest4);
 end.

@@ -6,16 +6,43 @@ inherited frmTest1: TfrmTest1
   PixelsPerInch = 96
   TextHeight = 13
   inline DTFDBGridFrame1: TDTFDBGridFrame
-    Left = 0
-    Top = 0
-    Width = 686
-    Height = 319
+    Left = 2
+    Top = 4
+    Width = 682
+    Height = 313
     Align = alClient
+    Padding.Left = 2
+    Padding.Top = 2
+    Padding.Right = 2
+    Padding.Bottom = 2
     TabOrder = 0
-    ExplicitWidth = 686
-    ExplicitHeight = 319
+    ExplicitLeft = 2
+    ExplicitTop = 4
+    ExplicitWidth = 682
+    ExplicitHeight = 313
+    inherited DTFTitleFrame1: TDTFTitleFrame
+      Width = 678
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 686
+      inherited pnlCaption: TPanel
+        Width = 682
+        ExplicitWidth = 682
+      end
+    end
+    inherited grdMaster: TDBGrid
+      Top = 107
+      Width = 678
+      Height = 204
+    end
+    inherited pnlSearchControlArea: TPanel
+      Width = 678
+      Height = 63
+      ExplicitWidth = 686
+      ExplicitHeight = 63
+    end
     inherited tlbDataSet: TToolBar
-      Width = 686
+      Width = 678
       ExplicitLeft = 0
       ExplicitTop = 20
       ExplicitWidth = 686
@@ -39,30 +66,6 @@ inherited frmTest1: TfrmTest1
       end
       inherited ToolButton2: TToolButton
         ExplicitWidth = 53
-      end
-    end
-    inherited grdMaster: TDBGrid
-      Top = 105
-      Width = 686
-      Height = 214
-    end
-    inherited pnlSearchControlArea: TPanel
-      Width = 686
-      Height = 63
-      ExplicitLeft = 0
-      ExplicitTop = 42
-      ExplicitWidth = 686
-      ExplicitHeight = 63
-    end
-    inherited DTFTitleFrame1: TDTFTitleFrame
-      Width = 686
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 686
-      inherited pnlCaption: TPanel
-        Width = 682
-        ExplicitLeft = 4
-        ExplicitWidth = 682
       end
     end
     inherited ActionList: TActionList
@@ -98,12 +101,15 @@ inherited frmTest1: TfrmTest1
     end
   end
   object Panel7: TPanel
-    Left = 0
-    Top = 319
-    Width = 686
+    Left = 2
+    Top = 317
+    Width = 682
     Height = 109
     Align = alBottom
     TabOrder = 2
+    ExplicitLeft = 0
+    ExplicitTop = 319
+    ExplicitWidth = 686
     object Label1: TLabel
       Left = 16
       Top = 12

@@ -57,7 +57,9 @@ implementation
 
 {$R *.dfm}
 
-uses DatabaseModule, System.StrUtils;
+uses
+  DatabaseModule, System.StrUtils,
+  DTF.App;
 
 { TGridData }
 
@@ -107,6 +109,6 @@ begin
 end;
 
 initialization
-  TViewFactory.Instance.Regist(TfrmTest2);
+  App.View.Regist(TfrmTest2);
 
 end.
