@@ -15,6 +15,7 @@ unit DTF.App;
 interface
 
 uses
+  System.SysUtils,
   DTF.App.Core,
   DTF.Service.Types,
   DTF.Config,
@@ -87,6 +88,14 @@ procedure TApp.InitLoader;
 var
   Logger: TFileLogger;
 begin
+  App.Bind(IDTFConfigService, function: IDTFService
+    begin
+
+    end);
+
+  // Ȯ�强
+  // FConfig := TConfig.Create;
+
   FServiceLoader.RegistServiceProvider(IDTFConfigService, TConfig.Create);
 //  FServiceLoader.ServiceProvider[IDTFConfigService] := TConfig.Create({TIniConfigLoader.Create(Self, 'Config.ini')});
 

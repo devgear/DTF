@@ -4,6 +4,7 @@ unit DTF.App.Core;
 interface
 
 uses
+  System.SysUtils,
   System.Generics.Collections,
 
   DTF.Types,
@@ -16,8 +17,13 @@ uses
 type
   TAppCore<T: class> = class(TSingleton<T>)
   private
+    FBindFuncs: TDictionary<TGUID, TFunc<IDTFService>>;
+    FInstances: TDictionary<TGUID, IDTFService>;
   protected
     FServiceLoader: TServiceLoader;
+
+    procedure Bind(const AID: TGUID; AFunc: TFunc<IDTFService>); overload;
+    procedure Bind(const AID: TGUID; AClass: TClass); overload;
 
     function GetService(const AID: TGUID): TDTFServiceProvider;
     procedure AddService(const AID: TGUID; const AService: IDTFService);
@@ -29,6 +35,7 @@ type
   public
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
+
     procedure StartUp;
 
     procedure RegistService(const AID: TGUID; const ACls: TDTFServiceProviderClass);
@@ -40,23 +47,40 @@ type
 
 implementation
 
-uses
-  System.SysUtils;
-
-{ TDTFApp<T> }
+{ TAppCore<T> }
 
 procedure TAppCore<T>.AfterConstruction;
 begin
   inherited;
 
-  FServiceLoader := TServiceLoader.Create;
+  FBindFuncs := TDictionary<TGUID, TFunc<IDTFService>>.Create;
+  FInstances := TDictionary<TGUID, IDTFService>.Create;
+
+//  RegistCoreServices;
+//  RegistCustomServices;
 end;
 
 procedure TAppCore<T>.BeforeDestruction;
 begin
   inherited;
 
-  FServiceLoader.Free;
+  FBindFuncs.Free;
+  FInstances.Free;
+end;
+
+procedure TAppCore<T>.Bind(const AID: TGUID; AClass: TClass);
+begin
+  Bind(AID, function: IDTFService
+    var
+      Intf: IDTFService;
+    begin
+      Supports(AClass.Create, IDTFService, Result);
+    end);
+end;
+
+procedure TAppCore<T>.Bind(const AID: TGUID; AFunc: TFunc<IDTFService>);
+begin
+  FBindFuncs.Add(AID, AFunc);
 end;
 
 procedure TAppCore<T>.AddService(const AID: TGUID; const AService: IDTFService);
