@@ -20,11 +20,9 @@ uses
   DTF.Frame.Title in '..\DTF\DTF.Frame.Title.pas' {DTFTitleFrame: TFrame},
   DTF.Utils.Export in '..\DTF\DTF.Utils.Export.pas',
   Test1Form in 'Views\Test\Test1Form.pas' {frmTest1},
-  uIniConfig in '..\ThirdParty\CustomAttribute\uIniConfig.pas',
   ManageUserForm in 'Views\USR\ManageUserForm.pas' {DTFMDIChildForm1},
   DTF.App.Core in '..\DTF\DTF.App.Core.pas',
   DTF.App in 'Config\DTF.App.pas',
-  DTF.Service in '..\DTF\DTF.Service.pas',
   DTF.Service.Types in '..\DTF\DTF.Service.Types.pas',
   DTF.Frame.StrGrid in '..\DTF\DTF.Frame.StrGrid.pas' {DTFStrGridFrame: TFrame},
   Test2Form in 'Views\Test\Test2Form.pas' {frmTest2},
@@ -42,7 +40,9 @@ uses
   Test4Form in 'Views\Test\Test4Form.pas' {frmTest4},
   DTF.Frame.View in '..\DTF\DTF.Frame.View.pas' {DTFViewFrame: TFrame},
   DTF.Config.Types in '..\DTF\DTF.Config.Types.pas',
-  DTF.Custom.Types in 'Config\DTF.Custom.Types.pas';
+  DTF.Custom.Types in 'Config\DTF.Custom.Types.pas',
+  DTF.Service.Auth in '..\DTF\DTF.Service.Auth.pas',
+  DTF.Auth.BasicAuth in '..\DTF\Auth\DTF.Auth.BasicAuth.pas';
 
 {$R *.res}
 

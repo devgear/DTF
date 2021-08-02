@@ -24,6 +24,14 @@ type
     procedure Regist(ACls: TDTFViewClass);
   end;
 
+  IDTFAuthCredential = interface
+  end;
+  IDTFAuthService = interface(IDTFService)
+    ['{A1CB8325-A183-4DE2-A06A-95728505D1F2}']
+    function SignIn: Boolean;  overload;
+    function SignIn(ACredential: IDTFAuthCredential): Boolean; overload;
+  end;
+
   IDTFConfigService = interface(IDTFService)
     ['{12BA2742-734A-45D0-A1AF-537C6AC5E7DB}']
   end;

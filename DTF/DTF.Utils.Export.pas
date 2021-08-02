@@ -14,6 +14,7 @@ type
   TExportUtil = class
     class procedure SaveToXlsFromDataset(const ADataSet: TDataSet; const AFilename: string; const ASheetName: string = '';
       const ASetNumberFormatLocal: Boolean = True; const AIncludeLabel: Boolean = True; const AShowAfterSave: Boolean = True);
+
     class procedure PrintFromDataSet(const ADataSet: TDataSet; const ATitle: string = '');
 
     class procedure PrintFromDataValue(const AData: TValue;

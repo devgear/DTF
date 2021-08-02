@@ -1,17 +1,5 @@
 unit DTF.App;
 
-{
-  How to use
-    App.Config.UserId
-    App.Logger.Log(ALog); // TLogger.Log
-
-    App.Auth
-    app.Perm
-
-    App.Utils.Printer ??
-    App.Utils.Export ??
-}
-
 interface
 
 uses
@@ -25,9 +13,6 @@ type
   protected
     procedure RegistCustomServices; override;
   public
-//    procedure AfterConstruction; override;
-//    procedure BeforeDestruction; override;
-
     property Config: TConfig read GetConfigService;
   end;
 
